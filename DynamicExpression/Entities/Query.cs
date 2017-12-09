@@ -1,6 +1,6 @@
 using DynamicExpression.Interfaces;
 
-namespace DynamicExpression
+namespace DynamicExpression.Entities
 {
     /// <inheritdoc />
     public class Query : IQuery

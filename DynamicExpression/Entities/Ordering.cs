@@ -1,7 +1,7 @@
 using DynamicExpression.Enums;
 using DynamicExpression.Interfaces;
 
-namespace DynamicExpression
+namespace DynamicExpression.Entities
 {
     /// <inheritdoc />
     public class Ordering : IOrdering
