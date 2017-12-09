@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2006
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".solution", ".solution", "{EA0E8885-9387-4A54-8DE6-65EB2431C1B9}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		icon.ico = icon.ico
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicExpression", "DynamicExpression\DynamicExpression.csproj", "{B283F4A4-1E7B-4D9A-A767-002C11B2C881}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B283F4A4-1E7B-4D9A-A767-002C11B2C881}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B283F4A4-1E7B-4D9A-A767-002C11B2C881}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B283F4A4-1E7B-4D9A-A767-002C11B2C881}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B283F4A4-1E7B-4D9A-A767-002C11B2C881}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {88C60CFA-317B-4439-ACA0-4CBE16274F92}
+	EndGlobalSection
+EndGlobal
