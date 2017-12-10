@@ -1,9 +1,6 @@
 ## Dynamic Expression v1.0.1
 Construct lambda expressions dynamically, and turn criteria models into Linq queries.  
   
-#### Nuget: https://www.nuget.org/packages/DynamicExpression (netstandard2.0).  
-  
-<br>
 Simply implement the interface: ```IQueryCriteria```, and fluently build the expression, relating properties of the ```IQueryCriteria``` implementation to a model or entity. Just follow the two steps in the example below.  
 
 #### 1. Implementing Query Criteria model.
