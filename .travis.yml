@@ -1,2 +1,6 @@
 language: csharp
+dotnet: 2.0.0
 solution: DynamicExpression.sln
+script:
+  - dotnet restore
+  - dotnet build -c Release
