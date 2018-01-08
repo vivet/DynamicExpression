@@ -1,7 +1,9 @@
-## Dynamic Expression v1.0.1
+# Dynamic Expression v1.0.1
+[![Build Status](https://travis-ci.org/vivet/DynamicExpression.svg?branch=master)](https://travis-ci.org/vivet/DynamicExpression)
+[![NuGet](https://img.shields.io/nuget/dt/DynamicExpression.svg)](https://www.nuget.org/packages/DynamicExpression/)
+
 Construct lambda expressions dynamically, and turn criteria models into Linq queries.  
 Feel free to contribute, throw questions and report issues. I usually respond fast (24-48 hours).  
-#### Nuget: https://www.nuget.org/packages/DynamicExpression (netstandard2.0).
   
 ### Introduction
 Simply implement the interface: ```IQueryCriteria```, and fluently build the expression, relating properties of the ```IQueryCriteria``` implementation to a model or entity. Just follow the two steps in the example below.
