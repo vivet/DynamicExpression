@@ -1,11 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".solution", ".solution", "{EA0E8885-9387-4A54-8DE6-65EB2431C1B9}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		.travis.yml = .travis.yml
 		icon.ico = icon.ico
 		LICENSE = LICENSE
 		README.md = README.md
@@ -15,7 +16,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicExpression", "Dynami
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".tests", ".tests", "{8BD321DD-4802-4A62-BA89-615F8565298F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicExpression.Test", "DynamicExpression.Test\DynamicExpression.Test.csproj", "{1F685781-1780-4826-864C-7BEA142B2F26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicExpression.Test", "DynamicExpression.Test\DynamicExpression.Test.csproj", "{1F685781-1780-4826-864C-7BEA142B2F26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
