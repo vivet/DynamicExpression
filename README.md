@@ -1,4 +1,4 @@
-# Dynamic Expression v1.0.1
+# Dynamic Expression v1.0.4
 [![Build Status](https://travis-ci.org/vivet/DynamicExpression.svg?branch=master)](https://travis-ci.org/vivet/DynamicExpression)
 [![NuGet](https://img.shields.io/nuget/dt/DynamicExpression.svg)](https://www.nuget.org/packages/DynamicExpression/)
 
