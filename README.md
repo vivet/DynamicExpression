@@ -31,3 +31,6 @@ Convert the instance of 'MyQueryCriteria' to a valid Linq Expression, by invokin
 var criteria = new MyQueryCriteria();
 var result = myQueryable.Where(criteria) 
 ```
+  
+##### # 3. Pagination and Ordering.
+Coming...
