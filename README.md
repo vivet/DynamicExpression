@@ -1,6 +1,7 @@
 # Dynamic Expression v1.0.4
 [![Build Status](https://travis-ci.org/vivet/DynamicExpression.svg?branch=master)](https://travis-ci.org/vivet/DynamicExpression)
 [![NuGet](https://img.shields.io/nuget/dt/DynamicExpression.svg)](https://www.nuget.org/packages/DynamicExpression/)
+[![NuGet](https://img.shields.io/nuget/v/DynamicExpression.svg)](https://www.nuget.org/packages/DynamicExpression/)
 
 Construct lambda expressions dynamically, and turn criteria models into Linq queries.  
 Feel free to contribute, throw questions and report issues. I usually respond fast (24-48 hours).  
