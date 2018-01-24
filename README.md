@@ -8,7 +8,6 @@ Easyly, construct lambda expressions dynamically, and turn criteria models into 
 Feel free to contribute, throw questions and report issues. I usually respond fast (24-48 hours).  
 
 ##### Table of Contents:
-* [Home](#)
 * [Query](#query)
 * [Query Criteria](#query-criteria)
 * [Criteria Expression Operations](#criteria-expression-operations)
