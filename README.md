@@ -85,10 +85,4 @@ var criteria = new MyQueryCriteria();
 var result = myQueryable
     .Where(criteria) 
 ```
-The other extensions methods applies pagination and ordering to the query, ```IQueryable<TModel>```.
-
-
-
-
-
-
+The other extensions methods applies pagination and ordering to the query, ```IQueryable<T>```.
