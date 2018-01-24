@@ -7,6 +7,13 @@ Easyly, construct lambda expressions dynamically, and turn criteria models into 
 
 Feel free to contribute, throw questions and report issues. I usually respond fast (24-48 hours).  
 
+##### Table of Contents:
+* [Home](#)
+* [Query](#query)
+* [Query Criteria](#query-criteria)
+* [Criteria Expression Operations](#criteria-expression-operations)
+* [Linq Extensions](#linq-extensions)
+
 #### Query
 The query object model has a generic and a non-generic implementations.  
 The ```Query``` is used when no filtering is required, but pagination and ordering is still needed, while the ```Query<TCriteria>``` is used when custom filter expressions should be applied.  
@@ -91,7 +98,7 @@ Note, that not all operations are valid on all data types, but it should be appa
 * IsNotNullNorWhiteSpace
 * In
 
-#### Linq Extensions.
+#### Linq Extensions
 The library comes with a few ```IQueryable<T>``` extension methods. They serve to convert the ```CriteriaExpression``` returned by the ```GetExpression<TModel>()```, into a valid linq expression.  
 
 The list below shows the extension methods
