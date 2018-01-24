@@ -38,7 +38,7 @@ public class MyQueryCriteria : IQueryCriteria
 }
 ```
   
-Advanced example.
+Another example, combining two criteria properties to one model property.
 ```csharp
 public class MyModel
 {
@@ -69,6 +69,27 @@ public class MyQueryCriteria : IQueryCriteria
     }
 }
 ```
+
+#### Criteria Expression Operations
+When constructing the ```CriteriaExpression``` the following methods are available.  
+Note, that not all operations are valid on all data types, but it should be apparent.
+* Equal
+* NotEqual
+* Contains
+* StartsWith
+* EndsWith
+* GreaterThan
+* GreaterThanOrEqual
+* LessThan
+* LessThanOrEqual
+* Between
+* IsNull
+* IsEmpty
+* IsNullOrWhiteSpace
+* IsNotNull
+* IsNotEmpty
+* IsNotNullNorWhiteSpace
+* In
 
 #### Linq Extensions.
 The library comes with a few ```IQueryable<T>``` extension methods. They serve to convert the ```CriteriaExpression``` returned by the ```GetExpression<TModel>()```, into a valid linq expression.  
