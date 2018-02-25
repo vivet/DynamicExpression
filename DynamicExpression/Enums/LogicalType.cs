@@ -13,18 +13,6 @@
         /// <summary>
         /// Or.
         /// </summary>
-        Or,
-
-        /// <summary>
-        /// Nor. 
-        /// FEATURE: Not implemented
-        /// </summary>
-        Nor,
-
-        /// <summary>
-        /// Xor.
-        /// FEATURE: Not implemented
-        /// </summary>
-        Xor
+        Or
     }
 }
