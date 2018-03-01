@@ -8,16 +8,11 @@ namespace DynamicExpression.Interfaces
         /// <summary>
         /// Number.
         /// </summary>
-        int Number { get; set; }
+        int? Number { get; set; }
 
         /// <summary>
         /// Count (Take).
         /// </summary>
-        int Count { get; set; }
-
-        /// <summary>
-        /// Skip (Skip).
-        /// </summary>
-        int Skip { get; }
+        int? Count { get; set; }
     }
 }

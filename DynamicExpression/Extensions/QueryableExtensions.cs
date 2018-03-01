@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using DynamicExpression.Entities;
 using DynamicExpression.Enums;
 using DynamicExpression.Interfaces;
 
@@ -80,9 +81,12 @@ namespace DynamicExpression.Extensions
             if (pagination == null)
                 throw new ArgumentNullException(nameof(pagination));
 
+            var count = pagination.Count ?? Pagination.DEFAULT_COUNT;
+            var number = pagination.Number ?? Pagination.DEFAULT_NUMBER;
+
             return source
-                .Skip(pagination.Skip)
-                .Take(pagination.Count);
+                .Skip((number - 1) * count)
+                .Take(count);
         }
     }
 }

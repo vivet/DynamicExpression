@@ -6,16 +6,15 @@ namespace DynamicExpression.Entities
     /// <inheritdoc />
     public class Pagination : IPagination
     {
-        /// <inheritdoc />
-        [DefaultValue(1)]
-        public virtual int Number { get; set; } = 1;
+        internal const int DEFAULT_COUNT = 25;
+        internal const int DEFAULT_NUMBER = 1;
 
         /// <inheritdoc />
-        [DefaultValue(25)]
-        public virtual int Count { get; set; } = 25;
+        [DefaultValue(Pagination.DEFAULT_NUMBER)]
+        public virtual int? Number { get; set; } = Pagination.DEFAULT_NUMBER;
 
         /// <inheritdoc />
-        [DefaultValue(0)]
-        public virtual int Skip => (this.Number - 1) * this.Count;
+        [DefaultValue(Pagination.DEFAULT_COUNT)]
+        public virtual int? Count { get; set; } = Pagination.DEFAULT_COUNT;
     }
 }
