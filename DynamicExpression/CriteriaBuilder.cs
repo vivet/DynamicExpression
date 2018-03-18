@@ -12,7 +12,7 @@ namespace DynamicExpression
     /// <summary>
     /// CriteriaExpression Builder
     /// </summary>
-	internal class CriteriaBuilder
+    public class CriteriaBuilder
     {
         private readonly Dictionary<OperationType, Func<Expression, Expression, Expression, Expression>> expressions;
         private readonly Dictionary<string, MethodInfo> methods = new Dictionary<string, MethodInfo>
@@ -78,8 +78,7 @@ namespace DynamicExpression
             }
 
             return 
-                Expression.Lambda<Func<T, bool>>(expression ?? 
-                Expression.Constant(true), parameter);
+                Expression.Lambda<Func<T, bool>>(expression ?? Expression.Constant(true), parameter);
         }
 
 	    private Expression GetExpression(Expression expression, ICriteria criteria, string propertyName = null)
