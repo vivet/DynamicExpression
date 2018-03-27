@@ -20,7 +20,7 @@ namespace DynamicExpression.Extensions
         /// <param name="query">The <see cref="IQuery"/>.</param>
         /// <returns>The <see cref="IQueryable{T}"/>.</returns>
         public static IQueryable<T> Where<T>(this IQueryable<T> source, IQuery query)
-            where T : class
+        where T : class
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -29,8 +29,8 @@ namespace DynamicExpression.Extensions
                 throw new ArgumentNullException(nameof(query));
 
             return source
-                .Order(query.Order)
-                .Limit(query.Paging);
+            .Order(query.Order)
+            .Limit(query.Paging);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace DynamicExpression.Extensions
         /// <param name="queryCriteria">The <see cref="IQueryCriteria"/>.</param>
         /// <returns>The <see cref="IQueryable{T}"/>.</returns>
         public static IQueryable<T> Where<T>(this IQueryable<T> source, IQueryCriteria queryCriteria)
-            where T : class
+        where T : class
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -53,7 +53,7 @@ namespace DynamicExpression.Extensions
             var expression = new CriteriaBuilder().GetExpression<T>(criteria);
 
             return source
-                .Where(expression);
+            .Where(expression);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace DynamicExpression.Extensions
         /// <param name="queryCriteria">The <see cref="IQuery{T}"/>.</param>
         /// <returns>The <see cref="IQueryable{T}"/>.</returns>
         public static IQueryable<T> Where<T>(this IQueryable<T> source, IQuery<IQueryCriteria> queryCriteria)
-            where T : class
+        where T : class
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -76,9 +76,9 @@ namespace DynamicExpression.Extensions
             var expression = new CriteriaBuilder().GetExpression<T>(criteria);
 
             return source
-                .Where(expression)
-                .Order(queryCriteria.Order)
-                .Limit(queryCriteria.Paging);
+            .Where(expression)
+            .Order(queryCriteria.Order)
+            .Limit(queryCriteria.Paging);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace DynamicExpression.Extensions
         /// <param name="ordering">The <see cref="IOrdering"/>.</param>
         /// <returns>The <see cref="IQueryable{T}"/>.</returns>
         public static IQueryable<T> Order<T>(this IQueryable<T> source, IOrdering ordering)
-            where T : class
+        where T : class
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -120,7 +120,7 @@ namespace DynamicExpression.Extensions
         /// <param name="pagination">The <see cref="IPagination"/>.</param>
         /// <returns>The <see cref="IQueryable{T}"/>.</returns>
         public static IQueryable<T> Limit<T>(this IQueryable<T> source, IPagination pagination)
-            where T : class
+        where T : class
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -132,8 +132,8 @@ namespace DynamicExpression.Extensions
             var number = pagination.Number ?? Pagination.DEFAULT_NUMBER;
 
             return source
-                .Skip((number - 1) * count)
-                .Take(count);
+            .Skip((number - 1) * count)
+            .Take(count);
         }
     }
 }

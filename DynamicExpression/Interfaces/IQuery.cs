@@ -21,7 +21,7 @@ namespace DynamicExpression.Interfaces
     /// </summary>
     /// <typeparam name="TCriteria">The type of <see cref="IQuery"/>.</typeparam>
     public interface IQuery<TCriteria> : IQuery
-        where TCriteria : IQueryCriteria
+    where TCriteria : IQueryCriteria
     {
         /// <summary>
         /// Query.

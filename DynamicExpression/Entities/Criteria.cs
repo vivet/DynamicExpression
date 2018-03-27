@@ -29,13 +29,13 @@ namespace DynamicExpression.Entities
     public class Criteria<TType> : Criteria
     {
         private readonly Dictionary<string, HashSet<Type>> operationTypes = new Dictionary<string, HashSet<Type>>
-        {
-            { "Text", new HashSet<Type> { typeof(string), typeof(char) } },
-            { "Number", new HashSet<Type> { typeof(int), typeof(uint), typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal) } },
-            { "Boolean", new HashSet<Type> { typeof(bool) } },
-            { "Date", new HashSet<Type> { typeof(DateTime), typeof(DateTimeOffset) } },
-            { "Nullable", new HashSet<Type> { typeof(Nullable<>) } }
-        };
+{
+{ "Text", new HashSet<Type> { typeof(string), typeof(char) } },
+{ "Number", new HashSet<Type> { typeof(int), typeof(uint), typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal) } },
+{ "Boolean", new HashSet<Type> { typeof(bool) } },
+{ "Date", new HashSet<Type> { typeof(DateTime), typeof(DateTimeOffset) } },
+{ "Nullable", new HashSet<Type> { typeof(Nullable<>) } }
+};
 
         /// <summary>
         /// Constructor.
@@ -45,35 +45,35 @@ namespace DynamicExpression.Entities
         /// <param name="value">The value.</param>
         /// <param name="value2">the value2</param>
         /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
-		public Criteria(string property, OperationType operationType, TType value, TType value2, LogicalType logicalType = LogicalType.And)
-		{
-		    if (property == null)
+        public Criteria(string property, OperationType operationType, TType value, TType value2, LogicalType logicalType = LogicalType.And)
+        {
+            if (property == null)
                 throw new ArgumentNullException(nameof(property));
 
-		    if (!this.GetOperationTypes(typeof(TType)).Contains(operationType))
-		        throw new InvalidOperationException(OperationType.ToString());
+            if (!this.GetOperationTypes(typeof(TType)).Contains(operationType))
+                throw new InvalidOperationException(OperationType.ToString());
 
             this.Property = property;
-		    this.OperationType = operationType;
+            this.OperationType = operationType;
 
             if (typeof(TType).IsArray)
-			{
-				if (operationType != OperationType.Contains && operationType != OperationType.In)
+            {
+                if (operationType != OperationType.Contains && operationType != OperationType.In)
                     throw new ArgumentException("Only 'OperationType.Contains' and 'OperationType.In' support arrays as parameters.");
 
-				var type = typeof(List<>);
+                var type = typeof(List<>);
                 var genericType = type.MakeGenericType(typeof(TType).GetElementType());
 
                 this.Value = value != null ? Activator.CreateInstance(genericType, value) : null;
-			    this.Value2 = value2 != null ? Activator.CreateInstance(genericType, value2) : null;
+                this.Value2 = value2 != null ? Activator.CreateInstance(genericType, value2) : null;
             }
-			else
-			{
-				this.Value = value;
+            else
+            {
+                this.Value = value;
                 this.Value2 = value2;
-			}
+            }
 
-		    this.LogicalType = logicalType;
+            this.LogicalType = logicalType;
         }
 
         /// <summary>
