@@ -29,13 +29,13 @@ namespace DynamicExpression.Entities
     public class Criteria<TType> : Criteria
     {
         private readonly Dictionary<string, HashSet<Type>> operationTypes = new Dictionary<string, HashSet<Type>>
-{
-{ "Text", new HashSet<Type> { typeof(string), typeof(char) } },
-{ "Number", new HashSet<Type> { typeof(int), typeof(uint), typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal) } },
-{ "Boolean", new HashSet<Type> { typeof(bool) } },
-{ "Date", new HashSet<Type> { typeof(DateTime), typeof(DateTimeOffset) } },
-{ "Nullable", new HashSet<Type> { typeof(Nullable<>) } }
-};
+        {
+            { "Text", new HashSet<Type> { typeof(string), typeof(char) } },
+            { "Number", new HashSet<Type> { typeof(int), typeof(uint), typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal) } },
+            { "Boolean", new HashSet<Type> { typeof(bool) } },
+            { "Date", new HashSet<Type> { typeof(DateTime), typeof(DateTimeOffset) } },
+            { "Nullable", new HashSet<Type> { typeof(Nullable<>) } }
+        };
 
         /// <summary>
         /// Constructor.

@@ -16,13 +16,13 @@ namespace DynamicExpression
     {
         private readonly Dictionary<OperationType, Func<Expression, Expression, Expression, Expression>> expressions;
         private readonly Dictionary<string, MethodInfo> methods = new Dictionary<string, MethodInfo>
-{
-{ "Trim", typeof(string).GetRuntimeMethod("Trim", new Type[0]) },
-{ "ToLower", typeof(string).GetRuntimeMethod("ToLower", new Type[0]) },
-{ "Contains", typeof(string).GetRuntimeMethod("Contains", new Type[0]) },
-{ "EndsWith", typeof(string).GetRuntimeMethod("EndsWith", new[] { typeof(string) }) },
-{ "StartsWith", typeof(string).GetRuntimeMethod("StartsWith", new[] { typeof(string) }) }
-};
+        {
+            { "Trim", typeof(string).GetRuntimeMethod("Trim", new Type[0]) },
+            { "ToLower", typeof(string).GetRuntimeMethod("ToLower", new Type[0]) },
+            { "Contains", typeof(string).GetRuntimeMethod("Contains", new Type[0]) },
+            { "EndsWith", typeof(string).GetRuntimeMethod("EndsWith", new[] { typeof(string) }) },
+            { "StartsWith", typeof(string).GetRuntimeMethod("StartsWith", new[] { typeof(string) }) }
+        };
 
         /// <summary>
         /// Constructor.
@@ -30,25 +30,25 @@ namespace DynamicExpression
         internal CriteriaBuilder()
         {
             this.expressions = new Dictionary<OperationType, Func<Expression, Expression, Expression, Expression>>
-{
-{ OperationType.Equal, (member, constant, constant2) => Expression.Equal(member, constant) },
-{ OperationType.NotEqual, (member, constant, constant2) => Expression.NotEqual(member, constant) },
-{ OperationType.GreaterThan, (member, constant, constant2) => Expression.GreaterThan(member, constant) },
-{ OperationType.GreaterThanOrEqualTo, (member, constant, constant2) => Expression.GreaterThanOrEqual(member, constant) },
-{ OperationType.LessThan, (member, constant, constant2) => Expression.LessThan(member, constant) },
-{ OperationType.LessThanOrEqualTo, (member, constant, constant2) => Expression.LessThanOrEqual(member, constant) },
-{ OperationType.Contains, (member, constant, constant2) => this.GetContainsExpression(member, constant) },
-{ OperationType.StartsWith, (member, constant, constant2) => Expression.Call(member,  this.methods["StartsWith"], constant) },
-{ OperationType.EndsWith, (member, constant, constant2) => Expression.Call(member,  this.methods["EndsWith"], constant) },
-{ OperationType.Between, this.GetBetweenExpression },
-{ OperationType.In, (member, constant, constant2) => this.GetContainsExpression(member, constant) },
-{ OperationType.IsNull, (member, constant, constant2) => Expression.Equal(member, Expression.Constant(null)) },
-{ OperationType.IsNotNull, (member, constant, constant2) => Expression.NotEqual(member, Expression.Constant(null)) },
-{ OperationType.IsEmpty, (member, constant, constant2) => Expression.Equal(member, Expression.Constant(string.Empty)) },
-{ OperationType.IsNotEmpty, (member, constant, constant2) => Expression.NotEqual(member, Expression.Constant(string.Empty)) },
-{ OperationType.IsNullOrWhiteSpace, (member, constant, constant2) => this.GetIsNullOrWhiteSpaceExpression(member) },
-{ OperationType.IsNotNullNorWhiteSpace, (member, constant, constant2) => this.GetIsNotNullNorWhiteSpaceExpression(member) }
-};
+            {
+                { OperationType.Equal, (member, constant, constant2) => Expression.Equal(member, constant) },
+                { OperationType.NotEqual, (member, constant, constant2) => Expression.NotEqual(member, constant) },
+                { OperationType.GreaterThan, (member, constant, constant2) => Expression.GreaterThan(member, constant) },
+                { OperationType.GreaterThanOrEqualTo, (member, constant, constant2) => Expression.GreaterThanOrEqual(member, constant) },
+                { OperationType.LessThan, (member, constant, constant2) => Expression.LessThan(member, constant) },
+                { OperationType.LessThanOrEqualTo, (member, constant, constant2) => Expression.LessThanOrEqual(member, constant) },
+                { OperationType.Contains, (member, constant, constant2) => this.GetContainsExpression(member, constant) },
+                { OperationType.StartsWith, (member, constant, constant2) => Expression.Call(member,  this.methods["StartsWith"], constant) },
+                { OperationType.EndsWith, (member, constant, constant2) => Expression.Call(member,  this.methods["EndsWith"], constant) },
+                { OperationType.Between, this.GetBetweenExpression },
+                { OperationType.In, (member, constant, constant2) => this.GetContainsExpression(member, constant) },
+                { OperationType.IsNull, (member, constant, constant2) => Expression.Equal(member, Expression.Constant(null)) },
+                { OperationType.IsNotNull, (member, constant, constant2) => Expression.NotEqual(member, Expression.Constant(null)) },
+                { OperationType.IsEmpty, (member, constant, constant2) => Expression.Equal(member, Expression.Constant(string.Empty)) },
+                { OperationType.IsNotEmpty, (member, constant, constant2) => Expression.NotEqual(member, Expression.Constant(string.Empty)) },
+                { OperationType.IsNullOrWhiteSpace, (member, constant, constant2) => this.GetIsNullOrWhiteSpaceExpression(member) },
+                { OperationType.IsNotNullNorWhiteSpace, (member, constant, constant2) => this.GetIsNotNullNorWhiteSpaceExpression(member) }
+            };
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace DynamicExpression
         /// <param name="criteriaExpression">The <see cref="CriteriaExpression"/>.</param>
         /// <returns>The <see cref="Expression{T}"/></returns>
         public Expression<Func<T, bool>> GetExpression<T>(CriteriaExpression criteriaExpression)
-        where T : class
+            where T : class
         {
             if (criteriaExpression == null)
                 throw new ArgumentNullException(nameof(criteriaExpression));
