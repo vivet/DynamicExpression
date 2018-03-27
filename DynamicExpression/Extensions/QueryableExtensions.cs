@@ -13,6 +13,27 @@ namespace DynamicExpression.Extensions
     public static class QueryableExtensions
     {
         /// <summary>
+        /// Adds order and limit clauses to the <see cref="IQueryable{T}"/> based on the passed <paramref name="query"/>.
+        /// </summary>
+        /// <typeparam name="T">The type used in the <see cref="IQueryable{T}"/>.</typeparam>
+        /// <param name="source">The <see cref="IQueryable{T}"/>.</param>
+        /// <param name="query">The <see cref="IQuery"/>.</param>
+        /// <returns>The <see cref="IQueryable{T}"/>.</returns>
+        public static IQueryable<T> Where<T>(this IQueryable<T> source, IQuery query)
+            where T : class
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            if (query == null)
+                throw new ArgumentNullException(nameof(query));
+
+            return source
+                .Order(query.Order)
+                .Limit(query.Paging);
+        }
+
+        /// <summary>
         /// Adds where clause to the <see cref="IQueryable{T}"/> based on the passed <paramref name="queryCriteria"/>.
         /// </summary>
         /// <typeparam name="T">The type used in the <see cref="IQueryable{T}"/>.</typeparam>
@@ -31,7 +52,33 @@ namespace DynamicExpression.Extensions
             var criteria = queryCriteria.GetExpression<T>();
             var expression = new CriteriaBuilder().GetExpression<T>(criteria);
 
-            return source.Where(expression);
+            return source
+                .Where(expression);
+        }
+
+        /// <summary>
+        /// Adds where, order and limit clauses to the <see cref="IQueryable{T}"/> based on the passed <paramref name="queryCriteria"/>.
+        /// </summary>
+        /// <typeparam name="T">The type used in the <see cref="IQueryable{T}"/>.</typeparam>
+        /// <param name="source">The <see cref="IQueryable{T}"/>.</param>
+        /// <param name="queryCriteria">The <see cref="IQuery{T}"/>.</param>
+        /// <returns>The <see cref="IQueryable{T}"/>.</returns>
+        public static IQueryable<T> Where<T>(this IQueryable<T> source, IQuery<IQueryCriteria> queryCriteria)
+            where T : class
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            if (queryCriteria == null)
+                throw new ArgumentNullException(nameof(queryCriteria));
+
+            var criteria = queryCriteria.Criteria.GetExpression<T>();
+            var expression = new CriteriaBuilder().GetExpression<T>(criteria);
+
+            return source
+                .Where(expression)
+                .Order(queryCriteria.Order)
+                .Limit(queryCriteria.Paging);
         }
 
         /// <summary>
