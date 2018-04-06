@@ -14,9 +14,9 @@ namespace DynamicExpression.Entities
 
     /// <inheritdoc cref="IQuery{TCriteria}"/>
     public class Query<TCriteria> : Query, IQuery<TCriteria>
-        where TCriteria : IQueryCriteria
+        where TCriteria : IQueryCriteria, new()
     {
         /// <inheritdoc />
-        public virtual TCriteria Criteria { get; set; }
+        public virtual TCriteria Criteria { get; set; } = new TCriteria();
     }
 }

@@ -13,6 +13,6 @@ namespace DynamicExpression.Interfaces
         /// <typeparam name="T">The type.</typeparam>
         /// <returns>The <see cref="CriteriaExpression"/></returns>
         CriteriaExpression GetExpression<T>()
-        where T : class;
+            where T : class;
     }
 }
