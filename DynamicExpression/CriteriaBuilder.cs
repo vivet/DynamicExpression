@@ -27,7 +27,7 @@ namespace DynamicExpression
         /// <summary>
         /// Constructor.
         /// </summary>
-        internal CriteriaBuilder()
+        public CriteriaBuilder()
         {
             this.expressions = new Dictionary<OperationType, Func<Expression, Expression, Expression, Expression>>
             {
@@ -57,7 +57,7 @@ namespace DynamicExpression
         /// <typeparam name="T">Type used in the <see cref="Expression{TDelegate}"/>.</typeparam>
         /// <param name="criteriaExpression">The <see cref="CriteriaExpression"/>.</param>
         /// <returns>The <see cref="Expression{T}"/></returns>
-        public Expression<Func<T, bool>> GetExpression<T>(CriteriaExpression criteriaExpression)
+        public virtual Expression<Func<T, bool>> GetExpression<T>(CriteriaExpression criteriaExpression)
             where T : class
         {
             if (criteriaExpression == null)
@@ -234,7 +234,7 @@ namespace DynamicExpression
                 case OperationType.In:
                     return Expression.AndAlso(
                     Expression.NotEqual(expression, Expression.Constant(null)),
-                    this.expressions[operationType].Invoke(Expression.Call(Expression.Call(expression, this.methods["StartsWith"]), this.methods["ToLower"]), value, value2));
+                    this.expressions[operationType].Invoke(Expression.Call(Expression.Call(expression, this.methods["Trim"]), this.methods["ToLower"]), value, value2));
 
                 case OperationType.IsNull:
                 case OperationType.IsNullOrWhiteSpace:
