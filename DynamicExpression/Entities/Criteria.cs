@@ -34,7 +34,8 @@ namespace DynamicExpression.Entities
             { "Number", new HashSet<Type> { typeof(int), typeof(uint), typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal) } },
             { "Boolean", new HashSet<Type> { typeof(bool) } },
             { "Date", new HashSet<Type> { typeof(DateTime), typeof(DateTimeOffset) } },
-            { "Nullable", new HashSet<Type> { typeof(Nullable<>) } }
+            { "Nullable", new HashSet<Type> { typeof(Nullable<>) } },
+            { "Guid", new HashSet<Type> { typeof(Guid) } },
         };
 
         /// <summary>
@@ -113,8 +114,12 @@ namespace DynamicExpression.Entities
                     operations.AddRange(this.GetOperationTypes(Nullable.GetUnderlyingType(type)));
                     break;
 
+                case "Guid":
+                    operations.AddRange(new[] { OperationType.Equal, OperationType.NotEqual });
+                    break;
+
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException("operationType");
             }
 
             if (type.IsArray)
