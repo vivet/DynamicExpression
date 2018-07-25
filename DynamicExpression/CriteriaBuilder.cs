@@ -70,15 +70,14 @@ namespace DynamicExpression
             foreach (var statement in criteriaExpression.Criterias)
             {
                 var expr = statement.Property.Contains("[") && statement.Property.Contains("]")
-                ? GetArrayExpression(parameter, statement)
-                : GetExpression(parameter, statement);
+                ? this.GetArrayExpression(parameter, statement)
+                : this.GetExpression(parameter, statement);
 
                 expression = expression == null ? expr : this.GetCombinedExpression(expression, expr, logicalType);
                 logicalType = statement.LogicalType;
             }
 
-            return
-            Expression.Lambda<Func<T, bool>>(expression ?? Expression.Constant(true), parameter);
+            return Expression.Lambda<Func<T, bool>>(expression ?? Expression.Constant(true), parameter);
         }
 
         private Expression GetExpression(Expression parameter, ICriteria criteria, string propertyName = null)
@@ -125,8 +124,6 @@ namespace DynamicExpression
 
             return Expression.Call(method, member, expr);
         }
-
-
         private Expression GetConstantExpression(object value = null)
         {
             if (value == null)

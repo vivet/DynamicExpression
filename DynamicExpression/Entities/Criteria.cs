@@ -35,7 +35,7 @@ namespace DynamicExpression.Entities
             { "Boolean", new HashSet<Type> { typeof(bool) } },
             { "Date", new HashSet<Type> { typeof(DateTime), typeof(DateTimeOffset) } },
             { "Nullable", new HashSet<Type> { typeof(Nullable<>) } },
-            { "Guid", new HashSet<Type> { typeof(Guid) } },
+            { "Guid", new HashSet<Type> { typeof(Guid) } }
         };
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace DynamicExpression.Entities
                 throw new ArgumentNullException(nameof(type));
 
             var operations = new List<OperationType>();
-            var typeName = type.IsArray ? type.GetElementType().Name : type.Name;
+            var typeName = type.IsArray ? type.GetElementType()?.Name : type.Name;
             var operationType = operationTypes.FirstOrDefault(i => i.Value.Any(v => v.Name == typeName)).Key;
 
             switch (operationType)
@@ -119,7 +119,7 @@ namespace DynamicExpression.Entities
                     break;
 
                 default:
-                    throw new ArgumentOutOfRangeException("operationType");
+                    throw new ArgumentOutOfRangeException(nameof(type));
             }
 
             if (type.IsArray)
