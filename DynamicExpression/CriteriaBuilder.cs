@@ -70,51 +70,59 @@ namespace DynamicExpression
             foreach (var statement in criteriaExpression.Criterias)
             {
                 var expr = statement.Property.Contains("[") && statement.Property.Contains("]")
-                ? GetArrayExpression(parameter, statement)
-                : GetExpression(parameter, statement);
+                ? this.GetArrayExpression(parameter, statement)
+                : this.GetExpression(parameter, statement);
 
                 expression = expression == null ? expr : this.GetCombinedExpression(expression, expr, logicalType);
                 logicalType = statement.LogicalType;
             }
 
-            return
-            Expression.Lambda<Func<T, bool>>(expression ?? Expression.Constant(true), parameter);
+            return Expression.Lambda<Func<T, bool>>(expression ?? Expression.Constant(true), parameter);
         }
 
-        private Expression GetExpression(Expression expression, ICriteria criteria, string propertyName = null)
+        private Expression GetExpression(Expression parameter, ICriteria criteria, string propertyName = null)
         {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
+            if (parameter == null)
+                throw new ArgumentNullException(nameof(parameter));
 
             if (criteria == null)
                 throw new ArgumentNullException(nameof(criteria));
 
             var memberName = propertyName ?? criteria.Property;
-            var member = this.GetMemberExpression(expression, memberName);
+            var member = this.GetMemberExpression(parameter, memberName);
             var constant = this.GetConstantExpression(criteria.Value);
             var constant2 = this.GetConstantExpression(criteria.Value2);
-
-            Expression expr = null;
-            if (Nullable.GetUnderlyingType(member.Type) != null && criteria.Value != null)
-            {
-                member = Expression.Property(member, "Value");
-                expr = Expression.Property(member, "HasValue");
-            }
-
-            var stringExpression = this.GetStringExpression(member, criteria.OperationType, constant, constant2);
-            expr = expr != null ? Expression.AndAlso(expr, stringExpression) : stringExpression;
+            var expression = this.GetStringExpression(member, criteria.OperationType, constant, constant2);
 
             if (memberName.Contains("."))
             {
                 var parentName = memberName.Substring(0, memberName.IndexOf(".", StringComparison.Ordinal));
-                var parentMember = this.GetMemberExpression(expression, parentName);
+                var parentMember = this.GetMemberExpression(parameter, parentName);
 
-                expr = criteria.OperationType == OperationType.IsNull || criteria.OperationType == OperationType.IsNullOrWhiteSpace
-                ? Expression.OrElse(Expression.Equal(parentMember, Expression.Constant(null)), expr)
-                : Expression.AndAlso(Expression.NotEqual(parentMember, Expression.Constant(null)), expr);
+                expression = criteria.OperationType == OperationType.IsNull || criteria.OperationType == OperationType.IsNullOrWhiteSpace
+                ? Expression.OrElse(Expression.Equal(parentMember, Expression.Constant(null)), expression)
+                : Expression.AndAlso(Expression.NotEqual(parentMember, Expression.Constant(null)), expression);
             }
 
-            return expr;
+            return expression;
+        }
+        private Expression GetArrayExpression(Expression parameter, ICriteria criteria)
+        {
+            if (parameter == null)
+                throw new ArgumentNullException(nameof(parameter));
+
+            if (criteria == null)
+                throw new ArgumentNullException(nameof(criteria));
+
+            var baseName = criteria.Property.Substring(0, criteria.Property.IndexOf("[", StringComparison.Ordinal));
+            var name = criteria.Property.Replace(baseName, "").Replace("[", "").Replace("]", "");
+            var type = parameter.Type.GetRuntimeProperty(baseName).PropertyType.GenericTypeArguments[0];
+            var method = typeof(Enumerable).GetRuntimeMethods().First(m => m.Name == "Any" && m.GetParameters().Length == 2).MakeGenericMethod(type);
+            var member = this.GetMemberExpression(parameter, baseName);
+            var parameter2 = Expression.Parameter(type, "i");
+            var expr = Expression.Lambda(GetExpression(parameter2, criteria, name), parameter2);
+
+            return Expression.Call(method, member, expr);
         }
         private Expression GetConstantExpression(object value = null)
         {
@@ -213,8 +221,26 @@ namespace DynamicExpression
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
 
+
             if (expression.Type != typeof(string))
+            {
+                if (expression.Type.IsEnum)
+                {
+                    expression = Expression.Convert(expression, Enum.GetUnderlyingType(expression.Type));
+                    value = Expression.Convert(value, Enum.GetUnderlyingType(value.Type));
+
+                    switch (operationType)
+                    {
+                        case OperationType.Equal:
+                            return Expression.Equal(Expression.And(expression, value), value);
+
+                        case OperationType.NotEqual:
+                            return Expression.NotEqual(Expression.And(expression, value), value);
+                    }
+                }
+
                 return this.expressions[operationType].Invoke(expression, value, value2);
+            }
 
             switch (operationType)
             {
@@ -232,9 +258,7 @@ namespace DynamicExpression
                 case OperationType.IsNotNull:
                 case OperationType.IsNotEmpty:
                 case OperationType.In:
-                    return Expression.AndAlso(
-                    Expression.NotEqual(expression, Expression.Constant(null)),
-                    this.expressions[operationType].Invoke(Expression.Call(Expression.Call(expression, this.methods["Trim"]), this.methods["ToLower"]), value, value2));
+                    return Expression.AndAlso(Expression.NotEqual(expression, Expression.Constant(null)), this.expressions[operationType].Invoke(Expression.Call(Expression.Call(expression, this.methods["Trim"]), this.methods["ToLower"]), value, value2));
 
                 case OperationType.IsNull:
                 case OperationType.IsNullOrWhiteSpace:
@@ -244,24 +268,6 @@ namespace DynamicExpression
                 default:
                     return this.expressions[operationType].Invoke(expression, value, value2);
             }
-        }
-        private Expression GetArrayExpression(Expression expression, ICriteria criteria)
-        {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
-
-            if (criteria == null)
-                throw new ArgumentNullException(nameof(criteria));
-
-            var baseName = criteria.Property.Substring(0, criteria.Property.IndexOf("[", StringComparison.Ordinal));
-            var name = criteria.Property.Replace(baseName, "").Replace("[", "").Replace("]", "");
-            var type = expression.Type.GetRuntimeProperty(baseName).PropertyType.GenericTypeArguments[0];
-            var method = typeof(Enumerable).GetRuntimeMethods().First(m => m.Name == "Any" && m.GetParameters().Length == 2).MakeGenericMethod(type);
-            var member = this.GetMemberExpression(expression, baseName);
-            var parameter = Expression.Parameter(type, "i");
-            var expr = Expression.Lambda(GetExpression(parameter, criteria, name), parameter);
-
-            return Expression.Call(method, member, expr);
         }
         private Expression GetCombinedExpression(Expression expression1, Expression expression2, LogicalType logicalType)
         {
