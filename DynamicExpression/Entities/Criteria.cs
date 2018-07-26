@@ -89,7 +89,9 @@ namespace DynamicExpression.Entities
 
             var operations = new List<OperationType>();
             var typeName = type.IsArray ? type.GetElementType()?.Name : type.Name;
-            var operationType = operationTypes.FirstOrDefault(i => i.Value.Any(v => v.Name == typeName)).Key;
+            var operationType = type.IsEnum 
+                ? "Enum" 
+                : this.operationTypes.FirstOrDefault(x => x.Value.Any(y => y.Name == typeName)).Key;
 
             switch (operationType)
             {
@@ -115,6 +117,10 @@ namespace DynamicExpression.Entities
                     break;
 
                 case "Guid":
+                    operations.AddRange(new[] { OperationType.Equal, OperationType.NotEqual });
+                    break;
+
+                case "Enum":
                     operations.AddRange(new[] { OperationType.Equal, OperationType.NotEqual });
                     break;
 

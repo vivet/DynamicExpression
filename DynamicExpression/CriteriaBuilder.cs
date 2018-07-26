@@ -221,8 +221,26 @@ namespace DynamicExpression
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
 
+
             if (expression.Type != typeof(string))
+            {
+                if (expression.Type.IsEnum)
+                {
+                    expression = Expression.Convert(expression, Enum.GetUnderlyingType(expression.Type));
+                    value = Expression.Convert(value, Enum.GetUnderlyingType(value.Type));
+
+                    switch (operationType)
+                    {
+                        case OperationType.Equal:
+                            return Expression.Equal(Expression.And(expression, value), value);
+
+                        case OperationType.NotEqual:
+                            return Expression.NotEqual(Expression.And(expression, value), value);
+                    }
+                }
+
                 return this.expressions[operationType].Invoke(expression, value, value2);
+            }
 
             switch (operationType)
             {
@@ -240,9 +258,7 @@ namespace DynamicExpression
                 case OperationType.IsNotNull:
                 case OperationType.IsNotEmpty:
                 case OperationType.In:
-                    return Expression.AndAlso(
-                        Expression.NotEqual(expression, Expression.Constant(null)),
-                        this.expressions[operationType].Invoke(Expression.Call(Expression.Call(expression, this.methods["Trim"]), this.methods["ToLower"]), value, value2));
+                    return Expression.AndAlso(Expression.NotEqual(expression, Expression.Constant(null)), this.expressions[operationType].Invoke(Expression.Call(Expression.Call(expression, this.methods["Trim"]), this.methods["ToLower"]), value, value2));
 
                 case OperationType.IsNull:
                 case OperationType.IsNullOrWhiteSpace:
