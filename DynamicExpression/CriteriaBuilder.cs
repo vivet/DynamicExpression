@@ -221,53 +221,51 @@ namespace DynamicExpression
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
 
-
-            if (expression.Type != typeof(string))
+            if (expression.Type == typeof(string))
             {
-                if (expression.Type.IsEnum)
+                switch (operationType)
                 {
-                    expression = Expression.Convert(expression, Enum.GetUnderlyingType(expression.Type));
-                    value = Expression.Convert(value, Enum.GetUnderlyingType(value.Type));
+                    case OperationType.Equal:
+                    case OperationType.NotEqual:
+                    case OperationType.Contains:
+                    case OperationType.StartsWith:
+                    case OperationType.EndsWith:
+                    case OperationType.GreaterThan:
+                    case OperationType.GreaterThanOrEqualTo:
+                    case OperationType.LessThan:
+                    case OperationType.LessThanOrEqualTo:
+                    case OperationType.Between:
+                    case OperationType.IsEmpty:
+                    case OperationType.IsNotNull:
+                    case OperationType.IsNotEmpty:
+                    case OperationType.In:
+                        return Expression.AndAlso(Expression.NotEqual(expression, Expression.Constant(null)), this.expressions[operationType].Invoke(Expression.Call(Expression.Call(expression, this.methods["Trim"]), this.methods["ToLower"]), value, value2));
 
-                    switch (operationType)
-                    {
-                        case OperationType.Equal:
-                            return Expression.Equal(Expression.And(expression, value), value);
+                    case OperationType.IsNull:
+                    case OperationType.IsNullOrWhiteSpace:
+                    case OperationType.IsNotNullNorWhiteSpace:
+                        return this.expressions[operationType].Invoke(expression, value, value2);
 
-                        case OperationType.NotEqual:
-                            return Expression.NotEqual(Expression.And(expression, value), value);
-                    }
+                    default:
+                        return this.expressions[operationType].Invoke(expression, value, value2);
                 }
-
-                return this.expressions[operationType].Invoke(expression, value, value2);
             }
-
-            switch (operationType)
+            else if (expression.Type.IsEnum)
             {
-                case OperationType.Equal:
-                case OperationType.NotEqual:
-                case OperationType.Contains:
-                case OperationType.StartsWith:
-                case OperationType.EndsWith:
-                case OperationType.GreaterThan:
-                case OperationType.GreaterThanOrEqualTo:
-                case OperationType.LessThan:
-                case OperationType.LessThanOrEqualTo:
-                case OperationType.Between:
-                case OperationType.IsEmpty:
-                case OperationType.IsNotNull:
-                case OperationType.IsNotEmpty:
-                case OperationType.In:
-                    return Expression.AndAlso(Expression.NotEqual(expression, Expression.Constant(null)), this.expressions[operationType].Invoke(Expression.Call(Expression.Call(expression, this.methods["Trim"]), this.methods["ToLower"]), value, value2));
+                expression = Expression.Convert(expression, Enum.GetUnderlyingType(expression.Type));
+                value = Expression.Convert(value, Enum.GetUnderlyingType(value.Type));
 
-                case OperationType.IsNull:
-                case OperationType.IsNullOrWhiteSpace:
-                case OperationType.IsNotNullNorWhiteSpace:
-                    return this.expressions[operationType].Invoke(expression, value, value2);
+                switch (operationType)
+                {
+                    case OperationType.Equal:
+                        return Expression.Equal(Expression.And(expression, value), value);
 
-                default:
-                    return this.expressions[operationType].Invoke(expression, value, value2);
+                    case OperationType.NotEqual:
+                        return Expression.NotEqual(Expression.And(expression, value), value);
+                }
             }
+
+            return this.expressions[operationType].Invoke(expression, value, value2);
         }
         private Expression GetCombinedExpression(Expression expression1, Expression expression2, LogicalType logicalType)
         {
