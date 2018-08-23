@@ -70,8 +70,8 @@ namespace DynamicExpression
             foreach (var statement in criteriaExpression.Criterias)
             {
                 var expr = statement.Property.Contains("[") && statement.Property.Contains("]")
-                ? this.GetArrayExpression(parameter, statement)
-                : this.GetExpression(parameter, statement);
+                    ? this.GetArrayExpression(parameter, statement)
+                    : this.GetExpression(parameter, statement);
 
                 expression = expression == null ? expr : this.GetCombinedExpression(expression, expr, logicalType);
                 logicalType = statement.LogicalType;
@@ -100,8 +100,8 @@ namespace DynamicExpression
                 var parentMember = this.GetMemberExpression(parameter, parentName);
 
                 expression = criteria.OperationType == OperationType.IsNull || criteria.OperationType == OperationType.IsNullOrWhiteSpace
-                ? Expression.OrElse(Expression.Equal(parentMember, Expression.Constant(null)), expression)
-                : Expression.AndAlso(Expression.NotEqual(parentMember, Expression.Constant(null)), expression);
+                    ? Expression.OrElse(Expression.Equal(parentMember, Expression.Constant(null)), expression)
+                    : Expression.AndAlso(Expression.NotEqual(parentMember, Expression.Constant(null)), expression);
             }
 
             return expression;
