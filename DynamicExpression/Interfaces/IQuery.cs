@@ -1,7 +1,7 @@
 namespace DynamicExpression.Interfaces
 {
     /// <summary>
-    /// Query.
+    /// Query interface.
     /// </summary>
     public interface IQuery
     {
@@ -17,14 +17,14 @@ namespace DynamicExpression.Interfaces
     }
 
     /// <summary>
-    /// Query (generic).
+    /// Query (generic) interface.
     /// </summary>
-    /// <typeparam name="TCriteria">The type of <see cref="IQuery"/>.</typeparam>
+    /// <typeparam name="TCriteria">The type of <see cref="IQueryCriteria"/>.</typeparam>
     public interface IQuery<TCriteria> : IQuery
-    where TCriteria : IQueryCriteria
+        where TCriteria : IQueryCriteria
     {
         /// <summary>
-        /// Query.
+        /// Criteria.
         /// </summary>
         TCriteria Criteria { get; set; }
     }

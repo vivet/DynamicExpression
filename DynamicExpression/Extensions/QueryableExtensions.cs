@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
-using DynamicExpression.Entities;
 using DynamicExpression.Enums;
 using DynamicExpression.Interfaces;
 
@@ -29,8 +28,8 @@ namespace DynamicExpression.Extensions
                 throw new ArgumentNullException(nameof(query));
 
             return source
-            .Order(query.Order)
-            .Limit(query.Paging);
+                .Order(query.Order)
+                .Limit(query.Paging);
         }
 
         /// <summary>
@@ -49,11 +48,11 @@ namespace DynamicExpression.Extensions
             if (queryCriteria == null)
                 throw new ArgumentNullException(nameof(queryCriteria));
 
-            var criteria = queryCriteria.GetExpression<T>();
-            var expression = new CriteriaBuilder().GetExpression<T>(criteria);
+            var criteria = queryCriteria.GetExpression();
+            var expression = new CriteriaBuilder().Build<T>(criteria);
 
             return source
-            .Where(expression);
+                .Where(expression);
         }
 
         /// <summary>
@@ -61,7 +60,7 @@ namespace DynamicExpression.Extensions
         /// </summary>
         /// <typeparam name="T">The type used in the <see cref="IQueryable{T}"/>.</typeparam>
         /// <param name="source">The <see cref="IQueryable{T}"/>.</param>
-        /// <param name="queryCriteria">The <see cref="IQuery{T}"/>.</param>
+        /// <param name="queryCriteria">The <see cref="IQuery{TCriteria}"/>.</param>
         /// <returns>The <see cref="IQueryable{T}"/>.</returns>
         public static IQueryable<T> Where<T>(this IQueryable<T> source, IQuery<IQueryCriteria> queryCriteria)
             where T : class
@@ -72,13 +71,13 @@ namespace DynamicExpression.Extensions
             if (queryCriteria == null)
                 throw new ArgumentNullException(nameof(queryCriteria));
 
-            var criteria = queryCriteria.Criteria.GetExpression<T>();
-            var expression = new CriteriaBuilder().GetExpression<T>(criteria);
+            var criteria = queryCriteria.Criteria.GetExpression();
+            var expression = new CriteriaBuilder().Build<T>(criteria);
 
             return source
-            .Where(expression)
-            .Order(queryCriteria.Order)
-            .Limit(queryCriteria.Paging);
+                .Where(expression)
+                .Order(queryCriteria.Order)
+                .Limit(queryCriteria.Paging);
         }
 
         /// <summary>
@@ -178,12 +177,12 @@ namespace DynamicExpression.Extensions
             if (pagination == null)
                 throw new ArgumentNullException(nameof(pagination));
 
-            var count = pagination.Count ?? Pagination.DEFAULT_COUNT;
-            var number = pagination.Number ?? Pagination.DEFAULT_NUMBER;
+            var count = pagination.Count;
+            var number = pagination.Number;
 
             return source
-            .Skip((number - 1) * count)
-            .Take(count);
+                .Skip((number - 1) * count)
+                .Take(count);
         }
     }
 }

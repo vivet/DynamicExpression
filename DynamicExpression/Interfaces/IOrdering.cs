@@ -3,7 +3,7 @@ using DynamicExpression.Enums;
 namespace DynamicExpression.Interfaces
 {
     /// <summary>
-    /// Ordering.
+    /// Ordering interface.
     /// </summary>
     public interface IOrdering
     {

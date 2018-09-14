@@ -53,21 +53,6 @@ namespace DynamicExpression
         }
 
         /// <summary>
-        /// Add <see cref="OperationType.Contains"/> filter.
-        /// </summary>
-        /// <typeparam name="TType">The type of the property.</typeparam>
-        /// <param name="property">The property name.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
-        public virtual void Contains<TType>(string property, TType value, LogicalType logicalType = LogicalType.And)
-        {
-            if (property == null)
-                throw new ArgumentNullException(nameof(property));
-
-            this.By(property, OperationType.Contains, value, default, logicalType);
-        }
-
-        /// <summary>
         /// Add <see cref="OperationType.StartsWith"/> filter.
         /// </summary>
         /// <typeparam name="TType">The type of the property.</typeparam>
@@ -188,34 +173,6 @@ namespace DynamicExpression
         }
 
         /// <summary>
-        /// Add <see cref="OperationType.IsEmpty"/> filter.
-        /// </summary>
-        /// <typeparam name="TType">The type of the property.</typeparam>
-        /// <param name="property">The property name.</param>
-        /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
-        public virtual void IsEmpty<TType>(string property, LogicalType logicalType = LogicalType.And)
-        {
-            if (property == null)
-                throw new ArgumentNullException(nameof(property));
-
-            this.By<TType>(property, OperationType.IsEmpty, default, default, logicalType);
-        }
-
-        /// <summary>
-        /// Add <see cref="OperationType.IsNullOrWhiteSpace"/> filter.
-        /// </summary>
-        /// <typeparam name="TType">The type of the property.</typeparam>
-        /// <param name="property">The property name.</param>
-        /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
-        public virtual void IsNullOrWhiteSpace<TType>(string property, LogicalType logicalType = LogicalType.And)
-        {
-            if (property == null)
-                throw new ArgumentNullException(nameof(property));
-
-            this.By<TType>(property, OperationType.IsNullOrWhiteSpace, default, default, logicalType);
-        }
-
-        /// <summary>
         /// Add <see cref="OperationType.IsNotNull"/> filter.
         /// </summary>
         /// <typeparam name="TType">The type of the property.</typeparam>
@@ -227,6 +184,20 @@ namespace DynamicExpression
                 throw new ArgumentNullException(nameof(property));
 
             this.By<TType>(property, OperationType.IsNotNull, default, default, logicalType);
+        }
+
+        /// <summary>
+        /// Add <see cref="OperationType.IsEmpty"/> filter.
+        /// </summary>
+        /// <typeparam name="TType">The type of the property.</typeparam>
+        /// <param name="property">The property name.</param>
+        /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
+        public virtual void IsEmpty<TType>(string property, LogicalType logicalType = LogicalType.And)
+        {
+            if (property == null)
+                throw new ArgumentNullException(nameof(property));
+
+            this.By<TType>(property, OperationType.IsEmpty, default, default, logicalType);
         }
 
         /// <summary>
@@ -244,44 +215,64 @@ namespace DynamicExpression
         }
 
         /// <summary>
-        /// Add <see cref="OperationType.IsNotNullNorWhiteSpace"/> filter.
+        /// Add <see cref="OperationType.IsNullOrWhiteSpace"/> filter.
         /// </summary>
         /// <typeparam name="TType">The type of the property.</typeparam>
         /// <param name="property">The property name.</param>
         /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
-        public virtual void IsNotNullNorWhiteSpace<TType>(string property, LogicalType logicalType = LogicalType.And)
+        public virtual void IsNullOrWhiteSpace<TType>(string property, LogicalType logicalType = LogicalType.And)
         {
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
 
-            this.By<TType>(property, OperationType.IsNotNullNorWhiteSpace, default, default, logicalType);
+            this.By<TType>(property, OperationType.IsNullOrWhiteSpace, default, default, logicalType);
         }
 
         /// <summary>
-        /// Add <see cref="OperationType.In"/> filter.
+        /// Add <see cref="OperationType.IsNotNullOrWhiteSpace"/> filter.
+        /// </summary>
+        /// <typeparam name="TType">The type of the property.</typeparam>
+        /// <param name="property">The property name.</param>
+        /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
+        public virtual void IsNotNullOrWhiteSpace<TType>(string property, LogicalType logicalType = LogicalType.And)
+        {
+            if (property == null)
+                throw new ArgumentNullException(nameof(property));
+
+            this.By<TType>(property, OperationType.IsNotNullOrWhiteSpace, default, default, logicalType);
+        }
+
+        /// <summary>
+        /// Add <see cref="OperationType.Contains"/> filter.
         /// </summary>
         /// <typeparam name="TType">The type of the property.</typeparam>
         /// <param name="property">The property name.</param>
         /// <param name="value">The value.</param>
         /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
-        public virtual void In<TType>(string property, TType value, LogicalType logicalType = LogicalType.And)
+        public virtual void Contains<TType>(string property, TType value, LogicalType logicalType = LogicalType.And)
         {
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
 
-            this.By(property, OperationType.In, value, default, logicalType);
+            this.By(property, OperationType.Contains, value, default, logicalType);
         }
 
         /// <summary>
-        /// Adds a new <see cref="CriteriaExpression" /> to the <see cref="CriteriaExpression" />.
+        /// Add <see cref="OperationType.NotContains"/> filter.
         /// </summary>
-        /// <typeparam name="TType"></typeparam>
+        /// <typeparam name="TType">The type of the property.</typeparam>
         /// <param name="property">The property name.</param>
-        /// <param name="operationType">The <see cref="OperationType"/>.</param>
         /// <param name="value">The value.</param>
-        /// <param name="value2">The value2.</param>
         /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
-        public virtual void By<TType>(string property, OperationType operationType, TType value, TType value2 = default, LogicalType logicalType = LogicalType.And)
+        public virtual void NotContains<TType>(string property, TType value, LogicalType logicalType = LogicalType.And)
+        {
+            if (property == null)
+                throw new ArgumentNullException(nameof(property));
+
+            this.By(property, OperationType.NotContains, value, default, logicalType);
+        }
+
+        private void By<TType>(string property, OperationType operationType, TType value, TType value2 = default, LogicalType logicalType = LogicalType.And)
         {
             if (property == null)
                 throw new ArgumentNullException(nameof(property));

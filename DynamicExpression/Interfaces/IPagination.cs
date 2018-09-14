@@ -1,18 +1,18 @@
 namespace DynamicExpression.Interfaces
 {
     /// <summary>
-    /// Pagination.
+    /// Pagination interface.
     /// </summary>
     public interface IPagination
     {
         /// <summary>
         /// Number.
         /// </summary>
-        int? Number { get; set; }
+        int Number { get; set; }
 
         /// <summary>
         /// Count (Take).
         /// </summary>
-        int? Count { get; set; }
+        int Count { get; set; }
     }
 }

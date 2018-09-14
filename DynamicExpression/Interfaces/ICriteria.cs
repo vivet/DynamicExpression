@@ -3,7 +3,7 @@
 namespace DynamicExpression.Interfaces
 {
     /// <summary>
-    /// CriteriaExpression.
+    /// Criteria interface.
     /// </summary>
     public interface ICriteria
     {

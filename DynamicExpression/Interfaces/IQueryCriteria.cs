@@ -1,18 +1,14 @@
-using System.Linq.Expressions;
-
 namespace DynamicExpression.Interfaces
 {
     /// <summary>
-    /// Query Criteria.
+    /// Query Criteria interface.
     /// </summary>
     public interface IQueryCriteria
     {
         /// <summary>
-        /// Gets the <see cref="Expression{T}"/>.
+        /// Gets the <see cref="CriteriaExpression"/>.
         /// </summary>
-        /// <typeparam name="T">The type.</typeparam>
         /// <returns>The <see cref="CriteriaExpression"/></returns>
-        CriteriaExpression GetExpression<T>()
-            where T : class;
+        CriteriaExpression GetExpression();
     }
 }

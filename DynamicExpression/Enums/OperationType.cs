@@ -1,7 +1,7 @@
 ﻿namespace DynamicExpression.Enums
 {
     /// <summary>
-    /// OperationType.
+    /// Operation Type.
     /// </summary>
     public enum OperationType
     {
@@ -14,11 +14,6 @@
         /// Not Equal.
         /// </summary>
         NotEqual,
-
-        /// <summary>
-        /// Contains.
-        /// </summary>
-        Contains,
 
         /// <summary>
         /// Starts With.
@@ -61,11 +56,6 @@
         IsNull,
 
         /// <summary>
-        /// IsEmpty.
-        /// </summary>
-        IsEmpty,
-
-        /// <summary>
         /// IsNullOrWhiteSpace.
         /// </summary>
         IsNullOrWhiteSpace,
@@ -76,18 +66,28 @@
         IsNotNull,
 
         /// <summary>
+        /// IsNotNullOrWhiteSpace.
+        /// </summary>
+        IsNotNullOrWhiteSpace,
+
+        /// <summary>
+        /// IsEmpty.
+        /// </summary>
+        IsEmpty,
+
+        /// <summary>
         /// IsNotEmpty.
         /// </summary>
         IsNotEmpty,
 
         /// <summary>
-        /// IsNotNullNorWhiteSpace.
+        /// Contains.
         /// </summary>
-        IsNotNullNorWhiteSpace,
+        Contains,
 
         /// <summary>
-        /// In.
+        /// Not Contains.
         /// </summary>
-        In
+        NotContains
     }
 }

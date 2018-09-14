@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -10,54 +8,17 @@ using DynamicExpression.Interfaces;
 namespace DynamicExpression
 {
     /// <summary>
-    /// CriteriaExpression Builder
+    /// Criteria Builder
     /// </summary>
     public class CriteriaBuilder
     {
-        private readonly Dictionary<OperationType, Func<Expression, Expression, Expression, Expression>> expressions;
-        private readonly Dictionary<string, MethodInfo> methods = new Dictionary<string, MethodInfo>
-        {
-            { "Trim", typeof(string).GetRuntimeMethod("Trim", new Type[0]) },
-            { "ToLower", typeof(string).GetRuntimeMethod("ToLower", new Type[0]) },
-            { "Contains", typeof(string).GetRuntimeMethod("Contains", new Type[0]) },
-            { "EndsWith", typeof(string).GetRuntimeMethod("EndsWith", new[] { typeof(string) }) },
-            { "StartsWith", typeof(string).GetRuntimeMethod("StartsWith", new[] { typeof(string) }) }
-        };
-
         /// <summary>
-        /// Constructor.
-        /// </summary>
-        public CriteriaBuilder()
-        {
-            this.expressions = new Dictionary<OperationType, Func<Expression, Expression, Expression, Expression>>
-            {
-                { OperationType.Equal, (member, constant, constant2) => Expression.Equal(member, constant) },
-                { OperationType.NotEqual, (member, constant, constant2) => Expression.NotEqual(member, constant) },
-                { OperationType.GreaterThan, (member, constant, constant2) => Expression.GreaterThan(member, constant) },
-                { OperationType.GreaterThanOrEqualTo, (member, constant, constant2) => Expression.GreaterThanOrEqual(member, constant) },
-                { OperationType.LessThan, (member, constant, constant2) => Expression.LessThan(member, constant) },
-                { OperationType.LessThanOrEqualTo, (member, constant, constant2) => Expression.LessThanOrEqual(member, constant) },
-                { OperationType.Contains, (member, constant, constant2) => this.GetContainsExpression(member, constant) },
-                { OperationType.StartsWith, (member, constant, constant2) => Expression.Call(member,  this.methods["StartsWith"], constant) },
-                { OperationType.EndsWith, (member, constant, constant2) => Expression.Call(member,  this.methods["EndsWith"], constant) },
-                { OperationType.Between, this.GetBetweenExpression },
-                { OperationType.In, (member, constant, constant2) => this.GetContainsExpression(member, constant) },
-                { OperationType.IsNull, (member, constant, constant2) => Expression.Equal(member, Expression.Constant(null)) },
-                { OperationType.IsNotNull, (member, constant, constant2) => Expression.NotEqual(member, Expression.Constant(null)) },
-                { OperationType.IsEmpty, (member, constant, constant2) => Expression.Equal(member, Expression.Constant(string.Empty)) },
-                { OperationType.IsNotEmpty, (member, constant, constant2) => Expression.NotEqual(member, Expression.Constant(string.Empty)) },
-                { OperationType.IsNullOrWhiteSpace, (member, constant, constant2) => this.GetIsNullOrWhiteSpaceExpression(member) },
-                { OperationType.IsNotNullNorWhiteSpace, (member, constant, constant2) => this.GetIsNotNullNorWhiteSpaceExpression(member) }
-            };
-        }
-
-        /// <summary>
-        /// Constructor.
+        /// Builds the <see cref="CriteriaExpression"/>'s, and returns an <see cref="Expression"/>.
         /// </summary>
         /// <typeparam name="T">Type used in the <see cref="Expression{TDelegate}"/>.</typeparam>
         /// <param name="criteriaExpression">The <see cref="CriteriaExpression"/>.</param>
         /// <returns>The <see cref="Expression{T}"/></returns>
-        public virtual Expression<Func<T, bool>> GetExpression<T>(CriteriaExpression criteriaExpression)
+        public virtual Expression<Func<T, bool>> Build<T>(CriteriaExpression criteriaExpression)
             where T : class
         {
             if (criteriaExpression == null)
@@ -69,76 +30,37 @@ namespace DynamicExpression
             Expression expression = null;
             foreach (var statement in criteriaExpression.Criterias)
             {
-                var expr = statement.Property.Contains("[") && statement.Property.Contains("]")
-                    ? this.GetArrayExpression(parameter, statement)
-                    : this.GetExpression(parameter, statement);
+                Expression innerExpression;
+                if (statement.Property.Contains("[") && statement.Property.Contains("]"))
+                {
+                    var baseName = statement.Property.Substring(0, statement.Property.IndexOf("[", StringComparison.Ordinal));
+                    var name = statement.Property.Replace(baseName, "").Replace("[", "").Replace("]", "");
+                    var type = parameter.Type.GetRuntimeProperty(baseName).PropertyType.GenericTypeArguments[0];
+                    var method = typeof(Enumerable).GetRuntimeMethods().First(m => m.Name == "Any" && m.GetParameters().Length == 2).MakeGenericMethod(type);
+                    var member = this.GetMember(parameter, baseName);
+                    var parameter2 = Expression.Parameter(type, "i");
+                    var expr2 = Expression.Lambda(GetExpression(parameter2, statement, name), parameter2);
 
-                expression = expression == null ? expr : this.GetCombinedExpression(expression, expr, logicalType);
+                    innerExpression = Expression.Call(method, member, expr2);
+                }
+                else
+                {
+                    innerExpression = this.GetExpression(parameter, statement);
+                }
+
+                expression = expression == null 
+                    ? innerExpression 
+                    : logicalType == LogicalType.And
+                        ? Expression.AndAlso(expression, innerExpression)
+                        : Expression.OrElse(expression, innerExpression);
+
                 logicalType = statement.LogicalType;
             }
 
             return Expression.Lambda<Func<T, bool>>(expression ?? Expression.Constant(true), parameter);
         }
 
-        private Expression GetExpression(Expression parameter, ICriteria criteria, string propertyName = null)
-        {
-            if (parameter == null)
-                throw new ArgumentNullException(nameof(parameter));
-
-            if (criteria == null)
-                throw new ArgumentNullException(nameof(criteria));
-
-            var memberName = propertyName ?? criteria.Property;
-            var member = this.GetMemberExpression(parameter, memberName);
-            var constant = this.GetConstantExpression(criteria.Value);
-            var constant2 = this.GetConstantExpression(criteria.Value2);
-            var expression = this.GetStringExpression(member, criteria.OperationType, constant, constant2);
-
-            if (memberName.Contains("."))
-            {
-                var parentName = memberName.Substring(0, memberName.IndexOf(".", StringComparison.Ordinal));
-                var parentMember = this.GetMemberExpression(parameter, parentName);
-
-                expression = criteria.OperationType == OperationType.IsNull || criteria.OperationType == OperationType.IsNullOrWhiteSpace
-                    ? Expression.OrElse(Expression.Equal(parentMember, Expression.Constant(null)), expression)
-                    : Expression.AndAlso(Expression.NotEqual(parentMember, Expression.Constant(null)), expression);
-            }
-
-            return expression;
-        }
-        private Expression GetArrayExpression(Expression parameter, ICriteria criteria)
-        {
-            if (parameter == null)
-                throw new ArgumentNullException(nameof(parameter));
-
-            if (criteria == null)
-                throw new ArgumentNullException(nameof(criteria));
-
-            var baseName = criteria.Property.Substring(0, criteria.Property.IndexOf("[", StringComparison.Ordinal));
-            var name = criteria.Property.Replace(baseName, "").Replace("[", "").Replace("]", "");
-            var type = parameter.Type.GetRuntimeProperty(baseName).PropertyType.GenericTypeArguments[0];
-            var method = typeof(Enumerable).GetRuntimeMethods().First(m => m.Name == "Any" && m.GetParameters().Length == 2).MakeGenericMethod(type);
-            var member = this.GetMemberExpression(parameter, baseName);
-            var parameter2 = Expression.Parameter(type, "i");
-            var expr = Expression.Lambda(GetExpression(parameter2, criteria, name), parameter2);
-
-            return Expression.Call(method, member, expr);
-        }
-        private Expression GetConstantExpression(object value = null)
-        {
-            if (value == null)
-                return null;
-
-            switch (value)
-            {
-                case string _:
-                    return Expression.Call(Expression.Call(Expression.Constant(value), this.methods["Trim"]), this.methods["ToLower"]);
-
-                default:
-                    return Expression.Constant(value);
-            }
-        }
-        private Expression GetMemberExpression(Expression expression, string propertyName)
+        private Expression GetMember(Expression expression, string propertyName)
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
@@ -162,122 +84,104 @@ namespace DynamicExpression
                 return Expression.Property(expression, propertyName);
             }
         }
-        private Expression GetContainsExpression(Expression expression1, Expression expression2)
+        private Expression GetExpression(Expression parameter, ICriteria criteria, string propertyName = null)
         {
-            if (expression1 == null)
-                throw new ArgumentNullException(nameof(expression1));
+            if (parameter == null)
+                throw new ArgumentNullException(nameof(parameter));
 
-            if (expression2 == null)
-                throw new ArgumentNullException(nameof(expression2));
+            if (criteria == null)
+                throw new ArgumentNullException(nameof(criteria));
 
-            MethodCallExpression contains = null;
+            var memberName = propertyName ?? criteria.Property;
+            var member = this.GetMember(parameter, memberName);
+            var value = Expression.Constant(criteria.Value) as Expression;
+            var value2 = Expression.Constant(criteria.Value2);
+            var operationType = criteria.OperationType;
 
-            if (expression2 is ConstantExpression constant && constant.Value is IList && constant.Value.GetType().IsGenericParameter)
+            if (member.Type.IsEnum)
             {
-                var type = constant.Value.GetType();
-                var method = type.GetRuntimeMethod("Contains", new[] { type.GenericTypeArguments[0] });
-
-                contains = Expression.Call(constant, method, expression1);
-            }
-
-            return contains ?? Expression.Call(expression1, this.methods["Contains"], expression2);
-        }
-        private Expression GetIsNullOrWhiteSpaceExpression(Expression expression)
-        {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
-
-            return Expression.OrElse(
-            Expression.Equal(expression, Expression.Constant(null)),
-            Expression.Equal(Expression.Call(expression, this.methods["Trim"]), Expression.Constant(string.Empty)));
-        }
-        private Expression GetIsNotNullNorWhiteSpaceExpression(Expression expression)
-        {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
-
-            return Expression.AndAlso(
-            Expression.NotEqual(expression, Expression.Constant(null)),
-            Expression.NotEqual(Expression.Call(expression, this.methods["Trim"]), Expression.Constant(string.Empty)));
-        }
-        private Expression GetBetweenExpression(Expression expression, Expression greaterThan, Expression lessThan)
-        {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
-
-            if (greaterThan == null)
-                throw new ArgumentNullException(nameof(greaterThan));
-
-            if (lessThan == null)
-                throw new ArgumentNullException(nameof(lessThan));
-
-            var value = expressions[OperationType.GreaterThanOrEqualTo].Invoke(expression, greaterThan, null);
-            var value2 = expressions[OperationType.LessThanOrEqualTo].Invoke(expression, lessThan, null);
-
-            return this.GetCombinedExpression(value, value2, LogicalType.And);
-        }
-        private Expression GetStringExpression(Expression expression, OperationType operationType, Expression value, Expression value2)
-        {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
-
-            if (expression.Type == typeof(string))
-            {
-                switch (operationType)
-                {
-                    case OperationType.Equal:
-                    case OperationType.NotEqual:
-                    case OperationType.Contains:
-                    case OperationType.StartsWith:
-                    case OperationType.EndsWith:
-                    case OperationType.GreaterThan:
-                    case OperationType.GreaterThanOrEqualTo:
-                    case OperationType.LessThan:
-                    case OperationType.LessThanOrEqualTo:
-                    case OperationType.Between:
-                    case OperationType.IsEmpty:
-                    case OperationType.IsNotNull:
-                    case OperationType.IsNotEmpty:
-                    case OperationType.In:
-                        return Expression.AndAlso(Expression.NotEqual(expression, Expression.Constant(null)), this.expressions[operationType].Invoke(Expression.Call(Expression.Call(expression, this.methods["Trim"]), this.methods["ToLower"]), value, value2));
-
-                    case OperationType.IsNull:
-                    case OperationType.IsNullOrWhiteSpace:
-                    case OperationType.IsNotNullNorWhiteSpace:
-                        return this.expressions[operationType].Invoke(expression, value, value2);
-
-                    default:
-                        return this.expressions[operationType].Invoke(expression, value, value2);
-                }
-            }
-            else if (expression.Type.IsEnum)
-            {
-                expression = Expression.Convert(expression, Enum.GetUnderlyingType(expression.Type));
+                var expression = Expression.Convert(member, Enum.GetUnderlyingType(member.Type));
                 value = Expression.Convert(value, Enum.GetUnderlyingType(value.Type));
 
                 switch (operationType)
                 {
+                    case OperationType.Contains:
+                        return Expression.Equal(Expression.Or(expression, value), value);
+
+                    case OperationType.NotContains:
+                        return Expression.Not(Expression.Equal(Expression.Or(expression, value), value));
+
                     case OperationType.Equal:
                         return Expression.Equal(Expression.And(expression, value), value);
 
                     case OperationType.NotEqual:
                         return Expression.NotEqual(Expression.And(expression, value), value);
                 }
+
+                throw new NotSupportedException(nameof(operationType));
+            }
+            else
+            {
+                switch (operationType)
+                {
+                    case OperationType.Equal:
+                        return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Equal(member, value));
+
+                    case OperationType.NotEqual:
+                        return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.NotEqual(member, value));
+
+                    case OperationType.StartsWith:
+                        return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Call(member, typeof(string).GetRuntimeMethod("StartsWith", new[] { typeof(string) }), value));
+
+                    case OperationType.EndsWith:
+                        return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Call(member, typeof(string).GetRuntimeMethod("EndsWith", new[] { typeof(string) }), value));
+
+                    case OperationType.GreaterThan:
+                        return Expression.GreaterThan(member, value);
+
+                    case OperationType.GreaterThanOrEqualTo:
+                        return Expression.GreaterThanOrEqual(member, value);
+
+                    case OperationType.LessThan:
+                        return Expression.LessThan(member, value);
+
+                    case OperationType.LessThanOrEqualTo:
+                        return Expression.LessThanOrEqual(member, value);
+
+                    case OperationType.Between:
+                        return Expression.AndAlso(Expression.GreaterThanOrEqual(member, value), Expression.LessThanOrEqual(member, value2));
+
+                    case OperationType.IsNull:
+                        return Expression.Equal(member, Expression.Constant(null));
+
+                    case OperationType.IsEmpty:
+                        return Expression.Equal(member, Expression.Constant(string.Empty));
+
+                    case OperationType.IsNotNull:
+                        return Expression.NotEqual(member, Expression.Constant(null));
+
+                    case OperationType.IsNotEmpty:
+                        return Expression.NotEqual(member, Expression.Constant(string.Empty));
+
+                    case OperationType.Contains:
+                        return Expression.Call(member, typeof(string).GetRuntimeMethod("Contains", new[] { value.Type }), value);
+
+                    case OperationType.NotContains:
+                        return Expression.Not(Expression.Call(member, typeof(string).GetRuntimeMethod("Contains", new[] { value.Type }), value));
+
+                    case OperationType.IsNullOrWhiteSpace:
+                        return Expression.OrElse(
+                            Expression.Equal(member, Expression.Constant(null)), 
+                            Expression.Equal(Expression.Call(member, typeof(string).GetRuntimeMethod("Trim", new Type[0])), Expression.Constant(string.Empty)));
+
+                    case OperationType.IsNotNullOrWhiteSpace:
+                        return Expression.AndAlso(
+                            Expression.NotEqual(member, Expression.Constant(null)),
+                            Expression.NotEqual(Expression.Call(member, typeof(string).GetRuntimeMethod("Trim", new Type[0])), Expression.Constant(string.Empty)));
+                }
             }
 
-            return this.expressions[operationType].Invoke(expression, value, value2);
-        }
-        private Expression GetCombinedExpression(Expression expression1, Expression expression2, LogicalType logicalType)
-        {
-            if (expression1 == null)
-                throw new ArgumentNullException(nameof(expression1));
-
-            if (expression2 == null)
-                throw new ArgumentNullException(nameof(expression2));
-
-            return logicalType == LogicalType.And
-            ? Expression.AndAlso(expression1, expression2)
-            : Expression.OrElse(expression1, expression2);
+            throw new NotSupportedException(nameof(operationType));
         }
     }
 }
