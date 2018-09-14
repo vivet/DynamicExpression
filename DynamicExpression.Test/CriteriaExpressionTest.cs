@@ -94,7 +94,7 @@ namespace DynamicExpression.Test
             Assert.AreEqual(1, criteria.Value);
             Assert.AreEqual(0, criteria.Value2);
             Assert.AreEqual(LogicalType.And, criteria.LogicalType);
-            Assert.AreEqual(OperationType.GreaterThanOrEqualTo, criteria.OperationType);
+            Assert.AreEqual(OperationType.GreaterThanOrEqual, criteria.OperationType);
         }
 
         [TestMethod]
@@ -124,7 +124,7 @@ namespace DynamicExpression.Test
             Assert.AreEqual(1, criteria.Value);
             Assert.AreEqual(0, criteria.Value2);
             Assert.AreEqual(LogicalType.And, criteria.LogicalType);
-            Assert.AreEqual(OperationType.LessThanOrEqualTo, criteria.OperationType);
+            Assert.AreEqual(OperationType.LessThanOrEqual, criteria.OperationType);
         }
 
         [TestMethod]

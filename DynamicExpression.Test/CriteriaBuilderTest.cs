@@ -34,6 +34,38 @@ namespace DynamicExpression.Test
         }
 
         [TestMethod]
+        public void BuildWhenEqualAndGuidTest()
+        {
+            var criteriaExpression = new CriteriaExpression();
+
+            var guid = Guid.NewGuid();
+            criteriaExpression.Equal("Id", guid);
+            criteriaExpression.Equal("IdNullable", guid);
+  
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<Customer>(criteriaExpression);
+
+            Assert.IsNotNull(expression);
+            Assert.AreEqual($"((x.Id == {guid}) AndAlso ((x.IdNullable != null) AndAlso (x.IdNullable == {guid})))", expression.Body.ToString());
+        }
+
+        [TestMethod]
+        public void BuildWhenEqualAndGuidNullableTest()
+        {
+            var criteriaExpression = new CriteriaExpression();
+
+            Guid? guid = Guid.NewGuid();
+            criteriaExpression.Equal("Id", guid);
+            criteriaExpression.Equal("IdNullable", guid);
+
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<Customer>(criteriaExpression);
+
+            Assert.IsNotNull(expression);
+            Assert.AreEqual($"((x.Id == {guid}) AndAlso ((x.IdNullable != null) AndAlso (x.IdNullable == {guid})))", expression.Body.ToString());
+        }
+
+        [TestMethod]
         public void BuildWhenNotEqualTest()
         {
             var criteriaExpression = new CriteriaExpression();
@@ -43,7 +75,37 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
-            Assert.AreEqual("((x.Name != null) AndAlso (x.Name != \"value\"))", expression.Body.ToString());
+            Assert.AreEqual("((x.Name == null) OrElse (x.Name != \"value\"))", expression.Body.ToString());
+        }
+
+        [TestMethod]
+        public void BuildWhenNotEqualAndGuidTest()
+        {
+            var guid = Guid.NewGuid();
+            var criteriaExpression = new CriteriaExpression();
+            criteriaExpression.NotEqual("Id", guid);
+            criteriaExpression.NotEqual("IdNullable", guid);
+
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<Customer>(criteriaExpression);
+
+            Assert.IsNotNull(expression);
+            Assert.AreEqual($"((x.Id != {guid}) AndAlso ((x.IdNullable == null) OrElse (x.IdNullable != {guid})))", expression.Body.ToString());
+        }
+
+        [TestMethod]
+        public void BuildWhenNotEqualAndGuidNullableTest()
+        {
+            Guid? guid = Guid.NewGuid();
+            var criteriaExpression = new CriteriaExpression();
+            criteriaExpression.NotEqual("Id", guid);
+            criteriaExpression.NotEqual("IdNullable", guid);
+
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<Customer>(criteriaExpression);
+
+            Assert.IsNotNull(expression);
+            Assert.AreEqual($"((x.Id != {guid}) AndAlso ((x.IdNullable == null) OrElse (x.IdNullable != {guid})))", expression.Body.ToString());
         }
 
         [TestMethod]
@@ -120,8 +182,6 @@ namespace DynamicExpression.Test
             var builder = new CriteriaBuilder();
             var expression = builder.Build<Customer>(criteriaExpression);
 
-            Console.WriteLine(expression.Body.ToString());
-
             Assert.IsNotNull(expression);
             Assert.AreEqual("(x.Age <= 1)", expression.Body.ToString());
         }
@@ -153,6 +213,19 @@ namespace DynamicExpression.Test
         }
 
         [TestMethod]
+        public void BuildWhenIsNullWhenGuidNullableTest()
+        {
+            var criteriaExpression = new CriteriaExpression();
+            criteriaExpression.IsNull<Guid?>("IdNullable");
+
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<Customer>(criteriaExpression);
+
+            Assert.IsNotNull(expression);
+            Assert.AreEqual("(x.IdNullable == null)", expression.Body.ToString());
+        }
+
+        [TestMethod]
         public void BuildWhenIsNotNullTest()
         {
             var criteriaExpression = new CriteriaExpression();
@@ -163,6 +236,19 @@ namespace DynamicExpression.Test
 
             Assert.IsNotNull(expression);
             Assert.AreEqual("(x.Name != null)", expression.Body.ToString());
+        }
+
+        [TestMethod]
+        public void BuildWhenIsNotNullGuidNullableTest()
+        {
+            var criteriaExpression = new CriteriaExpression();
+            criteriaExpression.IsNotNull<Guid?>("IdNullable");
+
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<Customer>(criteriaExpression);
+
+            Assert.IsNotNull(expression);
+            Assert.AreEqual("(x.IdNullable != null)", expression.Body.ToString());
         }
 
         [TestMethod]
@@ -278,8 +364,6 @@ namespace DynamicExpression.Test
             var builder = new CriteriaBuilder();
             var expression = builder.Build<Customer>(criteriaExpression);
 
-            Console.WriteLine(expression.Body.ToString());
-
             Assert.IsNotNull(expression);
             Assert.AreEqual("x.Orders.Any(i => ((i.Payment.Id != null) AndAlso (i.Payment.Id == \"value\")))", expression.Body.ToString());
         }
@@ -303,6 +387,8 @@ namespace DynamicExpression.Test
 
         private class Customer
         {
+            public virtual Guid Id { get; set; }
+            public virtual Guid? IdNullable { get; set; }
             public virtual string Name { get; set; }
             public virtual int Age { get; set; }
             public virtual FlagsEnum Flags { get; set; } = FlagsEnum.One | FlagsEnum.Two;

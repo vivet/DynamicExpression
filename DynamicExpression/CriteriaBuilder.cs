@@ -98,6 +98,21 @@ namespace DynamicExpression
             var value2 = Expression.Constant(criteria.Value2);
             var operationType = criteria.OperationType;
 
+            if (Nullable.GetUnderlyingType(member.Type) != null)
+            {
+                if (Nullable.GetUnderlyingType(value.Type) == null)
+                {
+                    value = Expression.Constant(criteria.Value, typeof(Guid?));
+                }
+            }
+            else if (Nullable.GetUnderlyingType(value.Type) != null)
+            {
+                if (Nullable.GetUnderlyingType(member.Type) == null)
+                {
+                    value = Expression.Constant(value, typeof(Guid));
+                }
+            }
+
             if (member.Type.IsEnum)
             {
                 var expression = Expression.Convert(member, Enum.GetUnderlyingType(member.Type));
@@ -117,18 +132,22 @@ namespace DynamicExpression
                     case OperationType.NotEqual:
                         return Expression.NotEqual(Expression.And(expression, value), value);
                 }
-
-                throw new NotSupportedException(nameof(operationType));
             }
             else
             {
                 switch (operationType)
                 {
                     case OperationType.Equal:
+                        if (Nullable.GetUnderlyingType(member.Type) == null && member.Type != typeof(string))
+                            return Expression.Equal(member, value);
+
                         return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Equal(member, value));
 
                     case OperationType.NotEqual:
-                        return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.NotEqual(member, value));
+                        if (Nullable.GetUnderlyingType(member.Type) == null && member.Type != typeof(string))
+                            return Expression.NotEqual(member, value);
+
+                        return Expression.OrElse(Expression.Equal(member, Expression.Constant(null)), Expression.NotEqual(member, value));
 
                     case OperationType.StartsWith:
                         return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Call(member, typeof(string).GetRuntimeMethod("StartsWith", new[] { typeof(string) }), value));
@@ -139,13 +158,13 @@ namespace DynamicExpression
                     case OperationType.GreaterThan:
                         return Expression.GreaterThan(member, value);
 
-                    case OperationType.GreaterThanOrEqualTo:
+                    case OperationType.GreaterThanOrEqual:
                         return Expression.GreaterThanOrEqual(member, value);
 
                     case OperationType.LessThan:
                         return Expression.LessThan(member, value);
 
-                    case OperationType.LessThanOrEqualTo:
+                    case OperationType.LessThanOrEqual:
                         return Expression.LessThanOrEqual(member, value);
 
                     case OperationType.Between:
@@ -181,7 +200,7 @@ namespace DynamicExpression
                 }
             }
 
-            throw new NotSupportedException(nameof(operationType));
+            throw new NotSupportedException($"'{operationType}' is not supported by '{value.Type}' ");
         }
     }
 }

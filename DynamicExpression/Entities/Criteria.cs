@@ -49,21 +49,8 @@ namespace DynamicExpression.Entities
 
             this.Property = property;
             this.OperationType = operationType;
-
-            if (type.IsArray)
-            {
-                var list = typeof(List<>);
-                var genericType = list.MakeGenericType(type.GetElementType());
-
-                this.Value = value != null ? Activator.CreateInstance(genericType, value) : null;
-                this.Value2 = value2 != null ? Activator.CreateInstance(genericType, value2) : null;
-            }
-            else
-            {
-                this.Value = value;
-                this.Value2 = value2;
-            }
-
+            this.Value = value;
+            this.Value2 = value2;
             this.LogicalType = logicalType;
         }
 
@@ -114,9 +101,9 @@ namespace DynamicExpression.Entities
                         OperationType.Equal,
                         OperationType.NotEqual,
                         OperationType.GreaterThan,
-                        OperationType.GreaterThanOrEqualTo,
+                        OperationType.GreaterThanOrEqual,
                         OperationType.LessThan,
-                        OperationType.LessThanOrEqualTo,
+                        OperationType.LessThanOrEqual,
                         OperationType.Between
                     };
 

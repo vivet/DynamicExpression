@@ -98,7 +98,7 @@ namespace DynamicExpression
         }
 
         /// <summary>
-        /// Add <see cref="OperationType.GreaterThanOrEqualTo"/> filter.
+        /// Add <see cref="OperationType.GreaterThanOrEqual"/> filter.
         /// </summary>
         /// <typeparam name="TType">The type of the property.</typeparam>
         /// <param name="property">The property name.</param>
@@ -109,7 +109,7 @@ namespace DynamicExpression
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
 
-            this.By(property, OperationType.GreaterThanOrEqualTo, value, default, logicalType);
+            this.By(property, OperationType.GreaterThanOrEqual, value, default, logicalType);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace DynamicExpression
         }
 
         /// <summary>
-        /// Add <see cref="OperationType.LessThanOrEqualTo"/> filter.
+        /// Add <see cref="OperationType.LessThanOrEqual"/> filter.
         /// </summary>
         /// <typeparam name="TType">The type of the property.</typeparam>
         /// <param name="property">The property name.</param>
@@ -139,7 +139,7 @@ namespace DynamicExpression
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
 
-            this.By(property, OperationType.LessThanOrEqualTo, value, default, logicalType);
+            this.By(property, OperationType.LessThanOrEqual, value, default, logicalType);
         }
 
         /// <summary>

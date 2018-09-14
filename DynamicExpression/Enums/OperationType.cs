@@ -31,9 +31,9 @@
         GreaterThan,
 
         /// <summary>
-        /// GreaterThanOrEqualTo.
+        /// GreaterThanOrEqual.
         /// </summary>
-        GreaterThanOrEqualTo,
+        GreaterThanOrEqual,
 
         /// <summary>
         /// LessThan.
@@ -41,9 +41,9 @@
         LessThan,
 
         /// <summary>
-        /// LessThanOrEqualTo.
+        /// LessThanOrEqual.
         /// </summary>
-        LessThanOrEqualTo,
+        LessThanOrEqual,
 
         /// <summary>
         /// Between.
