@@ -56,10 +56,10 @@ public class MyQueryCriteria : IQueryCriteria
     public DateTimeOffset? AfterAt { get; set; }
     public DateTimeOffset? BeforeAt { get; set; }
 
-    public override CriteriaExpression GetExpression<TModel>() 
+    public override CriteriaExpression GetExpression() 
         where TEntity : class
     {
-        var expression = base.GetExpression<TModel>();
+        var expression = base.GetExpression();
 
         if (this.BeforeAt.HasValue)
         {
@@ -82,6 +82,7 @@ Note, that not all operations are valid on all data types, but it should be appa
 * Equal
 * NotEqual
 * Contains
+* Not Contains
 * StartsWith
 * EndsWith
 * GreaterThan
@@ -90,12 +91,11 @@ Note, that not all operations are valid on all data types, but it should be appa
 * LessThanOrEqual
 * Between
 * IsNull
-* IsEmpty
-* IsNullOrWhiteSpace
 * IsNotNull
+* IsNullOrWhiteSpace
+* IsNotNullOrWhiteSpace
+* IsEmpty
 * IsNotEmpty
-* IsNotNullNorWhiteSpace
-* In
 
 #### Linq Extensions
 The library comes with a few ```IQueryable<T>``` extension methods. They serve to convert the ```CriteriaExpression``` returned by the ```GetExpression<TModel>()```, into a valid linq expression.  
