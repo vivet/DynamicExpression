@@ -18,7 +18,7 @@ The query object model has a generic and a non-generic implementations.
 The ```Query``` is used when no filtering is required, but pagination and ordering is still needed, while the ```Query<TCriteria>``` is used when custom filter expressions should be applied.  
 
 #### Query Criteria
-The query criteria derives from the interface ```IQueryCriteria```, and implements a single method ```GetExpression<TModel>()```, where ```TModel``` defines the model type of the linq statement the critera expression is converted into. Additionally the query critiera implementation contains properties for each wanted criteria. In the method body of ```GetExpression<TModel>()``` build the ```CriteriaExpression```, defining logical operations and mapping model and criteria properties.  
+The query criteria derives from the interface ```IQueryCriteria```, and implements a single method ```GetExpression()```, where ```TModel``` defines the model type of the linq statement the critera expression is converted into. Additionally the query critiera implementation contains properties for each wanted criteria. In the method body of ```GetExpression()``` build the ```CriteriaExpression```, defining logical operations and mapping model and criteria properties.  
 
 Simple example.
 ```csharp
@@ -98,7 +98,7 @@ Note, that not all operations are valid on all data types, but it should be appa
 * IsNotEmpty
 
 #### Linq Extensions
-The library comes with a few ```IQueryable<T>``` extension methods. They serve to convert the ```CriteriaExpression``` returned by the ```GetExpression<TModel>()```, into a valid linq expression.  
+The library comes with a few ```IQueryable<T>``` extension methods. They serve to convert the ```CriteriaExpression``` returned by the ```GetExpression()```, into a valid linq expression.  
 
 The list below shows the extension methods
 * ```IQueryable<T> Order<T>(IOrdering)```
