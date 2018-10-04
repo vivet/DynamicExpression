@@ -304,6 +304,84 @@ namespace DynamicExpression.Test
         }
 
         [TestMethod]
+        public void BuildWhenInTest()
+        {
+            var criteriaExpression = new CriteriaExpression();
+            criteriaExpression.In("Name", "value");
+
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<Customer>(criteriaExpression);
+
+            Assert.IsNotNull(expression);
+            Assert.AreEqual("x.Name.Contains(\"value\")", expression.Body.ToString());
+        }
+
+        [TestMethod]
+        public void BuildWhenInAndEnumTest()
+        {
+            var criteriaExpression = new CriteriaExpression();
+            criteriaExpression.In("Flags", FlagsEnum.One | FlagsEnum.Two);
+
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<Customer>(criteriaExpression);
+
+            Assert.IsNotNull(expression);
+            Assert.AreEqual("((Convert(x.Flags, Int64) | Convert(One, Two, Int64)) == Convert(One, Two, Int64))", expression.Body.ToString());
+        }
+
+        [TestMethod]
+        public void BuildWhenInAndArrayTest()
+        {
+            var criteriaExpression = new CriteriaExpression();
+            criteriaExpression.In("Name", new[] { "value", "value2" });
+
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<Customer>(criteriaExpression);
+
+            Assert.IsNotNull(expression);
+            Assert.AreEqual("value(System.String[]).Contains(x.Name)", expression.Body.ToString());
+        }
+
+        [TestMethod]
+        public void BuildWhenNotInTest()
+        {
+            var criteriaExpression = new CriteriaExpression();
+            criteriaExpression.NotIn("Name", "value");
+
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<Customer>(criteriaExpression);
+
+            Assert.IsNotNull(expression);
+            Assert.AreEqual("Not(x.Name.Contains(\"value\"))", expression.Body.ToString());
+        }
+
+        [TestMethod]
+        public void BuildWhenNotInAndEnumTest()
+        {
+            var criteriaExpression = new CriteriaExpression();
+            criteriaExpression.NotIn("Flags", FlagsEnum.One | FlagsEnum.Two);
+
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<Customer>(criteriaExpression);
+
+            Assert.IsNotNull(expression);
+            Assert.AreEqual("Not(((Convert(x.Flags, Int64) | Convert(One, Two, Int64)) == Convert(One, Two, Int64)))", expression.Body.ToString());
+        }
+
+        [TestMethod]
+        public void BuildWhenNotInAndArrayTest()
+        {
+            var criteriaExpression = new CriteriaExpression();
+            criteriaExpression.NotIn("Name", new[] { "value", "value2" });
+
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<Customer>(criteriaExpression);
+
+            Assert.IsNotNull(expression);
+            Assert.AreEqual("Not(value(System.String[]).Contains(x.Name))", expression.Body.ToString());
+        }
+
+        [TestMethod]
         public void BuildWhenContainsTest()
         {
             var criteriaExpression = new CriteriaExpression();
@@ -327,6 +405,19 @@ namespace DynamicExpression.Test
 
             Assert.IsNotNull(expression);
             Assert.AreEqual("((Convert(x.Flags, Int64) | Convert(One, Two, Int64)) == Convert(One, Two, Int64))", expression.Body.ToString());
+        }
+                
+        [TestMethod]
+        public void BuildWhenContainsAndIsArrayTest()
+        {
+            var criteriaExpression = new CriteriaExpression();
+            criteriaExpression.Contains("Name", new[] { "value", "value2" });
+
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<Customer>(criteriaExpression);
+
+            Assert.IsNotNull(expression);
+            Assert.AreEqual("value(System.String[]).Contains(x.Name)", expression.Body.ToString());
         }
 
         [TestMethod]
@@ -356,7 +447,20 @@ namespace DynamicExpression.Test
         }
 
         [TestMethod]
-        public void BuildWhenCollectionTest()
+        public void BuildWhenReferenceTest()
+        {
+            var criteriaExpression = new CriteriaExpression();
+            criteriaExpression.Equal("Payment.Id", "value");
+
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<Order>(criteriaExpression);
+
+            Assert.IsNotNull(expression);
+            Assert.AreEqual("((x.Payment.Id != null) AndAlso (x.Payment.Id == \"value\"))", expression.Body.ToString());
+        }
+
+        [TestMethod]
+        public void BuildWhenReferenceCollectionTest()
         {
             var criteriaExpression = new CriteriaExpression();
             criteriaExpression.Equal("Orders[Payment.Id]", "value");

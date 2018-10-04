@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -39,7 +40,7 @@ namespace DynamicExpression
                     var method = typeof(Enumerable).GetRuntimeMethods().First(m => m.Name == "Any" && m.GetParameters().Length == 2).MakeGenericMethod(type);
                     var member = this.GetMember(parameter, baseName);
                     var parameter2 = Expression.Parameter(type, "i");
-                    var expr2 = Expression.Lambda(GetExpression(parameter2, statement, name), parameter2);
+                    var expr2 = Expression.Lambda(this.GetExpression(parameter2, statement, name), parameter2);
 
                     innerExpression = Expression.Call(method, member, expr2);
                 }
@@ -120,9 +121,11 @@ namespace DynamicExpression
 
                 switch (operationType)
                 {
+                    case OperationType.In:
                     case OperationType.Contains:
                         return Expression.Equal(Expression.Or(expression, value), value);
 
+                    case OperationType.NotIn:
                     case OperationType.NotContains:
                         return Expression.Not(Expression.Equal(Expression.Or(expression, value), value));
 
@@ -182,11 +185,29 @@ namespace DynamicExpression
                     case OperationType.IsNotEmpty:
                         return Expression.NotEqual(member, Expression.Constant(string.Empty));
 
+                    case OperationType.In:
                     case OperationType.Contains:
+                    {
+                        if (value.Type.IsArray)
+                        {
+                            var constant = (ConstantExpression)value;
+                            return Expression.Call(constant, typeof(IList).GetRuntimeMethod("Contains", new[] { constant.Value.GetType().GetElementType() }), member);
+                        }
+                        
                         return Expression.Call(member, typeof(string).GetRuntimeMethod("Contains", new[] { value.Type }), value);
+                    }
 
+                    case OperationType.NotIn:
                     case OperationType.NotContains:
+                    {
+                        if (value.Type.IsArray)
+                        {
+                            var constant = (ConstantExpression)value;
+                            return Expression.Not(Expression.Call(constant, typeof(IList).GetRuntimeMethod("Contains", new[] { constant.Value.GetType().GetElementType() }), member));
+                        }
+
                         return Expression.Not(Expression.Call(member, typeof(string).GetRuntimeMethod("Contains", new[] { value.Type }), value));
+                    }
 
                     case OperationType.IsNullOrWhiteSpace:
                         return Expression.OrElse(

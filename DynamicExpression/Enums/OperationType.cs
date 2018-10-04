@@ -81,6 +81,16 @@
         IsNotEmpty,
 
         /// <summary>
+        /// In.
+        /// </summary>
+        In,
+
+        /// <summary>
+        /// Not In.
+        /// </summary>
+        NotIn,
+
+        /// <summary>
         /// Contains.
         /// </summary>
         Contains,

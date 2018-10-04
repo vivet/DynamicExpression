@@ -68,7 +68,10 @@ namespace DynamicExpression.Entities
                 { "Nullable", new HashSet<Type> { typeof(Nullable<>) } },
                 { "Guid", new HashSet<Type> { typeof(Guid) } }
             };
-            
+
+            if (type.IsArray)
+                return new[] { OperationType.In, OperationType.NotIn, OperationType.Contains, OperationType.NotContains };
+
             var operationType = type.IsEnum 
                 ? "Enum" 
                 : operationTypes.FirstOrDefault(x => x.Value.Any(y => y.Name == type.Name)).Key;
@@ -90,6 +93,8 @@ namespace DynamicExpression.Entities
                         OperationType.IsNotNullOrWhiteSpace,
                         OperationType.IsEmpty,
                         OperationType.IsNotEmpty,
+                        OperationType.In,
+                        OperationType.NotIn,
                         OperationType.Contains,
                         OperationType.NotContains
                     };
@@ -126,6 +131,8 @@ namespace DynamicExpression.Entities
                     {
                         OperationType.Equal,
                         OperationType.NotEqual,
+                        OperationType.In, 
+                        OperationType.NotIn, 
                         OperationType.Contains,
                         OperationType.NotContains
                     };

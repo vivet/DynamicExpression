@@ -241,6 +241,36 @@ namespace DynamicExpression
 
             this.By<TType>(property, OperationType.IsNotNullOrWhiteSpace, default, default, logicalType);
         }
+                
+        /// <summary>
+        /// Add <see cref="OperationType.In"/> filter.
+        /// </summary>
+        /// <typeparam name="TType">The type of the property.</typeparam>
+        /// <param name="property">The property name.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
+        public virtual void In<TType>(string property, TType value, LogicalType logicalType = LogicalType.And)
+        {
+            if (property == null)
+                throw new ArgumentNullException(nameof(property));
+
+            this.By(property, OperationType.In, value, default, logicalType);
+        }
+
+        /// <summary>
+        /// Add <see cref="OperationType.NotIn"/> filter.
+        /// </summary>
+        /// <typeparam name="TType">The type of the property.</typeparam>
+        /// <param name="property">The property name.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
+        public virtual void NotIn<TType>(string property, TType value, LogicalType logicalType = LogicalType.And)
+        {
+            if (property == null)
+                throw new ArgumentNullException(nameof(property));
+
+            this.By(property, OperationType.NotIn, value, default, logicalType);
+        }
 
         /// <summary>
         /// Add <see cref="OperationType.Contains"/> filter.

@@ -233,18 +233,35 @@ namespace DynamicExpression.Test
         }
 
         [TestMethod]
-        public void ConstructorWhenNotContainsTest()
+        public void ConstructorWhenInTest()
         {
             var expression = new CriteriaExpression();
-            expression.NotContains("Name", "value");
+            var array = new[] { "value", "value2" };
+            expression.In("Name", array);
 
             var criteria = expression.Criterias.FirstOrDefault();
             Assert.IsNotNull(criteria);
             Assert.AreEqual("Name", criteria.Property);
-            Assert.AreEqual("value", criteria.Value);
+            Assert.AreEqual(array, criteria.Value);
             Assert.AreEqual(null, criteria.Value2);
             Assert.AreEqual(LogicalType.And, criteria.LogicalType);
-            Assert.AreEqual(OperationType.NotContains, criteria.OperationType);
+            Assert.AreEqual(OperationType.In, criteria.OperationType);
+        }
+
+        [TestMethod]
+        public void ConstructorWhenNotInTest()
+        {
+            var expression = new CriteriaExpression();
+            var array = new[] { "value", "value2" };
+            expression.NotIn("Name", array);
+
+            var criteria = expression.Criterias.FirstOrDefault();
+            Assert.IsNotNull(criteria);
+            Assert.AreEqual("Name", criteria.Property);
+            Assert.AreEqual(array, criteria.Value);
+            Assert.AreEqual(null, criteria.Value2);
+            Assert.AreEqual(LogicalType.And, criteria.LogicalType);
+            Assert.AreEqual(OperationType.NotIn, criteria.OperationType);
         }
 
         [TestMethod]
@@ -260,6 +277,21 @@ namespace DynamicExpression.Test
             Assert.AreEqual(null, criteria.Value2);
             Assert.AreEqual(LogicalType.And, criteria.LogicalType);
             Assert.AreEqual(OperationType.Contains, criteria.OperationType);
+        }
+
+        [TestMethod]
+        public void ConstructorWhenNotContainsTest()
+        {
+            var expression = new CriteriaExpression();
+            expression.NotContains("Name", "value");
+
+            var criteria = expression.Criterias.FirstOrDefault();
+            Assert.IsNotNull(criteria);
+            Assert.AreEqual("Name", criteria.Property);
+            Assert.AreEqual("value", criteria.Value);
+            Assert.AreEqual(null, criteria.Value2);
+            Assert.AreEqual(LogicalType.And, criteria.LogicalType);
+            Assert.AreEqual(OperationType.NotContains, criteria.OperationType);
         }
     }
 }
