@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DynamicExpression.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DynamicExpression.Test
@@ -7,7 +8,8 @@ namespace DynamicExpression.Test
     [TestClass]
     public class CriteriaBuilderTest
     {
-        [TestMethod]
+
+       [TestMethod]
         public void BuildWhenEqualTest()
         {
             var criteriaExpression = new CriteriaExpression();
@@ -17,6 +19,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("((x.Name != null) AndAlso (x.Name == \"value\"))", expression.Body.ToString());
         }
 
@@ -30,7 +33,8 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
-            Assert.AreEqual("((Convert(x.Flags, Int64) & Convert(One, Int64)) == Convert(One, Int64))", expression.Body.ToString());
+            Assert.IsNotNull(expression.Compile());
+            Assert.AreEqual("((Convert(x.Flags, Int32) & Convert(One, Int32)) == Convert(One, Int32))", expression.Body.ToString());
         }
 
         [TestMethod]
@@ -46,6 +50,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual($"((x.Id == {guid}) AndAlso ((x.IdNullable != null) AndAlso (x.IdNullable == {guid})))", expression.Body.ToString());
         }
 
@@ -62,6 +67,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual($"((x.Id == {guid}) AndAlso ((x.IdNullable != null) AndAlso (x.IdNullable == {guid})))", expression.Body.ToString());
         }
 
@@ -75,6 +81,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("((x.Name == null) OrElse (x.Name != \"value\"))", expression.Body.ToString());
         }
 
@@ -90,6 +97,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual($"((x.Id != {guid}) AndAlso ((x.IdNullable == null) OrElse (x.IdNullable != {guid})))", expression.Body.ToString());
         }
 
@@ -105,6 +113,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual($"((x.Id != {guid}) AndAlso ((x.IdNullable == null) OrElse (x.IdNullable != {guid})))", expression.Body.ToString());
         }
 
@@ -118,6 +127,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("((x.Name != null) AndAlso x.Name.StartsWith(\"value\"))", expression.Body.ToString());
         }
 
@@ -131,6 +141,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("((x.Name != null) AndAlso x.Name.EndsWith(\"value\"))", expression.Body.ToString());
         }
 
@@ -144,6 +155,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("(x.Age > 1)", expression.Body.ToString());
         }
 
@@ -157,6 +169,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("(x.Age >= 1)", expression.Body.ToString());
         }
 
@@ -170,6 +183,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("(x.Age < 1)", expression.Body.ToString());
         }
 
@@ -183,6 +197,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("(x.Age <= 1)", expression.Body.ToString());
         }
 
@@ -196,6 +211,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("((x.Age >= 1) AndAlso (x.Age <= 5))", expression.Body.ToString());
         }
 
@@ -209,6 +225,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("(x.Name == null)", expression.Body.ToString());
         }
 
@@ -222,6 +239,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("(x.IdNullable == null)", expression.Body.ToString());
         }
 
@@ -235,6 +253,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("(x.Name != null)", expression.Body.ToString());
         }
 
@@ -248,6 +267,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("(x.IdNullable != null)", expression.Body.ToString());
         }
 
@@ -261,6 +281,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("(x.Name == \"\")", expression.Body.ToString());
         }
 
@@ -274,6 +295,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("(x.Name != \"\")", expression.Body.ToString());
         }
 
@@ -287,6 +309,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("((x.Name == null) OrElse (x.Name.Trim() == \"\"))", expression.Body.ToString());
         }
 
@@ -300,6 +323,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("((x.Name != null) AndAlso (x.Name.Trim() != \"\"))", expression.Body.ToString());
         }
 
@@ -313,6 +337,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("x.Name.Contains(\"value\")", expression.Body.ToString());
         }
 
@@ -326,7 +351,8 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
-            Assert.AreEqual("((Convert(x.Flags, Int64) | Convert(One, Two, Int64)) == Convert(One, Two, Int64))", expression.Body.ToString());
+            Assert.IsNotNull(expression.Compile());
+            Assert.AreEqual("((Convert(x.Flags, Int32) | Convert(One, Two, Int32)) == Convert(One, Two, Int32))", expression.Body.ToString());
         }
 
         [TestMethod]
@@ -339,6 +365,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("value(System.String[]).Contains(x.Name)", expression.Body.ToString());
         }
 
@@ -352,6 +379,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("Not(x.Name.Contains(\"value\"))", expression.Body.ToString());
         }
 
@@ -365,7 +393,8 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
-            Assert.AreEqual("Not(((Convert(x.Flags, Int64) | Convert(One, Two, Int64)) == Convert(One, Two, Int64)))", expression.Body.ToString());
+            Assert.IsNotNull(expression.Compile());
+            Assert.AreEqual("Not(((Convert(x.Flags, Int32) | Convert(One, Two, Int32)) == Convert(One, Two, Int32)))", expression.Body.ToString());
         }
 
         [TestMethod]
@@ -378,6 +407,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("Not(value(System.String[]).Contains(x.Name))", expression.Body.ToString());
         }
 
@@ -391,6 +421,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("x.Name.Contains(\"value\")", expression.Body.ToString());
         }
 
@@ -404,7 +435,8 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
-            Assert.AreEqual("((Convert(x.Flags, Int64) | Convert(One, Two, Int64)) == Convert(One, Two, Int64))", expression.Body.ToString());
+            Assert.IsNotNull(expression.Compile());
+            Assert.AreEqual("((Convert(x.Flags, Int32) | Convert(One, Two, Int32)) == Convert(One, Two, Int32))", expression.Body.ToString());
         }
                 
         [TestMethod]
@@ -417,6 +449,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("value(System.String[]).Contains(x.Name)", expression.Body.ToString());
         }
 
@@ -430,6 +463,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("Not(x.Name.Contains(\"value\"))", expression.Body.ToString());
         }
 
@@ -443,7 +477,8 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
-            Assert.AreEqual("Not(((Convert(x.Flags, Int64) | Convert(One, Two, Int64)) == Convert(One, Two, Int64)))", expression.Body.ToString());
+            Assert.IsNotNull(expression.Compile());
+            Assert.AreEqual("Not(((Convert(x.Flags, Int32) | Convert(One, Two, Int32)) == Convert(One, Two, Int32)))", expression.Body.ToString());
         }
 
         [TestMethod]
@@ -456,6 +491,7 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Order>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("((x.Payment.Id != null) AndAlso (x.Payment.Id == \"value\"))", expression.Body.ToString());
         }
 
@@ -469,27 +505,36 @@ namespace DynamicExpression.Test
             var expression = builder.Build<Customer>(criteriaExpression);
 
             Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("x.Orders.Any(i => ((i.Payment.Id != null) AndAlso (i.Payment.Id == \"value\")))", expression.Body.ToString());
         }
 
+        [TestMethod]
+        public void BuildWhenMultipleCriteriaExpressionsTest()
+        {
+            var criteriaExpression1 = new CriteriaExpression();
+            criteriaExpression1.Equal("Name", "value");
+
+            var criteriaExpression2 = new CriteriaExpression();
+            criteriaExpression2.Equal("Name", "value2", LogicalType.Or);
+            criteriaExpression2.Equal("Name", "value3");
+
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<Customer>(new[] { criteriaExpression1, criteriaExpression2 });
+
+            Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
+            Assert.AreEqual("(((x.Name != null) AndAlso (x.Name == \"value\")) AndAlso (((x.Name != null) AndAlso (x.Name == \"value2\")) OrElse ((x.Name != null) AndAlso (x.Name == \"value3\"))))", expression.Body.ToString());
+        }
+
         [Flags]
-        private enum FlagsEnum : long
+        public enum FlagsEnum
         {
             One = 1 << 0,
             Two = 1 << 1
         }
 
-        private class Payment
-        {
-            public virtual string Id { get; set; }
-        }
-
-        private class Order
-        {
-            public virtual Payment Payment { get; set; }
-        }
-
-        private class Customer
+        public class Customer
         {
             public virtual Guid Id { get; set; }
             public virtual Guid? IdNullable { get; set; }
@@ -497,6 +542,16 @@ namespace DynamicExpression.Test
             public virtual int Age { get; set; }
             public virtual FlagsEnum Flags { get; set; } = FlagsEnum.One | FlagsEnum.Two;
             public virtual IEnumerable<Order> Orders { get; set; }
+        }
+
+        public class Payment
+        {
+            public virtual string Id { get; set; }
+        }
+
+        public class Order
+        {
+            public virtual Payment Payment { get; set; }
         }
     }
 }
