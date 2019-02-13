@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace DynamicExpression.Interfaces
 {
     /// <summary>
@@ -6,9 +8,9 @@ namespace DynamicExpression.Interfaces
     public interface IQueryCriteria
     {
         /// <summary>
-        /// Gets the <see cref="CriteriaExpression"/>.
+        /// Gets the collection of <see cref="CriteriaExpression"/>'s.
         /// </summary>
-        /// <returns>The <see cref="CriteriaExpression"/></returns>
-        CriteriaExpression GetExpression();
+        /// <returns>The <see cref="CriteriaExpression"/>'s.</returns>
+        IList<CriteriaExpression> GetExpressions();
     }
 }

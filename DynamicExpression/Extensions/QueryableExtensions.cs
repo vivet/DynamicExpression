@@ -48,7 +48,7 @@ namespace DynamicExpression.Extensions
             if (queryCriteria == null)
                 throw new ArgumentNullException(nameof(queryCriteria));
 
-            var criteria = queryCriteria.GetExpression();
+            var criteria = queryCriteria.GetExpressions();
             var expression = new CriteriaBuilder().Build<T>(criteria);
 
             return source
@@ -71,7 +71,7 @@ namespace DynamicExpression.Extensions
             if (queryCriteria == null)
                 throw new ArgumentNullException(nameof(queryCriteria));
 
-            var criteria = queryCriteria.Criteria.GetExpression();
+            var criteria = queryCriteria.Criteria.GetExpressions();
             var expression = new CriteriaBuilder().Build<T>(criteria);
 
             return source
@@ -104,17 +104,20 @@ namespace DynamicExpression.Extensions
                 var expression = Expression.Lambda<Func<T, Guid>>(property, parameter);
                 return ordering.Direction == OrderingDirection.Asc ? source.OrderBy(expression) : source.OrderByDescending(expression);
             }
-            else if (property.Type == typeof(TimeSpan))
+
+            if (property.Type == typeof(TimeSpan))
             {
                 var expression = Expression.Lambda<Func<T, TimeSpan>>(property, parameter);
                 return ordering.Direction == OrderingDirection.Asc ? source.OrderBy(expression) : source.OrderByDescending(expression);
             }
-            else if (property.Type == typeof(DateTime))
+            
+            if (property.Type == typeof(DateTime))
             {
                 var expression = Expression.Lambda<Func<T, DateTime>>(property, parameter);
                 return ordering.Direction == OrderingDirection.Asc ? source.OrderBy(expression) : source.OrderByDescending(expression);
             }
-            else if (property.Type == typeof(DateTimeOffset))
+            
+            if (property.Type == typeof(DateTimeOffset))
             {
                 var expression = Expression.Lambda<Func<T, DateTimeOffset>>(property, parameter);
                 return ordering.Direction == OrderingDirection.Asc ? source.OrderBy(expression) : source.OrderByDescending(expression);
@@ -124,32 +127,38 @@ namespace DynamicExpression.Extensions
                 var expression = Expression.Lambda<Func<T, byte>>(property, parameter);
                 return ordering.Direction == OrderingDirection.Asc ? source.OrderBy(expression) : source.OrderByDescending(expression);
             }
-            else if (property.Type == typeof(int))
+            
+            if (property.Type == typeof(int))
             {
                 var expression = Expression.Lambda<Func<T, int>>(property, parameter);
                 return ordering.Direction == OrderingDirection.Asc ? source.OrderBy(expression) : source.OrderByDescending(expression);
             }
-            else if (property.Type == typeof(long))
+            
+            if (property.Type == typeof(long))
             {
                 var expression = Expression.Lambda<Func<T, long>>(property, parameter);
                 return ordering.Direction == OrderingDirection.Asc ? source.OrderBy(expression) : source.OrderByDescending(expression);
             }
-            else if (property.Type == typeof(float))
+            
+            if (property.Type == typeof(float))
             {
                 var expression = Expression.Lambda<Func<T, float>>(property, parameter);
                 return ordering.Direction == OrderingDirection.Asc ? source.OrderBy(expression) : source.OrderByDescending(expression);
             }
-            else if (property.Type == typeof(double))
+            
+            if (property.Type == typeof(double))
             {
                 var expression = Expression.Lambda<Func<T, double>>(property, parameter);
                 return ordering.Direction == OrderingDirection.Asc ? source.OrderBy(expression) : source.OrderByDescending(expression);
             }
-            else if (property.Type == typeof(decimal))
+
+            if (property.Type == typeof(decimal))
             {
                 var expression = Expression.Lambda<Func<T, decimal>>(property, parameter);
                 return ordering.Direction == OrderingDirection.Asc ? source.OrderBy(expression) : source.OrderByDescending(expression);
             }
-            else if (property.Type == typeof(bool))
+            
+            if (property.Type == typeof(bool))
             {
                 var expression = Expression.Lambda<Func<T, bool>>(property, parameter);
                 return ordering.Direction == OrderingDirection.Asc ? source.OrderBy(expression) : source.OrderByDescending(expression);

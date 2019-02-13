@@ -12,7 +12,7 @@ namespace DynamicExpression
     public class CriteriaExpression
     {
         /// <summary>
-        /// Criterias
+        /// Criterias.
         /// </summary>
         public virtual List<ICriteria> Criterias { get; } = new List<ICriteria>();
 
@@ -307,9 +307,10 @@ namespace DynamicExpression
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
 
-            var statement = new Criteria<TType>(property, operationType, value, value2, logicalType);
+            var criteria = new Criteria<TType>(property, operationType, value, value2, logicalType);
 
-            this.Criterias.Add(statement);
+            this.Criterias
+                .Add(criteria);
         }
     }
 }
