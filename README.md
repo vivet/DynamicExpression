@@ -18,7 +18,7 @@ The query object model has a generic and a non-generic implementations.
 The ```Query``` is used when no filtering is required, but pagination and ordering is still needed, while the ```Query<TCriteria>``` is used when custom filter expressions should be applied.  
 
 #### Query Criteria
-The query criteria derives from the interface ```IQueryCriteria```, and implements a single method ```GetExpression()```, where ```TModel``` defines the model type of the linq statement the critera expression is converted into. Additionally the query critiera implementation contains properties for each wanted criteria. In the method body of ```GetExpression()``` build the ```CriteriaExpression```, defining logical operations and mapping model and criteria properties.  
+The query criteria derives from the interface ```IQueryCriteria```, and implements a single method ```GetExpressions()```, where ```TModel``` defines the model type of the linq statement the critera expression is converted into. Additionally the query critiera implementation contains properties for each wanted criteria. In the method body of ```GetExpressions()``` build the ```CriteriaExpression```, defining logical operations and mapping model and criteria properties.  
 
 Simple example.
 ```csharp
@@ -31,7 +31,7 @@ public class MyQueryCriteria : IQueryCriteria
 {
     public string MyCriteria { get; set; }
     
-    public virtual CriteriaExpression GetExpression<TModel>() 
+    public virtual IList<CriteriaExpression> GetExpressions() 
         where TEntity : class
     {
         var expression = new CriteriaExpression();
@@ -56,7 +56,7 @@ public class MyQueryCriteria : IQueryCriteria
     public DateTimeOffset? AfterAt { get; set; }
     public DateTimeOffset? BeforeAt { get; set; }
 
-    public override CriteriaExpression GetExpression() 
+    public override IList<CriteriaExpression> GetExpressions() 
         where TEntity : class
     {
         var expression = base.GetExpression();
