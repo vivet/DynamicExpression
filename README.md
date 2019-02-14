@@ -39,7 +39,7 @@ public class MyQueryCriteria : IQueryCriteria
         expression
             .Equal("MyProperty", this.MyCriteria);
 
-        return expression;
+        return new[] { expression };
     }
 }
 ```
@@ -71,7 +71,7 @@ public class MyQueryCriteria : IQueryCriteria
             expression.GreaterThanOrEqual("CreatedAt", this.AfterAt);
         }
         
-        return expression;
+        return new[] { expression };
     }
 }
 ```
