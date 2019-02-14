@@ -5,7 +5,7 @@
     <ApplicationIcon>.\..\icon.ico</ApplicationIcon>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.1.0</Version>
+    <Version>2.1.1</Version>
     <Company />
     <Description>Easily construct lambda expressions dynamically.
 Turn models into database queries, using a simple fluent implementation.</Description>
@@ -14,8 +14,8 @@ Turn models into database queries, using a simple fluent implementation.</Descri
     <PackageLicenseUrl>https://raw.githubusercontent.com/vivet/DynamicExpression/master/LICENSE</PackageLicenseUrl>
     <Authors>Michael Vivet</Authors>
     <Product>Dynamic Expression</Product>
-    <AssemblyVersion>2.1.0.0</AssemblyVersion>
-    <FileVersion>2.1.0.0</FileVersion>
+    <AssemblyVersion>2.1.1.0</AssemblyVersion>
+    <FileVersion>2.1.1.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
