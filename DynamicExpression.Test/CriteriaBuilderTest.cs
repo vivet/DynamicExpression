@@ -526,6 +526,69 @@ namespace DynamicExpression.Test
             Assert.IsNotNull(expression.Compile());
             Assert.AreEqual("(((x.Name != null) AndAlso (x.Name == \"value\")) AndAlso (((x.Name != null) AndAlso (x.Name == \"value2\")) OrElse ((x.Name != null) AndAlso (x.Name == \"value3\"))))", expression.Body.ToString());
         }
+        
+        [TestMethod]
+        public void BuildWhenPropertyIsNullableAndValueIsNullableTest()
+        {
+            Guid? guid = Guid.NewGuid();
+            var criteriaExpression = new CriteriaExpression();
+            criteriaExpression.Equal("IdNullable", guid);
+
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<Customer>(criteriaExpression);
+
+            Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
+            Assert.AreEqual($"((x.IdNullable != null) AndAlso (x.IdNullable == {guid}))", expression.Body.ToString());
+        }
+
+        [TestMethod]
+        public void BuildWhenPropertyIsNullableAndValueIsNotNullableTest()
+        {
+            var guid = Guid.NewGuid();
+            var criteriaExpression = new CriteriaExpression();
+            criteriaExpression.Equal("IdNullable", guid);
+
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<Customer>(criteriaExpression);
+
+            Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
+            Assert.AreEqual($"((x.IdNullable != null) AndAlso (x.IdNullable == {guid}))", expression.Body.ToString());
+        }
+        
+        [TestMethod]
+        public void BuildWhenPropertyIsNotNullableAndValueIsNullableTest()
+        {
+            Guid? guid = Guid.NewGuid();
+            var criteriaExpression = new CriteriaExpression();
+            criteriaExpression.Equal("Id", guid);
+
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<Customer>(criteriaExpression);
+
+            Console.WriteLine(expression.Body.ToString());
+
+            Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
+            Assert.AreEqual($"(x.Id == {guid})", expression.Body.ToString());
+        }
+
+        [TestMethod]
+        public void BuildWhenPropertyIsNotNullableAndValueIsNotNullableTest()
+        {
+            var guid = Guid.NewGuid();
+            var criteriaExpression = new CriteriaExpression();
+            criteriaExpression.Equal("Id", guid);
+
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<Customer>(criteriaExpression);
+
+            Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
+            Assert.AreEqual($"(x.Id == {guid})", expression.Body.ToString());
+        }
+
 
         [Flags]
         public enum FlagsEnum

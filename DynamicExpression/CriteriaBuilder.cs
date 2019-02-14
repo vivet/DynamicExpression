@@ -99,13 +99,15 @@ namespace DynamicExpression
                 if (Nullable.GetUnderlyingType(value.Type) == null)
                 {
                     value = Expression.Constant(criteria.Value, member.Type);
+                    value2 = Expression.Constant(criteria.Value2, member.Type);
                 }
             }
             else if (Nullable.GetUnderlyingType(value.Type) != null)
             {
                 if (Nullable.GetUnderlyingType(member.Type) == null)
                 {
-                    value = Expression.Constant(value, value.Type);
+                    value = Expression.Constant(criteria.Value, value.Type);
+                    value2 = Expression.Constant(criteria.Value2, value.Type);
                 }
             }
 
