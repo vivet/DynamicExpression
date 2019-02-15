@@ -1,41 +1,45 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <ApplicationIcon>.\..\icon.ico</ApplicationIcon>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.1.1</Version>
-    <Company />
-    <Description>Easily construct lambda expressions dynamically.
-Turn models into database queries, using a simple fluent implementation.</Description>
-    <RepositoryUrl></RepositoryUrl>
-    <PackageProjectUrl>https://github.com/vivet/DynamicExpression</PackageProjectUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/vivet/DynamicExpression/master/LICENSE</PackageLicenseUrl>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AssemblyVersion>2.1.2.0</AssemblyVersion>
+    <FileVersion>2.1.2.0</FileVersion>
+    <LangVersion>latest</LangVersion>
+    <Version>2.1.2</Version>
     <Authors>Michael Vivet</Authors>
     <Product>Dynamic Expression</Product>
-    <AssemblyVersion>2.1.1.0</AssemblyVersion>
-    <FileVersion>2.1.1.0</FileVersion>
+    <Summary>Turn criteria models into Linq expressions.</Summary>
+    <Description>Easily construct lambda expressions dynamically.
+Turn models into database queries, using a simple fluent implementation.</Description>
+    <PackageTags>Lampda, Expression, Linq, Dynamic, Criteria, Query, Paging, Pagination, Sort, Sorting</PackageTags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageLicense>https://raw.githubusercontent.com/vivet/DynamicExpression/master/LICENSE</PackageLicense>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageIconUrl>https://raw.githubusercontent.com/vivet/DynamicExpression/master/icon.ico</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/vivet/DynamicExpression</PackageProjectUrl>
+    <RepositoryType>Github</RepositoryType>
+    <RepositoryUrl>https://github.com/vivet/DynamicExpression</RepositoryUrl>
+    <Company>Michael Vivet</Company>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <LangVersion>latest</LangVersion>
-    <WarningsAsErrors />
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn />
-    <DocumentationFile>bin\Release\netstandard1.0\DynamicExpression.xml</DocumentationFile>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <LangVersion>latest</LangVersion>
-    <WarningsAsErrors />
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn />
-    <DocumentationFile>bin\Debug\netstandard1.0\DynamicExpression.xml</DocumentationFile>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <DocumentationFile>bin\Debug\netstandard2.0\DynamicExpression.xml</DocumentationFile>
   </PropertyGroup>
-
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>bin\Release\netstandard2.0\DynamicExpression.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <None Remove="DynamicExpression.csproj.DotSettings" />
   </ItemGroup>
-
+  <ItemGroup>
+    <None Include="..\LICENSE.txt" Pack="true" PackagePath="" />
+  </ItemGroup>
 </Project>

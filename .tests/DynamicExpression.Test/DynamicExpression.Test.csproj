@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DynamicExpression\DynamicExpression.csproj" />
+    <ProjectReference Include="..\..\DynamicExpression\DynamicExpression.csproj" />
   </ItemGroup>
 
 </Project>
