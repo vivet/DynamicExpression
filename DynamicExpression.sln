@@ -6,7 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".solution", ".solution", "{EA0E8885-9387-4A54-8DE6-65EB2431C1B9}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		.travis.yml = .travis.yml
+		appveyor.yml = appveyor.yml
 		icon.ico = icon.ico
 		LICENSE = LICENSE
 		README.md = README.md
@@ -16,7 +16,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicExpression", "Dynami
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".tests", ".tests", "{8BD321DD-4802-4A62-BA89-615F8565298F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicExpression.Test", "DynamicExpression.Test\DynamicExpression.Test.csproj", "{1F685781-1780-4826-864C-7BEA142B2F26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicExpression.Test", ".tests\DynamicExpression.Test\DynamicExpression.Test.csproj", "{E13EA595-4752-4DD2-9AEE-EAEFDEBD86BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,16 +28,15 @@ Global
 		{B283F4A4-1E7B-4D9A-A767-002C11B2C881}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B283F4A4-1E7B-4D9A-A767-002C11B2C881}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B283F4A4-1E7B-4D9A-A767-002C11B2C881}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1F685781-1780-4826-864C-7BEA142B2F26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1F685781-1780-4826-864C-7BEA142B2F26}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1F685781-1780-4826-864C-7BEA142B2F26}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1F685781-1780-4826-864C-7BEA142B2F26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E13EA595-4752-4DD2-9AEE-EAEFDEBD86BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E13EA595-4752-4DD2-9AEE-EAEFDEBD86BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E13EA595-4752-4DD2-9AEE-EAEFDEBD86BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{1F685781-1780-4826-864C-7BEA142B2F26} = {8BD321DD-4802-4A62-BA89-615F8565298F}
+		{E13EA595-4752-4DD2-9AEE-EAEFDEBD86BF} = {8BD321DD-4802-4A62-BA89-615F8565298F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {88C60CFA-317B-4439-ACA0-4CBE16274F92}
