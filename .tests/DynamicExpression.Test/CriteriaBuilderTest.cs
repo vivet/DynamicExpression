@@ -34,7 +34,7 @@ namespace DynamicExpression.Test
 
             Assert.IsNotNull(expression);
             Assert.IsNotNull(expression.Compile());
-            Assert.AreEqual("((Convert(x.Flags, Int32) & Convert(One, Int32)) == Convert(One, Int32))", expression.Body.ToString());
+            Assert.AreEqual("(Convert(x.Flags, Int32) == Convert(One, Int32))", expression.Body.ToString());
         }
 
         [TestMethod]
