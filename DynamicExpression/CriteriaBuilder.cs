@@ -127,10 +127,12 @@ namespace DynamicExpression
                         return Expression.Not(Expression.Equal(Expression.Or(expression, value), value));
 
                     case OperationType.Equal:
-                        return Expression.Equal(Expression.And(expression, value), value);
+                        return Expression.Equal(expression, value);
+                        //return Expression.Equal(Expression.And(expression, value), value);
 
                     case OperationType.NotEqual:
-                        return Expression.NotEqual(Expression.And(expression, value), value);
+                        return Expression.NotEqual(expression, value);
+                        //return Expression.NotEqual(Expression.And(expression, value), value);
                 }
             }
             else
