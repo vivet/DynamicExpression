@@ -5,10 +5,10 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <AssemblyVersion>2.1.3.0</AssemblyVersion>
-    <FileVersion>2.1.3.0</FileVersion>
+    <AssemblyVersion>2.1.4.0</AssemblyVersion>
+    <FileVersion>2.1.4.0</FileVersion>
     <LangVersion>latest</LangVersion>
-    <Version>2.1.3.0</Version>
+    <Version>2.1.4.0</Version>
     <Authors>Michael Vivet</Authors>
     <Product>Dynamic Expression</Product>
     <Summary>Turn criteria models into Linq expressions.</Summary>
@@ -22,7 +22,7 @@ Turn models into database queries, using a simple fluent implementation.</Descri
     <PackageIconUrl>https://raw.githubusercontent.com/vivet/DynamicExpression/master/icon.ico</PackageIconUrl>
     <PackageProjectUrl>https://github.com/vivet/DynamicExpression</PackageProjectUrl>
     <RepositoryType>Github</RepositoryType>
-    <RepositoryUrl>https://github.com/vivet/DynamicExpression</RepositoryUrl>
+    <RepositoryUrl>https://github.com/vivet/DynamicExpression.git</RepositoryUrl>
     <Company>Michael Vivet</Company>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -30,16 +30,20 @@ Turn models into database queries, using a simple fluent implementation.</Descri
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <DocumentationFile>bin\Debug\netstandard2.0\DynamicExpression.xml</DocumentationFile>
+    <WarningsAsErrors />
+    <NoWarn />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>bin\Release\netstandard2.0\DynamicExpression.xml</DocumentationFile>
+    <WarningsAsErrors />
+    <NoWarn />
   </PropertyGroup>
   <ItemGroup>
     <None Remove="DynamicExpression.csproj.DotSettings" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\LICENSE.txt" Pack="true" PackagePath="" />
+    <None Include="LICENSE.txt" Pack="true" PackagePath="LICENSE.txt" />
   </ItemGroup>
 </Project>
