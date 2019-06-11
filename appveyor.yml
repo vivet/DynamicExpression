@@ -19,7 +19,7 @@ build_script:
 test: off
 test_script:
 - ps: >-
-    dotnet test .\.tests\DynamicExpression.Test\DynamicExpression.Test.csproj --no-build
+    dotnet test .\.tests\DynamicExpression.Test\DynamicExpression.Test.csproj
 artifacts:
 - path: '**\*.nupkg'
   name: NuGet Package
