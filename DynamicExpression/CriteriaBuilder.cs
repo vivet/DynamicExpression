@@ -204,7 +204,7 @@ namespace DynamicExpression
                         if (value.Type.IsArray)
                         {
                             var constant = (ConstantExpression)value;
-                            return Expression.Call(constant, typeof(IQueryable).GetRuntimeMethod("Contains", new[] { constant.Value.GetType().GetElementType() }), member);
+                            return Expression.Call(constant, typeof(IList).GetRuntimeMethod("Contains", new[] { constant.Value.GetType().GetElementType() }), member);
                         }
                         
                         return Expression.Call(member, typeof(string).GetRuntimeMethod("Contains", new[] { value.Type }), value);
@@ -216,7 +216,7 @@ namespace DynamicExpression
                         if (value.Type.IsArray)
                         {
                             var constant = (ConstantExpression)value;
-                            return Expression.Not(Expression.Call(constant, typeof(IQueryable).GetRuntimeMethod("Contains", new[] { constant.Value.GetType().GetElementType() }), member));
+                            return Expression.Not(Expression.Call(constant, typeof(IList).GetRuntimeMethod("Contains", new[] { constant.Value.GetType().GetElementType() }), member));
                         }
 
                         return Expression.Not(Expression.Call(member, typeof(string).GetRuntimeMethod("Contains", new[] { value.Type }), value));
