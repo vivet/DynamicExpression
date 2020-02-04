@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -246,15 +245,32 @@ namespace DynamicExpression
                 Expression innerExpression;
                 if (criteria.Property.Contains("[") && criteria.Property.Contains("]"))
                 {
-                    var baseName = criteria.Property.Substring(0, criteria.Property.IndexOf("[", StringComparison.Ordinal));
-                    var name = criteria.Property.Replace(baseName, "").Replace("[", "").Replace("]", "");
-                    var type = parameter.Type.GetRuntimeProperty(baseName).PropertyType.GenericTypeArguments[0];
-                    var method = typeof(Enumerable).GetRuntimeMethods().First(x => x.Name == "Any" && x.GetParameters().Length == 2).MakeGenericMethod(type);
-                    var member = this.GetMember(parameter, baseName);
-                    var parameter2 = Expression.Parameter(type, "i");
-                    var expr2 = Expression.Lambda(this.GetExpression(parameter2, criteria, name), parameter2);
+                    var startArray = criteria.Property.IndexOf("[", StringComparison.Ordinal);
+                    var finishArray = criteria.Property.IndexOf("]", StringComparison.Ordinal);
+                    var baseName = criteria.Property.Substring(0, startArray);
+                    var lastIndexOfDot = baseName.LastIndexOf(".", StringComparison.Ordinal);
 
-                    innerExpression = Expression.Call(method, member, expr2);
+                    Expression paramNested;
+                    if (lastIndexOfDot > 0)
+                    {
+                        paramNested = this.GetMember(parameter, baseName.Substring(0, lastIndexOfDot));
+                        baseName = baseName.Substring(lastIndexOfDot + 1);
+                    }
+                    else
+                    {
+                        paramNested = parameter;
+                    }
+
+                    var name = criteria.Property.Substring(startArray + 1, finishArray - startArray - 1);  
+                    var type = paramNested.Type.GetRuntimeProperty(baseName).PropertyType.GenericTypeArguments[0];
+                    
+                    var methodAny = typeof(Enumerable).GetRuntimeMethods().First(x => x.Name == "Any" && x.GetParameters().Length == 2).MakeGenericMethod(type);
+                    var memberAny = this.GetMember(paramNested, baseName);
+                    var parameterAny = Expression.Parameter(type, "i");
+                    var expressionAny = this.GetExpression(parameterAny, criteria, name);
+                    var expr2 = Expression.Lambda(expressionAny, parameterAny); 
+
+                    innerExpression = Expression.Call(methodAny, memberAny, expr2);
                 }
                 else
                 {

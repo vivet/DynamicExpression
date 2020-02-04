@@ -8,8 +8,7 @@ namespace DynamicExpression.Test
     [TestClass]
     public class CriteriaBuilderTest
     {
-
-       [TestMethod]
+        [TestMethod]
         public void BuildWhenEqualTest()
         {
             var criteriaExpression = new CriteriaExpression();
@@ -510,6 +509,20 @@ namespace DynamicExpression.Test
         }
 
         [TestMethod]
+        public void BuildWhenRefernceAndReferenceCollectionTest()
+        {
+            var criteriaExpression = new CriteriaExpression();
+            criteriaExpression.Equal("Customer.Orders[Payment.Id]", "value");
+
+            var builder = new CriteriaBuilder();
+            var expression = builder.Build<User>(criteriaExpression);
+
+            Assert.IsNotNull(expression);
+            Assert.IsNotNull(expression.Compile());
+            Assert.AreEqual("x.Customer.Orders.Any(i => ((i.Payment.Id != null) AndAlso (i.Payment.Id == \"value\")))", expression.Body.ToString());
+        }
+
+        [TestMethod]
         public void BuildWhenMultipleCriteriaExpressionsTest()
         {
             var criteriaExpression1 = new CriteriaExpression();
@@ -589,14 +602,16 @@ namespace DynamicExpression.Test
             Assert.AreEqual($"(x.Id == {guid})", expression.Body.ToString());
         }
 
-
         [Flags]
         public enum FlagsEnum
         {
             One = 1 << 0,
             Two = 1 << 1
         }
-
+        public class User
+        {
+            public virtual Customer Customer { get; set; }
+        }
         public class Customer
         {
             public virtual Guid Id { get; set; }
@@ -606,12 +621,10 @@ namespace DynamicExpression.Test
             public virtual FlagsEnum Flags { get; set; } = FlagsEnum.One | FlagsEnum.Two;
             public virtual IEnumerable<Order> Orders { get; set; }
         }
-
         public class Payment
         {
             public virtual string Id { get; set; }
         }
-
         public class Order
         {
             public virtual Payment Payment { get; set; }

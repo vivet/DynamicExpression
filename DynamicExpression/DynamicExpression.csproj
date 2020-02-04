@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <ApplicationIcon>.\..\icon.ico</ApplicationIcon>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <AssemblyVersion>2.2.0.0</AssemblyVersion>
-    <FileVersion>2.2.0.0</FileVersion>
+    <AssemblyVersion>2.2.1.0</AssemblyVersion>
+    <FileVersion>2.2.1.0</FileVersion>
     <LangVersion>latest</LangVersion>
-    <Version>2.2.0.0</Version>
+    <Version>2.2.1.0</Version>
     <Authors>Michael Vivet</Authors>
     <Product>Dynamic Expression</Product>
     <Summary>Turn criteria models into Linq expressions.</Summary>
@@ -19,7 +19,8 @@ Turn models into database queries, using a simple fluent implementation.</Descri
     <PackageLicense>https://raw.githubusercontent.com/vivet/DynamicExpression/master/LICENSE</PackageLicense>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageIconUrl>https://raw.githubusercontent.com/vivet/DynamicExpression/master/icon.ico</PackageIconUrl>
+    <PackageIcon>icon.jpg</PackageIcon>
+    <PackageIconUrl />
     <PackageProjectUrl>https://github.com/vivet/DynamicExpression</PackageProjectUrl>
     <RepositoryType>Github</RepositoryType>
     <RepositoryUrl>https://github.com/vivet/DynamicExpression.git</RepositoryUrl>
@@ -42,8 +43,7 @@ Turn models into database queries, using a simple fluent implementation.</Descri
   </PropertyGroup>
   <ItemGroup>
     <None Remove="DynamicExpression.csproj.DotSettings" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="icon.jpg" Pack="true" PackagePath="icon.jpg" />
     <None Include="LICENSE.txt" Pack="true" PackagePath="LICENSE.txt" />
   </ItemGroup>
 </Project>
