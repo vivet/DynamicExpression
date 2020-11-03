@@ -12,7 +12,7 @@ Feel free to contribute, throw questions and report issues. I usually respond fa
 * [Query Criteria](#query-criteria)
 * [Criteria Expression Operations](#criteria-expression-operations)
 * [Linq Extensions](#linq-extensions)
-
+ 
 #### Query
 The query object model has a generic and a non-generic implementations.  
 The ```Query``` is used when no filtering is required, but pagination and ordering is still needed, while the ```Query<TCriteria>``` is used when custom filter expressions should be applied.  
