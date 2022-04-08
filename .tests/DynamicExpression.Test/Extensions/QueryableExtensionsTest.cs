@@ -246,6 +246,52 @@ namespace DynamicExpression.Test.Extensions
         }
 
         [TestMethod]
+        public void OrderWhenEnumTest()
+        {
+            var list = new[]
+            {
+                new OrderType<DayOfWeek> { Order = DayOfWeek.Friday },
+                new OrderType<DayOfWeek> { Order = DayOfWeek.Monday }
+            };
+
+            var ordering = new Ordering
+            {
+                By = "Order",
+                Direction = OrderingDirection.Asc
+            };
+
+            var orderedList = list
+                .AsQueryable()
+                .Order(ordering);
+
+            Assert.AreEqual(list[0].Order, orderedList.Last().Order);
+            Assert.AreEqual(list[1].Order, orderedList.First().Order);
+        }
+
+        [TestMethod]
+        public void OrderWhenEnumNullableTest()
+        {
+            var list = new[]
+            {
+                new OrderType<DayOfWeek?> { Order = DayOfWeek.Friday },
+                new OrderType<DayOfWeek?> { Order = null }
+            };
+
+            var ordering = new Ordering
+            {
+                By = "Order",
+                Direction = OrderingDirection.Asc
+            };
+
+            var orderedList = list
+                .AsQueryable()
+                .Order(ordering);
+
+            Assert.AreEqual(list[0].Order, orderedList.Last().Order);
+            Assert.AreEqual(list[1].Order, orderedList.First().Order);
+        }
+
+        [TestMethod]
         public void LimitWhenBoolTest()
         {
             var list = new[]
