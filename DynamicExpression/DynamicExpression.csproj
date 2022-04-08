@@ -39,7 +39,8 @@ Turn models into database queries, using a simple fluent implementation.</Descri
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
-  <ItemGroup>
-    <None Include="LICENSE.txt" Pack="true" PackagePath="LICENSE.txt" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="icon.jpg" Pack="true" PackagePath="icon.jpg" />
+		<None Include="LICENSE.txt" Pack="true" PackagePath="LICENSE.txt" />
+	</ItemGroup>
 </Project>
