@@ -5,10 +5,10 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <AssemblyVersion>2.2.1.0</AssemblyVersion>
-    <FileVersion>2.2.1.0</FileVersion>
+    <AssemblyVersion>2.2.2.0</AssemblyVersion>
+    <FileVersion>2.2.2.0</FileVersion>
     <LangVersion>latest</LangVersion>
-    <Version>2.2.1.0</Version>
+    <Version>2.2.2.0</Version>
     <Authors>Michael Vivet</Authors>
     <Product>Dynamic Expression</Product>
     <Summary>Turn criteria models into Linq expressions.</Summary>
@@ -25,25 +25,21 @@ Turn models into database queries, using a simple fluent implementation.</Descri
     <RepositoryType>Github</RepositoryType>
     <RepositoryUrl>https://github.com/vivet/DynamicExpression.git</RepositoryUrl>
     <Company>Michael Vivet</Company>
+    <WarningsAsErrors />
+    <NoWarn />
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>$(MSBuildThisFileDirectory)\bin\$(Configuration)\Api.Admin.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
-    <DocumentationFile>bin\Debug\netstandard2.0\DynamicExpression.xml</DocumentationFile>
-    <WarningsAsErrors />
-    <NoWarn />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>bin\Release\netstandard2.0\DynamicExpression.xml</DocumentationFile>
-    <WarningsAsErrors />
-    <NoWarn />
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="DynamicExpression.csproj.DotSettings" />
-    <None Include="icon.jpg" Pack="true" PackagePath="icon.jpg" />
     <None Include="LICENSE.txt" Pack="true" PackagePath="LICENSE.txt" />
   </ItemGroup>
 </Project>
