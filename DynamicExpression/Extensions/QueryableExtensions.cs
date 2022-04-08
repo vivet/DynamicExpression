@@ -99,7 +99,10 @@ namespace DynamicExpression.Extensions
             var parameter = Expression.Parameter(typeof(T));
             var property = Expression.Property(parameter, ordering.By);
             var expression = Expression.Lambda<Func<T, dynamic>>(Expression.Convert(property, typeof(object)), parameter);
-            return ordering.Direction == OrderingDirection.Asc ? source.OrderBy(expression) : source.OrderByDescending(expression);
+
+            return ordering.Direction == OrderingDirection.Asc 
+                ? source.OrderBy(expression) 
+                : source.OrderByDescending(expression);
         }
 
         /// <summary>
