@@ -14,7 +14,7 @@ namespace DynamicExpression
         /// <summary>
         /// Criterias.
         /// </summary>
-        public virtual List<ICriteria> Criterias { get; } = new List<ICriteria>();
+        public virtual List<ICriteria> Criterias { get; } = new();
 
         /// <summary>
         /// Add <see cref="OperationType.Equal"/> filter.

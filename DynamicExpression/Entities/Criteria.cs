@@ -10,19 +10,19 @@ namespace DynamicExpression.Entities
     public class Criteria : ICriteria
     {
         /// <inheritdoc />
-        public virtual object Value { get; set; }
+        public object Value { get; set; }
 
         /// <inheritdoc />
-        public virtual object Value2 { get; set; }
+        public object Value2 { get; set; }
 
         /// <inheritdoc />
-        public virtual string Property { get; set; }
+        public string Property { get; set; }
 
         /// <inheritdoc />
-        public virtual LogicalType LogicalType { get; set; }
+        public LogicalType LogicalType { get; set; }
 
         /// <inheritdoc />
-        public virtual OperationType OperationType { get; set; }
+        public OperationType OperationType { get; set; }
     }
 
     /// <inheritdoc />
@@ -48,10 +48,10 @@ namespace DynamicExpression.Entities
                 throw new InvalidOperationException(operationType.ToString());
 
             this.Property = property;
-            this.OperationType = operationType;
             this.Value = value;
             this.Value2 = value2;
             this.LogicalType = logicalType;
+            this.OperationType = operationType;
         }
 
         private IEnumerable<OperationType> GetSupportedOperationTypes(Type type)

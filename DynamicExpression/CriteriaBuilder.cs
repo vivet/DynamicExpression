@@ -156,34 +156,29 @@ namespace DynamicExpression
                         return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Call(member, typeof(string).GetRuntimeMethod("EndsWith", new[] { typeof(string) }), value));
 
                     case OperationType.GreaterThan:
-                        if (Nullable.GetUnderlyingType(member.Type) == null)
-                            return Expression.GreaterThan(member, value);
-
-                        return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.GreaterThan(member, value));
+                        return Nullable.GetUnderlyingType(member.Type) == null 
+                            ? Expression.GreaterThan(member, value) 
+                            : Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.GreaterThan(member, value));
 
                     case OperationType.GreaterThanOrEqual:
-                        if (Nullable.GetUnderlyingType(member.Type) == null)
-                            return Expression.GreaterThanOrEqual(member, value);
-
-                        return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.GreaterThanOrEqual(member, value));
+                        return Nullable.GetUnderlyingType(member.Type) == null 
+                            ? Expression.GreaterThanOrEqual(member, value) 
+                            : Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.GreaterThanOrEqual(member, value));
 
                     case OperationType.LessThan:
-                        if (Nullable.GetUnderlyingType(member.Type) == null)
-                            return Expression.LessThan(member, value);
-
-                        return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.LessThan(member, value));
+                        return Nullable.GetUnderlyingType(member.Type) == null 
+                            ? Expression.LessThan(member, value) 
+                            : Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.LessThan(member, value));
 
                     case OperationType.LessThanOrEqual:
-                        if (Nullable.GetUnderlyingType(member.Type) == null)
-                            return Expression.LessThanOrEqual(member, value);
-
-                        return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.LessThanOrEqual(member, value));
+                        return Nullable.GetUnderlyingType(member.Type) == null 
+                            ? Expression.LessThanOrEqual(member, value) 
+                            : Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.LessThanOrEqual(member, value));
 
                     case OperationType.Between:
-                        if (Nullable.GetUnderlyingType(member.Type) == null)
-                            return Expression.AndAlso(Expression.GreaterThanOrEqual(member, value), Expression.LessThanOrEqual(member, value2));
-
-                        return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.AndAlso(Expression.GreaterThanOrEqual(member, value), Expression.LessThanOrEqual(member, value2)));
+                        return Nullable.GetUnderlyingType(member.Type) == null 
+                            ? Expression.AndAlso(Expression.GreaterThanOrEqual(member, value), Expression.LessThanOrEqual(member, value2)) 
+                            : Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.AndAlso(Expression.GreaterThanOrEqual(member, value), Expression.LessThanOrEqual(member, value2)));
 
                     case OperationType.IsNull:
                         return Expression.Equal(member, Expression.Constant(null));
@@ -224,12 +219,15 @@ namespace DynamicExpression
                     case OperationType.IsNullOrWhiteSpace:
                         return Expression.OrElse(
                             Expression.Equal(member, Expression.Constant(null)), 
-                            Expression.Equal(Expression.Call(member, typeof(string).GetRuntimeMethod("Trim", new Type[0])), Expression.Constant(string.Empty)));
+                            Expression.Equal(Expression.Call(member, typeof(string).GetRuntimeMethod("Trim", Type.EmptyTypes)), Expression.Constant(string.Empty)));
 
                     case OperationType.IsNotNullOrWhiteSpace:
                         return Expression.AndAlso(
                             Expression.NotEqual(member, Expression.Constant(null)),
-                            Expression.NotEqual(Expression.Call(member, typeof(string).GetRuntimeMethod("Trim", new Type[0])), Expression.Constant(string.Empty)));
+                            Expression.NotEqual(Expression.Call(member, typeof(string).GetRuntimeMethod("Trim", Type.EmptyTypes)), Expression.Constant(string.Empty)));
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
 
