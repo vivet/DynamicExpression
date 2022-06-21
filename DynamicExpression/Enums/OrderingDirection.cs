@@ -1,18 +1,17 @@
-namespace DynamicExpression.Enums
+namespace DynamicExpression.Enums;
+
+/// <summary>
+/// Ordering Direction.
+/// </summary>
+public enum OrderingDirection
 {
     /// <summary>
-    /// Ordering Direction.
+    /// Ascending.
     /// </summary>
-    public enum OrderingDirection
-    {
-        /// <summary>
-        /// Ascending.
-        /// </summary>
-        Asc,
+    Asc,
 
-        /// <summary>
-        /// Descending.
-        /// </summary>
-        Desc
-    }
+    /// <summary>
+    /// Descending.
+    /// </summary>
+    Desc
 }

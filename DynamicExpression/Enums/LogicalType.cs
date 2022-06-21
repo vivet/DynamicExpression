@@ -1,18 +1,17 @@
-﻿namespace DynamicExpression.Enums
+﻿namespace DynamicExpression.Enums;
+
+/// <summary>
+/// Logical Type.
+/// </summary>
+public enum LogicalType
 {
     /// <summary>
-    /// Logical Type.
+    /// And.
     /// </summary>
-    public enum LogicalType
-    {
-        /// <summary>
-        /// And.
-        /// </summary>
-        And,
+    And,
 
-        /// <summary>
-        /// Or.
-        /// </summary>
-        Or
-    }
+    /// <summary>
+    /// Or.
+    /// </summary>
+    Or
 }

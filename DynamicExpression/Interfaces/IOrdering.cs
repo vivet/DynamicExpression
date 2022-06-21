@@ -1,20 +1,19 @@
 using DynamicExpression.Enums;
 
-namespace DynamicExpression.Interfaces
+namespace DynamicExpression.Interfaces;
+
+/// <summary>
+/// Ordering interface.
+/// </summary>
+public interface IOrdering
 {
     /// <summary>
-    /// Ordering interface.
+    /// By.
     /// </summary>
-    public interface IOrdering
-    {
-        /// <summary>
-        /// By.
-        /// </summary>
-        string By { get; set; }
+    string By { get; set; }
 
-        /// <summary>
-        /// Direction.
-        /// </summary>
-        OrderingDirection Direction { get; set; }
-    }
+    /// <summary>
+    /// Direction.
+    /// </summary>
+    OrderingDirection Direction { get; set; }
 }
