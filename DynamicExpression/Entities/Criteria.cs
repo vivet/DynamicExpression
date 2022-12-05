@@ -2,26 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using DynamicExpression.Enums;
-using DynamicExpression.Interfaces;
 
 namespace DynamicExpression.Entities;
 
-/// <inheritdoc />
-public class Criteria : ICriteria
+/// <summary>
+/// Criteria.
+/// </summary>
+public class Criteria
 {
-    /// <inheritdoc />
+    /// <summary>
+    /// Value.
+    /// </summary>
     public object Value { get; set; }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Value2.
+    /// </summary>
     public object Value2 { get; set; }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Property.
+    /// </summary>
     public string Property { get; set; }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Logical Type.
+    /// </summary>
     public LogicalType LogicalType { get; set; }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Operation Type.
+    /// </summary>
     public OperationType OperationType { get; set; }
 }
 

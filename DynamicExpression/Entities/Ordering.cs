@@ -1,17 +1,22 @@
 using System.ComponentModel;
 using DynamicExpression.Enums;
-using DynamicExpression.Interfaces;
 
 namespace DynamicExpression.Entities;
 
-/// <inheritdoc />
-public class Ordering : IOrdering
+/// <summary>
+/// Ordering.
+/// </summary>
+public class Ordering
 {
-    /// <inheritdoc />
+    /// <summary>
+    /// By,
+    /// </summary>
     [DefaultValue("Id")]
     public virtual string By { get; set; } = "Id";
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Direction.
+    /// </summary>
     [DefaultValue(OrderingDirection.Asc)]
     public virtual OrderingDirection Direction { get; set; } = OrderingDirection.Asc;
 }

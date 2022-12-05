@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using DynamicExpression.Entities;
 using DynamicExpression.Enums;
 using DynamicExpression.Interfaces;
 
@@ -85,9 +86,9 @@ public static class QueryableExtensions
     /// </summary>
     /// <typeparam name="T">The type used in the <see cref="IQueryable{T}"/>.</typeparam>
     /// <param name="source">The <see cref="IQueryable{T}"/>.</param>
-    /// <param name="ordering">The <see cref="IOrdering"/>.</param>
+    /// <param name="ordering">The <see cref="Ordering"/>.</param>
     /// <returns>The <see cref="IQueryable{T}"/>.</returns>
-    public static IQueryable<T> Order<T>(this IQueryable<T> source, IOrdering ordering)
+    public static IQueryable<T> Order<T>(this IQueryable<T> source, Ordering ordering)
         where T : class
     {
         if (source == null)
@@ -110,9 +111,9 @@ public static class QueryableExtensions
     /// </summary>
     /// <typeparam name="T">The type used in the <see cref="IQueryable{T}"/>.</typeparam>
     /// <param name="source">The <see cref="IQueryable{T}"/>.</param>
-    /// <param name="pagination">The <see cref="IPagination"/>.</param>
+    /// <param name="pagination">The <see cref="Pagination"/>.</param>
     /// <returns>The <see cref="IQueryable{T}"/>.</returns>
-    public static IQueryable<T> Limit<T>(this IQueryable<T> source, IPagination pagination)
+    public static IQueryable<T> Limit<T>(this IQueryable<T> source, Pagination pagination)
         where T : class
     {
         if (source == null)

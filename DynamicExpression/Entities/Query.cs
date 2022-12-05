@@ -6,10 +6,10 @@ namespace DynamicExpression.Entities;
 public class Query : IQuery
 {
     /// <inheritdoc />
-    public virtual IOrdering Order { get; set; } = new Ordering();
+    public virtual Ordering Order { get; set; } = new();
 
     /// <inheritdoc />
-    public virtual IPagination Paging { get; set; } = new Pagination();
+    public virtual Pagination Paging { get; set; } = new();
 }
 
 /// <inheritdoc cref="IQuery{TCriteria}"/>

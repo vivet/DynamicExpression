@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using DynamicExpression.Entities;
 using DynamicExpression.Enums;
-using DynamicExpression.Interfaces;
 
 namespace DynamicExpression;
 
@@ -80,7 +80,7 @@ public class CriteriaBuilder
             return Expression.Property(parameter, propertyName);
         }
     }
-    private Expression GetExpression(Expression parameter, ICriteria criteria, string propertyName = null)
+    private Expression GetExpression(Expression parameter, Criteria criteria, string propertyName = null)
     {
         if (parameter == null)
             throw new ArgumentNullException(nameof(parameter));

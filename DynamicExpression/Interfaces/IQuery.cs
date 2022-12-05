@@ -1,3 +1,5 @@
+using DynamicExpression.Entities;
+
 namespace DynamicExpression.Interfaces;
 
 /// <summary>
@@ -8,12 +10,12 @@ public interface IQuery
     /// <summary>
     /// Order.
     /// </summary>
-    IOrdering Order { get; set; }
+    Ordering Order { get; set; }
 
     /// <summary>
     /// Paging.
     /// </summary>
-    IPagination Paging { get; set; }
+    Pagination Paging { get; set; }
 }
 
 /// <summary>

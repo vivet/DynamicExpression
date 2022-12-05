@@ -1,16 +1,21 @@
 using System.ComponentModel;
-using DynamicExpression.Interfaces;
 
 namespace DynamicExpression.Entities;
 
-/// <inheritdoc />
-public class Pagination : IPagination
+/// <summary>
+/// 
+/// </summary>
+public class Pagination
 {
-    /// <inheritdoc />
+    /// <summary>
+    /// Number.
+    /// </summary>
     [DefaultValue(1)]
     public virtual int Number { get; set; } = 1;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Count.
+    /// </summary>
     [DefaultValue(25)]
     public virtual int Count { get; set; } = 25;
 }

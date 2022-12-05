@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using DynamicExpression.Entities;
 using DynamicExpression.Enums;
-using DynamicExpression.Interfaces;
 
 namespace DynamicExpression;
 
@@ -14,7 +13,7 @@ public class CriteriaExpression
     /// <summary>
     /// Criterias.
     /// </summary>
-    public virtual List<ICriteria> Criterias { get; } = new();
+    public virtual List<Criteria> Criterias { get; } = new();
 
     /// <summary>
     /// Add <see cref="OperationType.Equal"/> filter.
