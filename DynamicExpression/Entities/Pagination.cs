@@ -4,10 +4,15 @@ using System.ComponentModel.DataAnnotations;
 namespace DynamicExpression.Entities;
 
 /// <summary>
-/// 
+/// Pagination.
 /// </summary>
 public class Pagination
 {
+    /// <summary>
+    /// Max Pagination.
+    /// </summary>
+    public const int MAX_PAGINATION = 25000;
+
     /// <summary>
     /// Number.
     /// </summary>
@@ -19,6 +24,6 @@ public class Pagination
     /// Count.
     /// </summary>
     [DefaultValue(25)]
-    [Range(1, 1000)]
+    [Range(1, Pagination.MAX_PAGINATION)]
     public virtual int Count { get; set; } = 25;
 }
