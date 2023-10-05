@@ -4,9 +4,9 @@
 		<ApplicationIcon>.\..\icon.ico</ApplicationIcon>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PlatformTarget>AnyCPU</PlatformTarget>
-		<AssemblyVersion>2.3.2.0</AssemblyVersion>
-		<FileVersion>2.3.2.0</FileVersion>
-		<Version>2.3.2.0</Version>
+		<AssemblyVersion>2.3.3.0</AssemblyVersion>
+		<FileVersion>2.3.3.0</FileVersion>
+		<Version>2.3.3.0</Version>
 		<LangVersion>latest</LangVersion>
 		<Authors>Michael Vivet</Authors>
 		<Product>Dynamic Expression</Product>
@@ -15,7 +15,7 @@
 		</Description>
 		<PackageTags>Lampda, Expression, Linq, Dynamic, Criteria, Query, Paging, Pagination, Sort, Sorting</PackageTags>
 		<PackageReleaseNotes>
-			- Added Range limitation to Pagination.Count
+			- Updated NuGets.
 		</PackageReleaseNotes>
 		<PackageLicense>https://raw.githubusercontent.com/vivet/DynamicExpression/master/LICENSE</PackageLicense>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
@@ -40,7 +40,7 @@
 		<None Include="LICENSE.txt" Pack="true" PackagePath="LICENSE.txt" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.DataAnnotations" Version="2.2.0" />
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 	</ItemGroup>
 </Project>
