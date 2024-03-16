@@ -15,7 +15,7 @@ public static class ServiceCollectionExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/>.</param>
     /// <returns>The <see cref="IServiceCollection"/>.</returns>
-    internal static IServiceCollection AddQueryModelBinders(this IServiceCollection services)
+    public static IServiceCollection AddQueryModelBinders(this IServiceCollection services)
     {
         if (services == null)
             throw new ArgumentNullException(nameof(services));
