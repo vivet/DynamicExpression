@@ -26,7 +26,7 @@ public static class ServiceCollectionExtensions
                 var queryModelBinderProvider = new QueryModelBinderProvider();
 
                 x.ModelBinderProviders
-                    .Add(queryModelBinderProvider);
+                    .Insert(0, queryModelBinderProvider);
             });
 
         return services;
