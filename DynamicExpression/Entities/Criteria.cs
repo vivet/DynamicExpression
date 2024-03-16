@@ -72,12 +72,13 @@ public class Criteria<TType> : Criteria
 
         var operationTypes = new Dictionary<string, HashSet<Type>>
         {
-            { "Text", new HashSet<Type> { typeof(string), typeof(char) } },
-            { "Number", new HashSet<Type> { typeof(int), typeof(uint), typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal) } },
-            { "Boolean", new HashSet<Type> { typeof(bool) } },
-            { "Date", new HashSet<Type> { typeof(DateTime), typeof(DateTimeOffset) } },
-            { "Nullable", new HashSet<Type> { typeof(Nullable<>) } },
-            { "Guid", new HashSet<Type> { typeof(Guid) } }
+            { "Text", [typeof(string), typeof(char)] },
+            { "Number", [typeof(int), typeof(uint), typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal)]
+            },
+            { "Boolean", [typeof(bool)] },
+            { "Date", [typeof(DateTime), typeof(DateTimeOffset)] },
+            { "Nullable", [typeof(Nullable<>)] },
+            { "Guid", [typeof(Guid)] }
         };
 
         if (type.IsArray)

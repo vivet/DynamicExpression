@@ -113,3 +113,11 @@ var result = myQueryable
     .Where(criteria) 
 ```
 The other extensions methods applies pagination and ordering to the query, ```IQueryable<T>```.
+
+#### Query Model Binders
+Add Query and Query Criteria to MVC.  
+
+```csharp
+services
+    .AddQueryModelBinders();
+```

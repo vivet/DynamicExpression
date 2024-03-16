@@ -13,7 +13,7 @@ public class CriteriaExpression
     /// <summary>
     /// Criterias.
     /// </summary>
-    public virtual List<Criteria> Criterias { get; } = new();
+    public virtual List<Criteria> Criterias { get; } = [];
 
     /// <summary>
     /// Add <see cref="OperationType.Equal"/> filter.

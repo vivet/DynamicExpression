@@ -150,10 +150,24 @@ public class CriteriaBuilder
                     return Expression.OrElse(Expression.Equal(member, Expression.Constant(null)), Expression.NotEqual(member, value));
 
                 case OperationType.StartsWith:
-                    return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Call(member, typeof(string).GetRuntimeMethod("StartsWith", new[] { typeof(string) }), value));
+                    var methodStartsWith = typeof(string).GetRuntimeMethod("StartsWith", new[] { typeof(string) });
+                    
+                    if (methodStartsWith == null)
+                    {
+                        throw new NullReferenceException(nameof(methodStartsWith));
+                    }
+
+                    return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Call(member, methodStartsWith, value));
 
                 case OperationType.EndsWith:
-                    return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Call(member, typeof(string).GetRuntimeMethod("EndsWith", new[] { typeof(string) }), value));
+                    var methodEndsWith = typeof(string).GetRuntimeMethod("EndsWith", new[] { typeof(string) });
+
+                    if (methodEndsWith == null)
+                    {
+                        throw new NullReferenceException(nameof(methodEndsWith));
+                    }
+                    
+                    return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Call(member, methodEndsWith, value));
 
                 case OperationType.GreaterThan:
                     return Nullable.GetUnderlyingType(member.Type) == null
@@ -195,36 +209,93 @@ public class CriteriaBuilder
                 case OperationType.In:
                 case OperationType.Contains:
                 {
+                    MethodInfo methodContains;
                     if (value.Type.IsArray)
                     {
                         var constant = (ConstantExpression)value;
-                        return Expression.Call(constant, typeof(IList).GetRuntimeMethod("Contains", new[] { constant.Value.GetType().GetElementType() }), member);
+
+                        if (constant.Value == null)
+                        {
+                            throw new NullReferenceException(nameof(constant.Value));
+                        }
+                        
+                        methodContains = typeof(IList).GetRuntimeMethod("Contains", new[] { constant.Value.GetType().GetElementType() });
+
+                        if (methodContains == null)
+                        {
+                            throw new NullReferenceException(nameof(methodContains));
+                        }
+                        
+                        return Expression.Call(constant, methodContains, member);
                     }
 
-                    return Expression.Call(member, typeof(string).GetRuntimeMethod("Contains", new[] { value.Type }), value);
+                    methodContains = typeof(string).GetRuntimeMethod("Contains", new[] { value.Type });
+
+                    if (methodContains == null)
+                    {
+                        throw new NullReferenceException(nameof(methodContains));
+                    }
+                    
+                    return Expression.Call(member, methodContains, value);
                 }
 
                 case OperationType.NotIn:
                 case OperationType.NotContains:
                 {
+                    MethodInfo methodNotContains;
+
                     if (value.Type.IsArray)
                     {
                         var constant = (ConstantExpression)value;
-                        return Expression.Not(Expression.Call(constant, typeof(IList).GetRuntimeMethod("Contains", new[] { constant.Value.GetType().GetElementType() }), member));
+
+                        if (constant.Value == null)
+                        {
+                            throw new NullReferenceException(nameof(constant.Value));
+                        }
+
+                        methodNotContains = typeof(IList).GetRuntimeMethod("Contains", new[] { constant.Value.GetType().GetElementType() });
+
+                        if (methodNotContains == null)
+                        {
+                            throw new NullReferenceException(nameof(methodNotContains));
+                        }
+
+                        return Expression.Not(Expression.Call(constant, methodNotContains, member));
                     }
 
-                    return Expression.Not(Expression.Call(member, typeof(string).GetRuntimeMethod("Contains", new[] { value.Type }), value));
+                    methodNotContains = typeof(string).GetRuntimeMethod("Contains", new[] { value.Type });
+
+                    if (methodNotContains == null)
+                    {
+                        throw new NullReferenceException(nameof(methodNotContains));
+                    }
+                    
+                    return Expression.Not(Expression.Call(member, methodNotContains, value));
                 }
 
                 case OperationType.IsNullOrWhiteSpace:
+                    var methodTrim = typeof(string).GetRuntimeMethod("Trim", Type.EmptyTypes);
+
+                    if (methodTrim == null)
+                    {
+                        throw new NullReferenceException(nameof(methodTrim));
+                    }
+
                     return Expression.OrElse(
                         Expression.Equal(member, Expression.Constant(null)),
-                        Expression.Equal(Expression.Call(member, typeof(string).GetRuntimeMethod("Trim", Type.EmptyTypes)), Expression.Constant(string.Empty)));
+                        Expression.Equal(Expression.Call(member, methodTrim), Expression.Constant(string.Empty)));
 
                 case OperationType.IsNotNullOrWhiteSpace:
+                    var methodTrim2 = typeof(string).GetRuntimeMethod("Trim", Type.EmptyTypes);
+
+                    if (methodTrim2 == null)
+                    {
+                        throw new NullReferenceException(nameof(methodTrim2));
+                    }
+
                     return Expression.AndAlso(
                         Expression.NotEqual(member, Expression.Constant(null)),
-                        Expression.NotEqual(Expression.Call(member, typeof(string).GetRuntimeMethod("Trim", Type.EmptyTypes)), Expression.Constant(string.Empty)));
+                        Expression.NotEqual(Expression.Call(member, methodTrim2), Expression.Constant(string.Empty)));
 
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -260,8 +331,14 @@ public class CriteriaBuilder
                 }
 
                 var name = criteria.Property.Substring(startArray + 1, finishArray - startArray - 1);
-                var type = paramNested.Type.GetRuntimeProperty(baseName).PropertyType.GenericTypeArguments[0];
+                var property = paramNested.Type.GetRuntimeProperty(baseName);
 
+                if (property == null)
+                {
+                    throw new NullReferenceException(nameof(property));
+                }
+                
+                var type = property.PropertyType.GenericTypeArguments[0];
                 var methodAny = typeof(Enumerable).GetRuntimeMethods().First(x => x.Name == "Any" && x.GetParameters().Length == 2).MakeGenericMethod(type);
                 var memberAny = this.GetMember(paramNested, baseName);
                 var parameterAny = Expression.Parameter(type, "i");
