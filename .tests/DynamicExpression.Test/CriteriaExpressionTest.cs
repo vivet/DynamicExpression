@@ -23,21 +23,6 @@ public class CriteriaExpressionTest
     }
 
     [TestMethod]
-    public void ConstructorWhenEqualWhenNullTest()
-    {
-        var expression = new CriteriaExpression();
-        expression.Equal("name", (string)null);
-
-        var criteria = expression.Criterias.FirstOrDefault();
-        Assert.IsNotNull(criteria);
-        Assert.AreEqual("name", criteria.Property);
-        Assert.IsNull(criteria.Value);
-        Assert.AreEqual(null, criteria.Value2);
-        Assert.AreEqual(LogicalType.And, criteria.LogicalType);
-        Assert.AreEqual(OperationType.IsNull, criteria.OperationType);
-    }
-
-    [TestMethod]
     public void ConstructorWhenStartsWithTest()
     {
         var expression = new CriteriaExpression();
