@@ -11,7 +11,7 @@ public class CriteriaExpressionTest
     public void ConstructorWhenEqualTest()
     {
         var expression = new CriteriaExpression();
-        expression.Equal("name","value");
+        expression.Equal("name", "value");
 
         var criteria = expression.Criterias.FirstOrDefault();
         Assert.IsNotNull(criteria);

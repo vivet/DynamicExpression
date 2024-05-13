@@ -69,10 +69,10 @@ public class CriteriaBuilder
             if (propertyName.Contains("."))
             {
                 var index = propertyName.IndexOf(".", StringComparison.Ordinal);
-                var param = Expression.Property(parameter, propertyName.Substring(0, index));
+                var param = Expression.Property(parameter, propertyName[..index]);
 
                 parameter = param;
-                propertyName = propertyName.Substring(index + 1);
+                propertyName = propertyName[(index + 1)..];
 
                 continue;
             }
@@ -316,14 +316,14 @@ public class CriteriaBuilder
             {
                 var startArray = criteria.Property.IndexOf("[", StringComparison.Ordinal);
                 var finishArray = criteria.Property.IndexOf("]", StringComparison.Ordinal);
-                var baseName = criteria.Property.Substring(0, startArray);
+                var baseName = criteria.Property[..startArray];
                 var lastIndexOfDot = baseName.LastIndexOf(".", StringComparison.Ordinal);
 
                 Expression paramNested;
                 if (lastIndexOfDot > 0)
                 {
-                    paramNested = this.GetMember(parameter, baseName.Substring(0, lastIndexOfDot));
-                    baseName = baseName.Substring(lastIndexOfDot + 1);
+                    paramNested = this.GetMember(parameter, baseName[..lastIndexOfDot]);
+                    baseName = baseName[(lastIndexOfDot + 1)..];
                 }
                 else
                 {

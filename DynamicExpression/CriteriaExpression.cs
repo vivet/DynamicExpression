@@ -27,9 +27,6 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        if (value == null)
-            this.IsNull<TType>(property);
-
         this.By(property, OperationType.Equal, value, default, logicalType);
     }
 
@@ -44,9 +41,6 @@ public class CriteriaExpression
     {
         if (property == null)
             throw new ArgumentNullException(nameof(property));
-
-        if (value == null)
-            this.IsNotNull<TType>(property);
 
         this.By(property, OperationType.NotEqual, value, default, logicalType);
     }

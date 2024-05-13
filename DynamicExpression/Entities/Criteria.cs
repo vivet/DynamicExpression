@@ -73,8 +73,7 @@ public class Criteria<TType> : Criteria
         var operationTypes = new Dictionary<string, HashSet<Type>>
         {
             { "Text", [typeof(string), typeof(char)] },
-            { "Number", [typeof(int), typeof(uint), typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal)]
-            },
+            { "Number", [typeof(int), typeof(uint), typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal)] },
             { "Boolean", [typeof(bool)] },
             { "Date", [typeof(DateTime), typeof(DateTimeOffset)] },
             { "Nullable", [typeof(Nullable<>)] },
