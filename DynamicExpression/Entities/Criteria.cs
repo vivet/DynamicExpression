@@ -129,11 +129,21 @@ public class Criteria<TType> : Criteria
 
             case "Boolean":
             case "Guid":
-            case "Enum":
                 return new[]
                 {
                     OperationType.Equal,
                     OperationType.NotEqual
+                };
+
+            case "Enum":
+                return new[]
+                {
+                    OperationType.Equal,
+                    OperationType.NotEqual,
+                    OperationType.In,
+                    OperationType.NotIn,
+                    OperationType.Contains,
+                    OperationType.NotContains
                 };
 
             case "Nullable":

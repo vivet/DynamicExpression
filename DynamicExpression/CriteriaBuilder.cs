@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -219,14 +220,14 @@ public class CriteriaBuilder
                             throw new NullReferenceException(nameof(constant.Value));
                         }
 
-                        var elementType = constant.Type.GetGenericArguments().FirstOrDefault() ?? constant.Type.GetElementType();
+                        var elementType = value.Type.GetGenericArguments().FirstOrDefault() ?? constant.Type.GetElementType();
 
                         if (elementType == null)
                         {
                             throw new NullReferenceException(nameof(elementType));
                         }
 
-                        methodContains = constant.Type.GetRuntimeMethod("Contains", new[] { elementType });
+                        methodContains = typeof(IList).GetRuntimeMethod("Contains", new[] { elementType });
 
                         if (methodContains == null)
                         {
@@ -266,7 +267,7 @@ public class CriteriaBuilder
                             throw new NullReferenceException(nameof(elementType));
                         }
 
-                        methodNotContains = constant.Type.GetRuntimeMethod("Contains", new[] { elementType });
+                        methodNotContains = typeof(IList).GetRuntimeMethod("Contains", new[] { elementType });
 
                         if (methodNotContains == null)
                         {
