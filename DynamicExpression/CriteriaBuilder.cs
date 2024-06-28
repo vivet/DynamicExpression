@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using DynamicExpression.Entities;
 using DynamicExpression.Enums;
+using DynamicExpression.Extensions;
 
 namespace DynamicExpression;
 
@@ -210,7 +210,7 @@ public class CriteriaBuilder
                 case OperationType.Contains:
                 {
                     MethodInfo methodContains;
-                    if (value.Type.IsArray)
+                    if (value.Type.IsArrayOrEnumerable()) 
                     {
                         var constant = (ConstantExpression)value;
 
@@ -218,8 +218,15 @@ public class CriteriaBuilder
                         {
                             throw new NullReferenceException(nameof(constant.Value));
                         }
-                        
-                        methodContains = typeof(IList).GetRuntimeMethod("Contains", new[] { constant.Value.GetType().GetElementType() });
+
+                        var elementType = constant.Type.GetGenericArguments().FirstOrDefault() ?? constant.Type.GetElementType();
+
+                        if (elementType == null)
+                        {
+                            throw new NullReferenceException(nameof(elementType));
+                        }
+
+                        methodContains = constant.Type.GetRuntimeMethod("Contains", new[] { elementType });
 
                         if (methodContains == null)
                         {
@@ -243,8 +250,7 @@ public class CriteriaBuilder
                 case OperationType.NotContains:
                 {
                     MethodInfo methodNotContains;
-
-                    if (value.Type.IsArray)
+                    if (value.Type.IsArrayOrEnumerable())
                     {
                         var constant = (ConstantExpression)value;
 
@@ -253,7 +259,14 @@ public class CriteriaBuilder
                             throw new NullReferenceException(nameof(constant.Value));
                         }
 
-                        methodNotContains = typeof(IList).GetRuntimeMethod("Contains", new[] { constant.Value.GetType().GetElementType() });
+                        var elementType = constant.Type.GetGenericArguments().FirstOrDefault() ?? constant.Type.GetElementType();
+
+                        if (elementType == null)
+                        {
+                            throw new NullReferenceException(nameof(elementType));
+                        }
+
+                        methodNotContains = constant.Type.GetRuntimeMethod("Contains", new[] { elementType });
 
                         if (methodNotContains == null)
                         {

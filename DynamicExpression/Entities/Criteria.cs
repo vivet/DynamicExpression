@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DynamicExpression.Enums;
+using DynamicExpression.Extensions;
 
 namespace DynamicExpression.Entities;
 
@@ -80,8 +82,10 @@ public class Criteria<TType> : Criteria
             { "Guid", [typeof(Guid)] }
         };
 
-        if (type.IsArray)
-            return new[] { OperationType.In, OperationType.NotIn, OperationType.Contains, OperationType.NotContains };
+        if (type.IsArrayOrEnumerable())
+        {
+            return new[] { OperationType.In, OperationType.NotIn, OperationType.Contains, OperationType.NotContains }; 
+        }
 
         var operationType = type.IsEnum
             ? "Enum"
@@ -124,28 +128,12 @@ public class Criteria<TType> : Criteria
                 };
 
             case "Boolean":
-                return new[]
-                {
-                    OperationType.Equal,
-                    OperationType.NotEqual
-                };
-
             case "Guid":
-                return new[]
-                {
-                    OperationType.Equal,
-                    OperationType.NotEqual
-                };
-
             case "Enum":
                 return new[]
                 {
                     OperationType.Equal,
-                    OperationType.NotEqual,
-                    OperationType.In,
-                    OperationType.NotIn,
-                    OperationType.Contains,
-                    OperationType.NotContains
+                    OperationType.NotEqual
                 };
 
             case "Nullable":
