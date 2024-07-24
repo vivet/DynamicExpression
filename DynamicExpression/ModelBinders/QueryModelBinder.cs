@@ -40,95 +40,50 @@ public class QueryModelBinder : IModelBinder
             throw new ArgumentNullException(nameof(bindingContext));
 
         var request = bindingContext.ActionContext.HttpContext.Request;
-        var body = await request.Body.ReadAllAsync();
 
-        var model = string.IsNullOrEmpty(body)
-            ? new Query
-            {
-                Order = this.GetOrdering(request),
-                Paging = this.GetPagination(request)
-            }
-            : JsonConvert.DeserializeObject<Query>(body, QueryModelBinder.jsonSerializerSettings);
+        var requestBody = await request.Body
+            .ReadAllAsync();
+
+        var model = string.IsNullOrEmpty(requestBody) 
+            ? new Query()
+            : JsonConvert.DeserializeObject<Query>(requestBody, QueryModelBinder.jsonSerializerSettings);
+
+        var pagingCount = this.GetPaginationCount(request);
+        var pagingNumber = this.GetPaginationNumber(request);
+        var pagingSkip = this.GetPaginationSkip(request);
+        var orderingBy = this.GetOrderingBy(request);
+        var orderingDirection = this.GetOrderingDirection(request);
+
+        model.Paging.Count = pagingCount ?? model.Paging.Count;
+        model.Paging.Number = pagingNumber ?? model.Paging.Number;
+        model.Paging.Skip = pagingSkip ?? model.Paging.Skip;
+        model.Order.By = orderingBy ?? model.Order.By ?? "Id";
+        model.Order.Direction = orderingDirection ?? model.Order.Direction;
 
         bindingContext.Result = ModelBindingResult.Success(model);
     }
 
     /// <summary>
-    /// Returns the <see cref="Ordering"/> from the <see cref="Query"/>.
+    /// Get Ordering By.
     /// </summary>
-    /// <param name="request">The <see cref="HttpRequest"/>.</param>
-    /// <returns>The <see cref="Ordering"/>.</returns>
-    protected virtual Ordering GetOrdering(HttpRequest request)
+    /// <param name="request">The <see cref="HttpRequest"/></param>
+    /// <returns>The ordering by.</returns>
+    protected string GetOrderingBy(HttpRequest request)
     {
         if (request == null)
             throw new ArgumentNullException(nameof(request));
 
-        var by = this.GetOrderingBy(request);
-        var direction = this.GetOrderingDirection(request);
-
-        return new Ordering
-        {
-            By = by,
-            Direction = direction
-        };
-    }
-
-    /// <summary>
-    /// Returns the <see cref="Pagination"/> from the <see cref="HttpRequest.Query"/>.
-    /// </summary>
-    /// <param name="request">The <see cref="HttpRequest"/>.</param>
-    /// <returns>The <see cref="Pagination"/>.</returns>
-    protected virtual Pagination GetPagination(HttpRequest request)
-    {
-        if (request == null)
-            throw new ArgumentNullException(nameof(request));
-
-        var count = this.GetPaginationCount(request);
-        var number = this.GetPaginationNumber(request);
-
-        return new Pagination
-        {
-            Count = count,
-            Number = number
-        };
-    }
-
-    private string GetOrderingBy(HttpRequest request)
-    {
-        if (request == null)
-            throw new ArgumentNullException(nameof(request));
-
-        var orderBy = request.Query["Order.By"].FirstOrDefault() ?? "Id";
+        var orderBy = request.Query["Order.By"].FirstOrDefault();
 
         return orderBy;
     }
-    private int GetPaginationCount(HttpRequest request)
-    {
-        if (request == null)
-            throw new ArgumentNullException(nameof(request));
 
-        var success = int.TryParse(request.Query["Paging.Count"].FirstOrDefault(), out var count);
-        if (!success)
-        {
-            count = 25;
-        }
-
-        return count;
-    }
-    private int GetPaginationNumber(HttpRequest request)
-    {
-        if (request == null)
-            throw new ArgumentNullException(nameof(request));
-
-        var success = int.TryParse(request.Query["Paging.Number"].FirstOrDefault(), out var number);
-        if (!success)
-        {
-            number = 1;
-        }
-
-        return number;
-    }
-    private OrderingDirection GetOrderingDirection(HttpRequest request)
+    /// <summary>
+    /// Get Ordering Direction.
+    /// </summary>
+    /// <param name="request">The <see cref="HttpRequest"/></param>
+    /// <returns>The ordering direction.</returns>
+    protected OrderingDirection? GetOrderingDirection(HttpRequest request)
     {
         if (request == null)
             throw new ArgumentNullException(nameof(request));
@@ -136,10 +91,67 @@ public class QueryModelBinder : IModelBinder
         var success = Enum.TryParse<OrderingDirection>(request.Query["Order.Direction"].FirstOrDefault(), true, out var direction);
         if (!success)
         {
-            direction = OrderingDirection.Asc;
+            return null;
         }
 
         return direction;
+    }
+
+    /// <summary>
+    /// Get Pagination Count.
+    /// </summary>
+    /// <param name="request">The <see cref="HttpRequest"/></param>
+    /// <returns>The pagination count</returns>
+    protected int? GetPaginationCount(HttpRequest request)
+    {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+
+        var success = int.TryParse(request.Query["Paging.Count"].FirstOrDefault(), out var count);
+        if (!success)
+        {
+            return null;
+        }
+
+        return count;
+    }
+
+    /// <summary>
+    /// Get Pagination Number.
+    /// </summary>
+    /// <param name="request">The <see cref="HttpRequest"/></param>
+    /// <returns>The pagination number.</returns>
+    protected int? GetPaginationNumber(HttpRequest request)
+    {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+
+        var success = int.TryParse(request.Query["Paging.Number"].FirstOrDefault(), out var number);
+        if (!success)
+        {
+            return null;
+        }
+
+        return number;
+    }
+
+    /// <summary>
+    /// Get Pagination Skip.
+    /// </summary>
+    /// <param name="request">The <see cref="HttpRequest"/></param>
+    /// <returns>The pagination skip.</returns>
+    protected int? GetPaginationSkip(HttpRequest request)
+    {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+
+        var success = int.TryParse(request.Query["Paging.Skip"].FirstOrDefault(), out var skip);
+        if (!success)
+        {
+            return null;
+        }
+
+        return skip;
     }
 }
 
@@ -154,16 +166,27 @@ public class QueryModelBinder<TCriteria> : QueryModelBinder
             throw new ArgumentNullException(nameof(bindingContext));
 
         var request = bindingContext.ActionContext.HttpContext.Request;
-        var body = await request.Body.ReadAllAsync();
 
-        var model = string.IsNullOrEmpty(body)
-            ? new Query<TCriteria>
-            {
-                Order = this.GetOrdering(request),
-                Paging = this.GetPagination(request),
-                Criteria = this.GetCriteria(request)
-            }
-            : JsonConvert.DeserializeObject<Query<TCriteria>>(body, QueryModelBinder.jsonSerializerSettings);
+        var requestBody = await request.Body
+            .ReadAllAsync();
+
+        var model = string.IsNullOrEmpty(requestBody)
+            ? new Query<TCriteria>()
+            : JsonConvert.DeserializeObject<Query<TCriteria>>(requestBody, QueryModelBinder.jsonSerializerSettings);
+
+        var pagingCount = this.GetPaginationCount(request);
+        var pagingNumber = this.GetPaginationNumber(request);
+        var pagingSkip = this.GetPaginationSkip(request);
+        var orderingBy = this.GetOrderingBy(request);
+        var orderingDirection = this.GetOrderingDirection(request);
+
+        model.Paging.Count = pagingCount ?? model.Paging.Count;
+        model.Paging.Number = pagingNumber ?? model.Paging.Number;
+        model.Paging.Skip = pagingSkip ?? model.Paging.Skip;
+        model.Order.By = orderingBy ?? model.Order.By ?? "Id";
+        model.Order.Direction = orderingDirection ?? model.Order.Direction;
+
+        model.Criteria = this.GetCriteria(request) ?? model.Criteria;
 
         bindingContext.Result = ModelBindingResult.Success(model);
     }

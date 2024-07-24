@@ -122,11 +122,12 @@ public static class QueryableExtensions
         if (pagination == null)
             throw new ArgumentNullException(nameof(pagination));
 
+        var skip = pagination.Skip;
         var count = pagination.Count;
         var number = pagination.Number;
 
         return source
-            .Skip((number - 1) * count)
+            .Skip(skip ?? (number - 1) * count)
             .Take(count);
     }
 }

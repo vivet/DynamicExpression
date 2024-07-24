@@ -26,4 +26,12 @@ public class Pagination
     [DefaultValue(25)]
     [Range(1, Pagination.MAX_PAGINATION)]
     public virtual int Count { get; set; } = 25;
+
+    /// <summary>
+    /// Skip.
+    /// Skips a number of items.
+    /// If set, then it Overrides <see cref="Number"/>.
+    /// </summary>
+    [Range(0, int.MaxValue)]
+    public virtual int? Skip { get; set; }
 }

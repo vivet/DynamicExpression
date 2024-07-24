@@ -4,9 +4,9 @@
 		<ApplicationIcon>.\..\icon.ico</ApplicationIcon>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PlatformTarget>AnyCPU</PlatformTarget>
-		<AssemblyVersion>8.0.3.0</AssemblyVersion>
-		<FileVersion>8.0.3.0</FileVersion>
-		<Version>8.0.3.0</Version>
+		<AssemblyVersion>8.0.4.0</AssemblyVersion>
+		<FileVersion>8.0.4.0</FileVersion>
+		<Version>8.0.4.0</Version>
 		<LangVersion>latest</LangVersion>
 		<Authors>Michael Vivet</Authors>
 		<Product>Dynamic Expression</Product>
@@ -15,7 +15,8 @@
 		</Description>
 		<PackageTags>Lampda, Expression, Linq, Dynamic, Criteria, Query, Paging, Pagination, Sort, Sorting</PackageTags>
 		<PackageReleaseNotes>
-			- Fixed issues with In and Contains clauses.
+			- Improved the ModelBinder to use query parameters when request has a body, but without Pagination and Ordering.
+			- Added Pagination.Skip, that when set will override Pagination.Number. It skips a number items, instead of using regular paging.
 		</PackageReleaseNotes>
 		<PackageLicense>https://raw.githubusercontent.com/vivet/DynamicExpression/master/LICENSE</PackageLicense>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
