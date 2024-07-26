@@ -4,9 +4,9 @@
 		<ApplicationIcon>.\..\icon.ico</ApplicationIcon>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PlatformTarget>AnyCPU</PlatformTarget>
-		<AssemblyVersion>8.0.6.0</AssemblyVersion>
-		<FileVersion>8.0.6.0</FileVersion>
-		<Version>8.0.6.0</Version>
+		<AssemblyVersion>8.0.7.0</AssemblyVersion>
+		<FileVersion>8.0.7.0</FileVersion>
+		<Version>8.0.7.0</Version>
 		<LangVersion>latest</LangVersion>
 		<Authors>Michael Vivet</Authors>
 		<Product>Dynamic Expression</Product>
