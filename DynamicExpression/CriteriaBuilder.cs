@@ -151,7 +151,7 @@ public class CriteriaBuilder
                     return Expression.OrElse(Expression.Equal(member, Expression.Constant(null)), Expression.NotEqual(member, value));
 
                 case OperationType.StartsWith:
-                    var methodStartsWith = typeof(string).GetRuntimeMethod("StartsWith", new[] { typeof(string) });
+                    var methodStartsWith = typeof(string).GetRuntimeMethod("StartsWith", [typeof(string)]);
                     
                     if (methodStartsWith == null)
                     {
@@ -161,7 +161,7 @@ public class CriteriaBuilder
                     return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Call(member, methodStartsWith, value));
 
                 case OperationType.EndsWith:
-                    var methodEndsWith = typeof(string).GetRuntimeMethod("EndsWith", new[] { typeof(string) });
+                    var methodEndsWith = typeof(string).GetRuntimeMethod("EndsWith", [typeof(string)]);
 
                     if (methodEndsWith == null)
                     {
@@ -227,7 +227,7 @@ public class CriteriaBuilder
                             throw new NullReferenceException(nameof(elementType));
                         }
 
-                        methodContains = typeof(IList).GetRuntimeMethod("Contains", new[] { elementType });
+                        methodContains = typeof(IList).GetRuntimeMethod("Contains", [elementType]);
 
                         if (methodContains == null)
                         {
@@ -237,7 +237,7 @@ public class CriteriaBuilder
                         return Expression.Call(constant, methodContains, member);
                     }
 
-                    methodContains = typeof(string).GetRuntimeMethod("Contains", new[] { value.Type });
+                    methodContains = typeof(string).GetRuntimeMethod("Contains", [value.Type]);
 
                     if (methodContains == null)
                     {
@@ -267,7 +267,7 @@ public class CriteriaBuilder
                             throw new NullReferenceException(nameof(elementType));
                         }
 
-                        methodNotContains = typeof(IList).GetRuntimeMethod("Contains", new[] { elementType });
+                        methodNotContains = typeof(IList).GetRuntimeMethod("Contains", [elementType]);
 
                         if (methodNotContains == null)
                         {
@@ -277,7 +277,7 @@ public class CriteriaBuilder
                         return Expression.Not(Expression.Call(constant, methodNotContains, member));
                     }
 
-                    methodNotContains = typeof(string).GetRuntimeMethod("Contains", new[] { value.Type });
+                    methodNotContains = typeof(string).GetRuntimeMethod("Contains", [value.Type]);
 
                     if (methodNotContains == null)
                     {

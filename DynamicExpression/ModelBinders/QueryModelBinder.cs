@@ -1,38 +1,21 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using DynamicExpression.Entities;
 using DynamicExpression.Enums;
 using DynamicExpression.Interfaces;
+using DynamicExpression.ModelBinders.Const;
 using DynamicExpression.ModelBinders.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace DynamicExpression.ModelBinders;
 
 /// <inheritdoc />
 public class QueryModelBinder : IModelBinder
 {
-    /// <summary>
-    /// Json Serializer Settings.
-    /// </summary>
-    protected static readonly JsonSerializerSettings jsonSerializerSettings = new()
-    {
-        MaxDepth = 128,
-        Culture = CultureInfo.CurrentCulture,
-        NullValueHandling = NullValueHandling.Ignore,
-        ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-        PreserveReferencesHandling = PreserveReferencesHandling.None,
-        Converters =
-        {
-            new StringEnumConverter()
-        }
-    };
-
     /// <inheritdoc />
     public virtual async Task BindModelAsync(ModelBindingContext bindingContext)
     {
@@ -44,9 +27,9 @@ public class QueryModelBinder : IModelBinder
         var requestBody = await request.Body
             .ReadAllAsync();
 
-        var model = string.IsNullOrEmpty(requestBody)
+        var query = string.IsNullOrEmpty(requestBody)
             ? new Query()
-            : JsonConvert.DeserializeObject<Query>(requestBody, QueryModelBinder.jsonSerializerSettings);
+            : JsonConvert.DeserializeObject<Query>(requestBody, Constants.jsonSerializerSettings);
 
         var pagingCount = this.GetPaginationCount(request);
         var pagingNumber = this.GetPaginationNumber(request);
@@ -54,13 +37,13 @@ public class QueryModelBinder : IModelBinder
         var orderingBy = this.GetOrderingBy(request);
         var orderingDirection = this.GetOrderingDirection(request);
 
-        model.Paging.Count = pagingCount ?? model.Paging.Count;
-        model.Paging.Number = pagingNumber ?? model.Paging.Number;
-        model.Paging.Skip = pagingSkip ?? model.Paging.Skip;
-        model.Order.By = orderingBy ?? model.Order.By ?? "Id";
-        model.Order.Direction = orderingDirection ?? model.Order.Direction;
+        query.Paging.Count = pagingCount ?? query.Paging.Count;
+        query.Paging.Number = pagingNumber ?? query.Paging.Number;
+        query.Paging.Skip = pagingSkip ?? query.Paging.Skip;
+        query.Order.By = orderingBy ?? query.Order.By ?? "Id";
+        query.Order.Direction = orderingDirection ?? query.Order.Direction;
 
-        bindingContext.Result = ModelBindingResult.Success(model);
+        bindingContext.Result = ModelBindingResult.Success(query);
     }
 
     /// <summary>
@@ -170,53 +153,32 @@ public class QueryModelBinder<TCriteria> : QueryModelBinder
         var requestBody = await request.Body
             .ReadAllAsync();
 
-        var model = string.IsNullOrEmpty(requestBody)
+        var query = string.IsNullOrEmpty(requestBody)
             ? new Query<TCriteria>()
-            : JsonConvert.DeserializeObject<Query<TCriteria>>(requestBody, QueryModelBinder.jsonSerializerSettings);
+            : JsonConvert.DeserializeObject<Query<TCriteria>>(requestBody, Constants.jsonSerializerSettings);
 
-        var pagingCount = this.GetPaginationCount(request);
-        var pagingNumber = this.GetPaginationNumber(request);
-        var pagingSkip = this.GetPaginationSkip(request);
-        var orderingBy = this.GetOrderingBy(request);
-        var orderingDirection = this.GetOrderingDirection(request);
-        var criteria = this.GetCriteria(request);
+        query.Paging.Count = this.GetPaginationCount(request) ?? query.Paging.Count;
+        query.Paging.Number = this.GetPaginationNumber(request) ?? query.Paging.Number;
+        query.Paging.Skip = this.GetPaginationSkip(request) ?? query.Paging.Skip;
 
-        model.Paging.Count = pagingCount ?? model.Paging.Count;
-        model.Paging.Number = pagingNumber ?? model.Paging.Number;
-        model.Paging.Skip = pagingSkip ?? model.Paging.Skip;
-        model.Order.By = orderingBy ?? model.Order.By ?? "Id";
-        model.Order.Direction = orderingDirection ?? model.Order.Direction;
+        query.Order.By = this.GetOrderingBy(request) ?? query.Order.By ?? "Id";
+        query.Order.Direction = this.GetOrderingDirection(request) ?? query.Order.Direction;
+        
+        query.Criteria = this.GetCriteria(request, query);
 
-        typeof(TCriteria)
-            .GetProperties(BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance)
-            .ToList()
-            .ForEach(x =>
-            {
-                var queryValue = x.GetValue(criteria);
-                var bodyValue = x.GetValue(model.Criteria);
-
-                var value = queryValue ?? bodyValue;
-
-                if (value == null)
-                {
-                    return;
-                }
-
-                x.SetValue(model.Criteria, value);
-            });
-
-        bindingContext.Result = ModelBindingResult.Success(model);
+        bindingContext.Result = ModelBindingResult.Success(query);
     }
 
     /// <summary>
     /// Returns the Criteria of type <typeparamref name="TCriteria"/>, from the <see cref="HttpRequest.Query"/>.
     /// </summary>
-    /// <param name="request">The <see cref="HttpRequest"/>.</param>
+    /// <param name="httpRequest">The <see cref="HttpRequest"/>.</param>
+    /// <param name="query">The query.</param>
     /// <returns>The Criteria of type <typeparamref name="TCriteria"/>.</returns>
-    protected virtual TCriteria GetCriteria(HttpRequest request)
+    protected virtual TCriteria GetCriteria(HttpRequest httpRequest, Query<TCriteria> query)
     {
-        if (request == null)
-            throw new ArgumentNullException(nameof(request));
+        if (httpRequest == null)
+            throw new ArgumentNullException(nameof(httpRequest));
 
         var criteria = new TCriteria();
 
@@ -225,7 +187,16 @@ public class QueryModelBinder<TCriteria> : QueryModelBinder
             .ToList()
             .ForEach(x =>
             {
-                var success = request.Query.TryGetValue(x.Name, out var values);
+                var bodyValue = x.GetValue(query.Criteria);
+
+                if (bodyValue != null)
+                {
+                    x.SetValue(criteria, bodyValue);
+
+                    return; 
+                }
+
+                var success = httpRequest.Query.TryGetValue($"{nameof(Criteria)}.{x.Name}", out var values);
                 if (!success)
                 {
                     return;
