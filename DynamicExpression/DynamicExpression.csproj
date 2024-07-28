@@ -17,7 +17,7 @@
 		<PackageReleaseNotes>
 			- Added NuGet Readme file.
 		</PackageReleaseNotes>
-		<PackageReadmeFile>$(SolutionDir)README.md</PackageReadmeFile>
+		<PackageReadmeFile>https://raw.githubusercontent.com/vivet/DynamicExpression/master/README.md</PackageReadmeFile>
 		<PackageLicense>https://raw.githubusercontent.com/vivet/DynamicExpression/master/LICENSE</PackageLicense>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
