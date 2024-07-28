@@ -4,9 +4,9 @@
 		<ApplicationIcon>.\..\icon.ico</ApplicationIcon>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PlatformTarget>AnyCPU</PlatformTarget>
-		<AssemblyVersion>8.0.8.0</AssemblyVersion>
-		<FileVersion>8.0.8.0</FileVersion>
-		<Version>8.0.8.0</Version>
+		<AssemblyVersion>8.0.9.0</AssemblyVersion>
+		<FileVersion>8.0.9.0</FileVersion>
+		<Version>8.0.9.0</Version>
 		<LangVersion>latest</LangVersion>
 		<Authors>Michael Vivet</Authors>
 		<Product>Dynamic Expression</Product>
@@ -15,8 +15,9 @@
 		</Description>
 		<PackageTags>Lampda, Expression, Linq, Dynamic, Criteria, Query, Paging, Pagination, Sort, Sorting</PackageTags>
 		<PackageReleaseNotes>
-			- Fixed criteria not being recognized for IQuery when passed through querystring.
+			- Added NuGet Readme file.
 		</PackageReleaseNotes>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicense>https://raw.githubusercontent.com/vivet/DynamicExpression/master/LICENSE</PackageLicense>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
