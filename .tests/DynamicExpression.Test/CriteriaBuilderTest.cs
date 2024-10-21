@@ -23,6 +23,64 @@ public class CriteriaBuilderTest
     }
 
     [TestMethod]
+    public void BuildWhenEqualWhenTimeSpanTest()
+    {
+        var criteriaExpression = new CriteriaExpression();
+        criteriaExpression.Equal("Date", DateOnly.MaxValue);
+
+        var builder = new CriteriaBuilder();
+        var expression = builder.Build<Customer>(criteriaExpression);
+
+        Assert.IsNotNull(expression);
+        Assert.IsNotNull(expression.Compile());
+        Assert.AreEqual($"(x.Date == {DateOnly.MaxValue})", expression.Body.ToString());
+    }
+
+    [TestMethod]
+    public void BuildWhenEqualWhenDateOnlyTest()
+    {
+        var criteriaExpression = new CriteriaExpression();
+        criteriaExpression.Equal("Date", DateOnly.MaxValue);
+
+        var builder = new CriteriaBuilder();
+        var expression = builder.Build<Customer>(criteriaExpression);
+
+        Assert.IsNotNull(expression);
+        Assert.IsNotNull(expression.Compile());
+        Assert.AreEqual($"(x.Date == {DateOnly.MaxValue})", expression.Body.ToString());
+    }
+
+    [TestMethod]
+    public void BuildWhenEqualWhenDateTimeTest()
+    {
+        var criteriaExpression = new CriteriaExpression();
+        criteriaExpression.Equal("DateTime", DateTime.MaxValue);
+
+        var builder = new CriteriaBuilder();
+        var expression = builder.Build<Customer>(criteriaExpression);
+
+        Assert.IsNotNull(expression);
+        Assert.IsNotNull(expression.Compile());
+        Assert.AreEqual($"(x.DateTime == {DateTime.MaxValue})", expression.Body.ToString());
+    }
+
+    [TestMethod]
+    public void BuildWhenEqualWhenDateTimeOffsetTest()
+    {
+        var criteriaExpression = new CriteriaExpression();
+        criteriaExpression.Equal("DateTimeOffset", DateTimeOffset.MaxValue);
+
+        var builder = new CriteriaBuilder();
+        var expression = builder.Build<Customer>(criteriaExpression);
+
+        Assert.IsNotNull(expression);
+        Assert.IsNotNull(expression.Compile());
+        Assert.AreEqual($"(x.DateTimeOffset == {DateTimeOffset.MaxValue})", expression.Body.ToString());
+    }
+
+
+
+    [TestMethod]
     public void BuildWhenEqualAndEnumTest()
     {
         var criteriaExpression = new CriteriaExpression();
@@ -620,6 +678,10 @@ public class CriteriaBuilderTest
         public virtual int Age { get; set; }
         public virtual FlagsEnum Flags { get; set; } = FlagsEnum.One | FlagsEnum.Two;
         public virtual IEnumerable<Order> Orders { get; set; }
+        public virtual TimeOnly Time { get; set; }
+        public virtual DateOnly Date { get; set; }
+        public virtual DateTime DateTime { get; set; }
+        public virtual DateTimeOffset DateTimeOffset { get; set; }
     }
     public class Payment
     {

@@ -212,6 +212,14 @@ public class QueryModelBinder<TCriteria> : QueryModelBinder
                 {
                     x.SetValue(criteria, TimeSpan.Parse(value));
                 }
+                else if (x.PropertyType == typeof(TimeOnly) || x.PropertyType == typeof(TimeOnly?))
+                {
+                    x.SetValue(criteria, TimeOnly.Parse(value));
+                }
+                else if (x.PropertyType == typeof(DateOnly) || x.PropertyType == typeof(DateOnly?))
+                {
+                    x.SetValue(criteria, DateOnly.Parse(value));
+                }
                 else if (x.PropertyType == typeof(DateTime) || x.PropertyType == typeof(DateTime?))
                 {
                     x.SetValue(criteria, DateTime.Parse(value));

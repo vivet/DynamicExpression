@@ -76,7 +76,7 @@ public class Criteria<TType> : Criteria
             { "Text", [typeof(string), typeof(char)] },
             { "Number", [typeof(int), typeof(uint), typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal)] },
             { "Boolean", [typeof(bool)] },
-            { "Date", [typeof(DateTime), typeof(DateTimeOffset)] },
+            { "Date", [typeof(TimeOnly), typeof(DateOnly), typeof(DateTime), typeof(DateTimeOffset)] },
             { "Nullable", [typeof(Nullable<>)] },
             { "Guid", [typeof(Guid)] }
         };
@@ -151,7 +151,8 @@ public class Criteria<TType> : Criteria
                         OperationType.IsNull,
                         OperationType.IsNotNull
                     }
-                    .Union(this.GetSupportedOperationTypes(Nullable.GetUnderlyingType(type)));
+                    .Union(this.GetSupportedOperationTypes(Nullable.GetUnderlyingType(type)))
+                    .Distinct();
 
             default:
                 throw new ArgumentOutOfRangeException(nameof(type));
