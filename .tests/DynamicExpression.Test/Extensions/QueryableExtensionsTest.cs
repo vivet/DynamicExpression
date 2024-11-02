@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using DynamicExpression.Entities;
 using DynamicExpression.Enums;
@@ -13,6 +14,11 @@ public class QueryableExtensionsTest
     public class OrderType<T>
     {
         public virtual T Order { get; set; }
+    }
+
+    public class Nested<T>
+    {
+        public virtual OrderType<T> OrderType { get; set; }
     }
 
     [TestMethod]
@@ -312,5 +318,57 @@ public class QueryableExtensionsTest
             .Limit(pagination);
 
         Assert.AreEqual(2, limittedist.Count());
+    }
+
+    [TestMethod]
+    public void OrderWhenNestedObjectTest()
+    {
+        var list = new List<Nested<int>>
+        {
+            new()
+            {
+                OrderType = new OrderType<int>
+                {
+                    Order = 11
+                }
+            },
+            new()
+            {
+                OrderType = new OrderType<int>
+                {
+                    Order = 4
+                }
+            },
+            new()
+            {
+                OrderType = new OrderType<int>
+                {
+                    Order = 8
+                }
+            },
+            new()
+            {
+                OrderType = new OrderType<int>
+                {
+                    Order = 2
+                }
+            }
+        };
+
+        var ordering = new Ordering
+        {
+            By = "OrderType.Order",
+            Direction = OrderingDirection.Asc
+        };
+
+        var orderedList = list
+            .AsQueryable()
+            .Order(ordering)
+            .ToArray();
+
+        Assert.AreEqual(list[3].OrderType.Order, orderedList[0].OrderType.Order);
+        Assert.AreEqual(list[1].OrderType.Order, orderedList[1].OrderType.Order);
+        Assert.AreEqual(list[2].OrderType.Order, orderedList[2].OrderType.Order);
+        Assert.AreEqual(list[0].OrderType.Order, orderedList[3].OrderType.Order);
     }
 }

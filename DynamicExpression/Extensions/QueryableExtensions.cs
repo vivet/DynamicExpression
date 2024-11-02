@@ -98,8 +98,11 @@ public static class QueryableExtensions
             throw new ArgumentNullException(nameof(ordering));
 
         var parameter = Expression.Parameter(typeof(T));
-        var property = Expression.Property(parameter, ordering.By);
-        var expression = Expression.Lambda<Func<T, dynamic>>(Expression.Convert(property, typeof(object)), parameter);
+        var property = ordering.By
+            .Split('.')
+            .Aggregate<string, Expression>(parameter, Expression.Property);
+
+        var expression = Expression.Lambda<Func<T, object>>(Expression.Convert(property, typeof(object)), parameter);
 
         return ordering.Direction == OrderingDirection.Asc
             ? source.OrderBy(expression)
