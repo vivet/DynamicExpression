@@ -78,8 +78,6 @@ public class CriteriaBuilderTest
         Assert.AreEqual($"(x.DateTimeOffset == {DateTimeOffset.MaxValue})", expression.Body.ToString());
     }
 
-
-
     [TestMethod]
     public void BuildWhenEqualAndEnumTest()
     {
@@ -410,6 +408,20 @@ public class CriteriaBuilderTest
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
         Assert.AreEqual("((Convert(x.Flags, Int32) | Convert(One, Two, Int32)) == Convert(One, Two, Int32))", expression.Body.ToString());
+    }
+
+    [TestMethod]
+    public void BuildWhenInAndArrayEnumTest()
+    {
+        var criteriaExpression = new CriteriaExpression();
+        criteriaExpression.In("Flags", new[] { FlagsEnum.One, FlagsEnum.Two });
+
+        var builder = new CriteriaBuilder();
+        var expression = builder.Build<Customer>(criteriaExpression);
+
+        Assert.IsNotNull(expression);
+        Assert.IsNotNull(expression.Compile());
+        Assert.AreEqual("value(DynamicExpression.Test.CriteriaBuilderTest+FlagsEnum[]).Contains(x.Flags)", expression.Body.ToString());
     }
 
     [TestMethod]

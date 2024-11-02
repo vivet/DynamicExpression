@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Reflection.Metadata;
 using DynamicExpression.Entities;
 using DynamicExpression.Enums;
 using DynamicExpression.Extensions;
@@ -112,9 +114,9 @@ public class CriteriaBuilder
             }
         }
 
-        if (member.Type.IsEnum)
+        if (value.Type.IsEnum)
         {
-            var expression = Expression.Convert(member, Enum.GetUnderlyingType(member.Type));
+            var expression = Expression.Convert(member, Enum.GetUnderlyingType(value.Type));
             value = Expression.Convert(value, Enum.GetUnderlyingType(value.Type));
 
             switch (operationType)
@@ -226,8 +228,10 @@ public class CriteriaBuilder
                         {
                             throw new NullReferenceException(nameof(elementType));
                         }
-
-                        methodContains = typeof(IList).GetRuntimeMethod("Contains", [elementType]);
+                            
+                        methodContains = typeof(ICollection<>)
+                            .MakeGenericType(elementType)
+                            .GetRuntimeMethod("Contains", [elementType]);
 
                         if (methodContains == null)
                         {
@@ -267,7 +271,9 @@ public class CriteriaBuilder
                             throw new NullReferenceException(nameof(elementType));
                         }
 
-                        methodNotContains = typeof(IList).GetRuntimeMethod("Contains", [elementType]);
+                        methodNotContains = typeof(ICollection<>)
+                            .MakeGenericType(elementType)
+                            .GetRuntimeMethod("Contains", [elementType]);
 
                         if (methodNotContains == null)
                         {
