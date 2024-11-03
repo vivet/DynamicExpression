@@ -98,15 +98,29 @@ public static class QueryableExtensions
             throw new ArgumentNullException(nameof(ordering));
 
         var parameter = Expression.Parameter(typeof(T));
-        var property = ordering.By
+        var propertyBy = ordering.By
             .Split('.')
             .Aggregate<string, Expression>(parameter, Expression.Property);
 
-        var expression = Expression.Lambda<Func<T, object>>(Expression.Convert(property, typeof(object)), parameter);
+        var expressionBy = Expression.Lambda<Func<T, object>>(Expression.Convert(propertyBy, typeof(object)), parameter);
+
+        Expression<Func<T, object>> expressionThenBy = null;
+        if (ordering.ThenBy != null)
+        {
+            var propertyThenBy = ordering.ThenBy
+                .Split('.')
+                .Aggregate<string, Expression>(parameter, Expression.Property);
+
+            expressionThenBy = Expression.Lambda<Func<T, object>>(Expression.Convert(propertyThenBy, typeof(object)), parameter);
+        }
 
         return ordering.Direction == OrderingDirection.Asc
-            ? source.OrderBy(expression)
-            : source.OrderByDescending(expression);
+            ? expressionThenBy == null 
+                ? source.OrderBy(expressionBy)
+                : source.OrderBy(expressionBy).ThenBy(expressionThenBy)
+            : expressionThenBy == null 
+                ? source.OrderByDescending(expressionBy)
+                : source.OrderByDescending(expressionBy).ThenByDescending(expressionThenBy);
     }
 
     /// <summary>

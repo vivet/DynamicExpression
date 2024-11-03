@@ -18,6 +18,7 @@ public class QueryableExtensionsTest
 
     public class Nested<T>
     {
+        public virtual string Name { get; set; }
         public virtual OrderType<T> OrderType { get; set; }
     }
 
@@ -370,5 +371,66 @@ public class QueryableExtensionsTest
         Assert.AreEqual(list[1].OrderType.Order, orderedList[1].OrderType.Order);
         Assert.AreEqual(list[2].OrderType.Order, orderedList[2].OrderType.Order);
         Assert.AreEqual(list[0].OrderType.Order, orderedList[3].OrderType.Order);
+    }
+
+    [TestMethod]
+    public void OrderWhenThenByTest()
+    {
+        var list = new List<Nested<int>>
+        {
+            new()
+            {
+                Name = "D",
+                OrderType = new OrderType<int>
+                {
+                    Order = 2
+                }
+            },
+            new()
+            {
+                Name = "B",
+                OrderType = new OrderType<int>
+                {
+                    Order = 4
+                }
+            },
+            new()
+            {
+                Name = "C",
+                OrderType = new OrderType<int>
+                {
+                    Order = 8
+                }
+            },
+            new()
+            {
+                Name = "A",
+                OrderType = new OrderType<int>
+                {
+                    Order = 2
+                }
+            }
+        };
+
+        var ordering = new Ordering
+        {
+            By = "OrderType.Order",
+            ThenBy = "Name",
+            Direction = OrderingDirection.Asc
+        };
+
+        var orderedList = list
+            .AsQueryable()
+            .Order(ordering)
+            .ToArray();
+
+        Assert.AreEqual(list[0].Name, orderedList[1].Name);
+        Assert.AreEqual(list[0].OrderType.Order, orderedList[1].OrderType.Order);
+        Assert.AreEqual(list[1].Name, orderedList[2].Name);
+        Assert.AreEqual(list[1].OrderType.Order, orderedList[2].OrderType.Order);
+        Assert.AreEqual(list[2].Name, orderedList[3].Name);
+        Assert.AreEqual(list[2].OrderType.Order, orderedList[3].OrderType.Order);
+        Assert.AreEqual(list[3].Name, orderedList[0].Name);
+        Assert.AreEqual(list[3].OrderType.Order, orderedList[0].OrderType.Order);
     }
 }

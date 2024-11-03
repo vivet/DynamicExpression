@@ -15,6 +15,11 @@ public class Ordering
     public virtual string By { get; set; } = "Id";
 
     /// <summary>
+    /// By,
+    /// </summary>
+    public virtual string ThenBy { get; set; }
+
+    /// <summary>
     /// Direction.
     /// </summary>
     [DefaultValue(OrderingDirection.Asc)]
