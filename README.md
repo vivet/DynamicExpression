@@ -112,7 +112,8 @@ var criteria = new MyQueryCriteria();
 var result = myQueryable
     .Where(criteria) 
 ```
-The other extensions methods applies pagination and ordering to the query, ```IQueryable<T>```.
+The other extensions methods applies pagination and ordering to the query, ```IQueryable<T>```.  
+Ordering supports using '.' to navigate to nested properties.  
 
 #### Query Model Binders
 Add Query and Query Criteria to MVC.  
