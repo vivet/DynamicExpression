@@ -56,7 +56,7 @@ public class QueryModelBinder : IModelBinder
         if (request == null)
             throw new ArgumentNullException(nameof(request));
 
-        var orderBy = request.Query["Order.By"].FirstOrDefault();
+        var orderBy = request.Query[$"{nameof(IQuery.Order)}.{nameof(Ordering.By)}"].FirstOrDefault();
 
         return orderBy;
     }
@@ -71,7 +71,7 @@ public class QueryModelBinder : IModelBinder
         if (request == null)
             throw new ArgumentNullException(nameof(request));
 
-        var success = Enum.TryParse<OrderingDirection>(request.Query["Order.Direction"].FirstOrDefault(), true, out var direction);
+        var success = Enum.TryParse<OrderingDirection>(request.Query[$"{nameof(IQuery.Order)}.{nameof(Ordering.Direction)}"].FirstOrDefault(), true, out var direction);
         if (!success)
         {
             return null;
@@ -90,7 +90,7 @@ public class QueryModelBinder : IModelBinder
         if (request == null)
             throw new ArgumentNullException(nameof(request));
 
-        var success = int.TryParse(request.Query["Paging.Count"].FirstOrDefault(), out var count);
+        var success = int.TryParse(request.Query[$"{nameof(IQuery.Paging)}.{nameof(Pagination.Count)}"].FirstOrDefault(), out var count);
         if (!success)
         {
             return null;
@@ -109,7 +109,7 @@ public class QueryModelBinder : IModelBinder
         if (request == null)
             throw new ArgumentNullException(nameof(request));
 
-        var success = int.TryParse(request.Query["Paging.Number"].FirstOrDefault(), out var number);
+        var success = int.TryParse(request.Query[$"{nameof(IQuery.Paging)}.{nameof(Pagination.Number)}"].FirstOrDefault(), out var number);
         if (!success)
         {
             return null;
@@ -128,7 +128,7 @@ public class QueryModelBinder : IModelBinder
         if (request == null)
             throw new ArgumentNullException(nameof(request));
 
-        var success = int.TryParse(request.Query["Paging.Skip"].FirstOrDefault(), out var skip);
+        var success = int.TryParse(request.Query[$"{nameof(IQuery.Paging)}.{nameof(Pagination.Skip)}"].FirstOrDefault(), out var skip);
         if (!success)
         {
             return null;
