@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net8</TargetFrameworks>
+		<TargetFrameworks>net9.0</TargetFrameworks>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PlatformTarget>AnyCPU</PlatformTarget>
-		<AssemblyVersion>8.0.15.0</AssemblyVersion>
-		<FileVersion>8.0.15.0</FileVersion>
-		<Version>8.0.15.0</Version>
+		<AssemblyVersion>9.0.0.0</AssemblyVersion>
+		<FileVersion>9.0.0.0</FileVersion>
+		<Version>9.0.0.0</Version>
 		<LangVersion>latest</LangVersion>
 		<Authors>Michael Vivet</Authors>
 		<Product>Dynamic Expression</Product>
