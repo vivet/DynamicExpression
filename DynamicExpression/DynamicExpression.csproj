@@ -15,7 +15,7 @@
 		<PackageTags>Lampda, Expression, Linq, Dynamic, Criteria, Query, Paging, Pagination, Sort, Sorting</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageReleaseNotes>
-			- Cosmetics.
+			- Updated to .Net 9.
 		</PackageReleaseNotes>
 		<PackageLicense>https://raw.githubusercontent.com/vivet/DynamicExpression/master/LICENSE</PackageLicense>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
