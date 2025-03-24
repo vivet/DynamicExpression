@@ -62,7 +62,7 @@ public class CriteriaExpressionTest
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Age", criteria.Property);
         Assert.AreEqual(1, criteria.Value);
-        Assert.AreEqual(0, criteria.Value2);
+        Assert.AreEqual(null, criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.GreaterThan, criteria.OperationType);
     }
@@ -77,7 +77,7 @@ public class CriteriaExpressionTest
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Age", criteria.Property);
         Assert.AreEqual(1, criteria.Value);
-        Assert.AreEqual(0, criteria.Value2);
+        Assert.AreEqual(null, criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.GreaterThanOrEqual, criteria.OperationType);
     }
@@ -92,7 +92,7 @@ public class CriteriaExpressionTest
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Age", criteria.Property);
         Assert.AreEqual(1, criteria.Value);
-        Assert.AreEqual(0, criteria.Value2);
+        Assert.AreEqual(null, criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.LessThan, criteria.OperationType);
     }
@@ -107,7 +107,7 @@ public class CriteriaExpressionTest
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Age", criteria.Property);
         Assert.AreEqual(1, criteria.Value);
-        Assert.AreEqual(0, criteria.Value2);
+        Assert.AreEqual(null, criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.LessThanOrEqual, criteria.OperationType);
     }
