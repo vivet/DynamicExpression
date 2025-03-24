@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using DynamicExpression.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NetTopologySuite.Geometries;
 
 namespace DynamicExpression.Test;
 
@@ -14,8 +15,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.Equal("Name", "value");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -28,8 +28,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.Equal("Date", DateOnly.MaxValue);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -42,8 +41,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.Equal("Date", DateOnly.MaxValue);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -56,8 +54,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.Equal("DateTime", DateTime.MaxValue);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -70,8 +67,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.Equal("DateTimeOffset", DateTimeOffset.MaxValue);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -84,8 +80,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.Equal("Flags", FlagsEnum.One);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -101,8 +96,7 @@ public class CriteriaBuilderTest
         criteriaExpression.Equal("Id", guid);
         criteriaExpression.Equal("IdNullable", guid);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -118,8 +112,7 @@ public class CriteriaBuilderTest
         criteriaExpression.Equal("Id", guid);
         criteriaExpression.Equal("IdNullable", guid);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -132,8 +125,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.NotEqual("Name", "value");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -148,8 +140,7 @@ public class CriteriaBuilderTest
         criteriaExpression.NotEqual("Id", guid);
         criteriaExpression.NotEqual("IdNullable", guid);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -164,8 +155,7 @@ public class CriteriaBuilderTest
         criteriaExpression.NotEqual("Id", guid);
         criteriaExpression.NotEqual("IdNullable", guid);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -178,8 +168,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.StartsWith("Name", "value");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -192,8 +181,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.EndsWith("Name", "value");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -206,8 +194,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.GreaterThan("Age", 1);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -220,8 +207,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.GreaterThanOrEqual("Age", 1);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -234,8 +220,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.LessThan("Age", 1);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -248,8 +233,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.LessThanOrEqual("Age", 1);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -262,8 +246,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.Between("Age", 1, 5);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -276,8 +259,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.IsNull<string>("Name");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -290,8 +272,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.IsNull<Guid?>("IdNullable");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -304,8 +285,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.IsNotNull<string>("Name");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -318,8 +298,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.IsNotNull<Guid?>("IdNullable");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -332,8 +311,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.IsEmpty<string>("Name");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -346,8 +324,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.IsNotEmpty<string>("Name");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -360,8 +337,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.IsNullOrWhiteSpace<string>("Name");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -374,8 +350,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.IsNotNullOrWhiteSpace<string>("Name");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -388,8 +363,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.In("Name", "value");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -402,8 +376,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.In("Flags", FlagsEnum.One | FlagsEnum.Two);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -416,8 +389,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.In("Flags", new[] { FlagsEnum.One, FlagsEnum.Two });
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -430,8 +402,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.In("Name", new[] { "value", "value2" });
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -444,8 +415,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.NotIn("Name", "value");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -458,8 +428,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.NotIn("Flags", FlagsEnum.One | FlagsEnum.Two);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -472,8 +441,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.NotIn("Name", new[] { "value", "value2" });
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -486,8 +454,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.Contains("Name", "value");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -500,8 +467,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.Contains("Flags", FlagsEnum.One | FlagsEnum.Two);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -514,8 +480,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.Contains("Name", new[] { "value", "value2" });
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -528,8 +493,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.NotContains("Name", "value");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -542,12 +506,137 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.NotContains("Flags", FlagsEnum.One | FlagsEnum.Two);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
         Assert.AreEqual("Not(((Convert(x.Flags, Int32) | Convert(One, Two, Int32)) == Convert(One, Two, Int32)))", expression.Body.ToString());
+    }
+
+    [TestMethod]
+    public void BuildWhenCoversTest()
+    {
+        var criteriaExpression = new CriteriaExpression();
+
+        criteriaExpression.Covers(nameof(Customer.Location), new Point(0, 0));
+
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
+
+        Assert.IsNotNull(expression);
+        Assert.IsNotNull(expression.Compile());
+        Assert.AreEqual("((x.Location != null) AndAlso x.Location.Covers(POINT (0 0)))", expression.Body.ToString());
+    }
+
+    [TestMethod]
+    public void BuildWhenCrossesTest()
+    {
+        var criteriaExpression = new CriteriaExpression();
+
+        criteriaExpression.Crosses(nameof(Customer.Location), new Point(0, 0));
+
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
+
+        Assert.IsNotNull(expression);
+        Assert.IsNotNull(expression.Compile());
+        Assert.AreEqual("((x.Location != null) AndAlso x.Location.Crosses(POINT (0 0)))", expression.Body.ToString());
+    }
+
+    [TestMethod]
+    public void BuildWhenTouchesTest()
+    {
+        var criteriaExpression = new CriteriaExpression();
+
+        criteriaExpression.Touches(nameof(Customer.Location), new Point(0, 0));
+
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
+
+        Assert.IsNotNull(expression);
+        Assert.IsNotNull(expression.Compile());
+        Assert.AreEqual("((x.Location != null) AndAlso x.Location.Touches(POINT (0 0)))", expression.Body.ToString());
+    }
+
+    [TestMethod]
+    public void BuildWhenOverlapsTest()
+    {
+        var criteriaExpression = new CriteriaExpression();
+
+        criteriaExpression.Overlaps(nameof(Customer.Location), new Point(0, 0));
+
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
+
+        Assert.IsNotNull(expression);
+        Assert.IsNotNull(expression.Compile());
+        Assert.AreEqual("((x.Location != null) AndAlso x.Location.Overlaps(POINT (0 0)))", expression.Body.ToString());
+    }
+
+    [TestMethod]
+    public void BuildWhenCoveredByTest()
+    {
+        var criteriaExpression = new CriteriaExpression();
+
+        criteriaExpression.CoveredBy(nameof(Customer.Location), new Point(0, 0));
+
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
+
+        Assert.IsNotNull(expression);
+        Assert.IsNotNull(expression.Compile());
+        Assert.AreEqual("((x.Location != null) AndAlso x.Location.CoveredBy(POINT (0 0)))", expression.Body.ToString());
+    }
+
+    [TestMethod]
+    public void BuildWhenDisjointTest()
+    {
+        var criteriaExpression = new CriteriaExpression();
+
+        criteriaExpression.Disjoint(nameof(Customer.Location), new Point(0, 0));
+
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
+
+        Assert.IsNotNull(expression);
+        Assert.IsNotNull(expression.Compile());
+        Assert.AreEqual("((x.Location != null) AndAlso x.Location.Disjoint(POINT (0 0)))", expression.Body.ToString());
+    }
+
+    [TestMethod]
+    public void BuildWhenIntersectsTest()
+    {
+        var criteriaExpression = new CriteriaExpression();
+
+        criteriaExpression.Intersects(nameof(Customer.Location), new Point(0, 0));
+
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
+
+        Assert.IsNotNull(expression);
+        Assert.IsNotNull(expression.Compile());
+        Assert.AreEqual("((x.Location != null) AndAlso x.Location.Intersects(POINT (0 0)))", expression.Body.ToString());
+    }
+
+    [TestMethod]
+    public void BuildWhenWithinTest()
+    {
+        var criteriaExpression = new CriteriaExpression();
+
+        criteriaExpression.Within(nameof(Customer.Location), new Point(0, 0));
+
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
+
+        Assert.IsNotNull(expression);
+        Assert.IsNotNull(expression.Compile());
+        Assert.AreEqual("((x.Location != null) AndAlso x.Location.Within(POINT (0 0)))", expression.Body.ToString());
+    }
+
+    [TestMethod]
+    public void BuildWhenIsWithinDistanceTest()
+    {
+        var criteriaExpression = new CriteriaExpression();
+
+        criteriaExpression.IsWithinDistance(nameof(Customer.Location), new Point(0, 0), 100);
+
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
+
+        Assert.IsNotNull(expression);
+        Assert.IsNotNull(expression.Compile());
+        Assert.AreEqual("((x.Location != null) AndAlso x.Location.IsWithinDistance(POINT (0 0), 100))", expression.Body.ToString());
     }
 
     [TestMethod]
@@ -556,8 +645,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.Equal("Payment.Id", "value");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Order>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Order>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -570,8 +658,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.Equal("Orders[Payment.Id]", "value");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -584,8 +671,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.Equal("Customer.Orders[Payment.Id]", "value");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<User>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<User>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -602,8 +688,7 @@ public class CriteriaBuilderTest
         criteriaExpression2.Equal("Name", "value2", LogicalType.Or);
         criteriaExpression2.Equal("Name", "value3");
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(new[] { criteriaExpression1, criteriaExpression2 });
+        var expression = CriteriaBuilder.Build<Customer>([criteriaExpression1, criteriaExpression2]);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -617,8 +702,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.Equal("IdNullable", guid);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -632,8 +716,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.Equal("IdNullable", guid);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -647,8 +730,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.Equal("Id", guid);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Console.WriteLine(expression.Body.ToString());
 
@@ -664,8 +746,7 @@ public class CriteriaBuilderTest
         var criteriaExpression = new CriteriaExpression();
         criteriaExpression.Equal("Id", guid);
 
-        var builder = new CriteriaBuilder();
-        var expression = builder.Build<Customer>(criteriaExpression);
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
@@ -694,6 +775,7 @@ public class CriteriaBuilderTest
         public virtual DateOnly Date { get; set; }
         public virtual DateTime DateTime { get; set; }
         public virtual DateTimeOffset DateTimeOffset { get; set; }
+        public virtual Point Location { get; set; }
     }
     public class Payment
     {

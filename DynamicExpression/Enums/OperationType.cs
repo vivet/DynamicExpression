@@ -98,5 +98,50 @@ public enum OperationType
     /// <summary>
     /// Not Contains.
     /// </summary>
-    NotContains
+    NotContains,
+
+    /// <summary>
+    /// Covers.
+    /// </summary>
+    Covers,
+
+    /// <summary>
+    /// Crosses.
+    /// </summary>
+    Crosses,
+
+    /// <summary>
+    /// Touches.
+    /// </summary>
+    Touches,
+
+    /// <summary>
+    /// Overlaps.
+    /// </summary>
+    Overlaps,
+
+    /// <summary>
+    /// Covered By.
+    /// </summary>
+    CoveredBy,
+
+    /// <summary>
+    /// Disjoint.
+    /// </summary>
+    Disjoint,
+
+    /// <summary>
+    /// Intersects.
+    /// </summary>
+    Intersects,
+
+    /// <summary>
+    /// Within.
+    /// </summary>
+    Within,
+
+    /// <summary>
+    /// Is Within Distance.
+    /// </summary>
+    IsWithinDistance
 }

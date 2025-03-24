@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DynamicExpression.Entities;
 using DynamicExpression.Enums;
+using NetTopologySuite.Geometries;
 
 namespace DynamicExpression;
 
@@ -295,7 +296,145 @@ public class CriteriaExpression
         this.By(property, OperationType.NotContains, value, default, logicalType);
     }
 
-    private void By<TType>(string property, OperationType operationType, TType value, TType value2 = default, LogicalType logicalType = LogicalType.And)
+    /// <summary>
+    /// Add <see cref="OperationType.Covers"/> filter.
+    /// </summary>
+    /// <typeparam name="TType">The type of the property.</typeparam>
+    /// <param name="property">The property name.</param>
+    /// <param name="value">The value.</param>
+    /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
+    public virtual void Covers<TType>(string property, TType value, LogicalType logicalType = LogicalType.And)
+    {
+        if (property == null)
+            throw new ArgumentNullException(nameof(property));
+
+        this.By(property, OperationType.Covers, value, default, logicalType);
+    }
+
+    /// <summary>
+    /// Add <see cref="OperationType.Crosses"/> filter.
+    /// </summary>
+    /// <typeparam name="TType">The type of the property.</typeparam>
+    /// <param name="property">The property name.</param>
+    /// <param name="value">The value.</param>
+    /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
+    public virtual void Crosses<TType>(string property, TType value, LogicalType logicalType = LogicalType.And)
+    {
+        if (property == null)
+            throw new ArgumentNullException(nameof(property));
+
+        this.By(property, OperationType.Crosses, value, default, logicalType);
+    }
+
+    /// <summary>
+    /// Add <see cref="OperationType.Touches"/> filter.
+    /// </summary>
+    /// <typeparam name="TType">The type of the property.</typeparam>
+    /// <param name="property">The property name.</param>
+    /// <param name="value">The value.</param>
+    /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
+    public virtual void Touches<TType>(string property, TType value, LogicalType logicalType = LogicalType.And)
+    {
+        if (property == null)
+            throw new ArgumentNullException(nameof(property));
+
+        this.By(property, OperationType.Touches, value, default, logicalType);
+    }
+
+    /// <summary>
+    /// Add <see cref="OperationType.Overlaps"/> filter.
+    /// </summary>
+    /// <typeparam name="TType">The type of the property.</typeparam>
+    /// <param name="property">The property name.</param>
+    /// <param name="value">The value.</param>
+    /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
+    public virtual void Overlaps<TType>(string property, TType value, LogicalType logicalType = LogicalType.And)
+    {
+        if (property == null)
+            throw new ArgumentNullException(nameof(property));
+
+        this.By(property, OperationType.Overlaps, value, default, logicalType);
+    }
+
+    /// <summary>
+    /// Add <see cref="OperationType.CoveredBy"/> filter.
+    /// </summary>
+    /// <typeparam name="TType">The type of the property.</typeparam>
+    /// <param name="property">The property name.</param>
+    /// <param name="value">The value.</param>
+    /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
+    public virtual void CoveredBy<TType>(string property, TType value, LogicalType logicalType = LogicalType.And)
+    {
+        if (property == null)
+            throw new ArgumentNullException(nameof(property));
+
+        this.By(property, OperationType.CoveredBy, value, default, logicalType);
+    }
+
+    /// <summary>
+    /// Add <see cref="OperationType.Disjoint"/> filter.
+    /// </summary>
+    /// <typeparam name="TType">The type of the property.</typeparam>
+    /// <param name="property">The property name.</param>
+    /// <param name="value">The value.</param>
+    /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
+    public virtual void Disjoint<TType>(string property, TType value, LogicalType logicalType = LogicalType.And)
+    {
+        if (property == null)
+            throw new ArgumentNullException(nameof(property));
+
+        this.By(property, OperationType.Disjoint, value, default, logicalType);
+    }
+
+    /// <summary>
+    /// Add <see cref="OperationType.Intersects"/> filter.
+    /// </summary>
+    /// <typeparam name="TType">The type of the property.</typeparam>
+    /// <param name="property">The property name.</param>
+    /// <param name="value">The value.</param>
+    /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
+    public virtual void Intersects<TType>(string property, TType value, LogicalType logicalType = LogicalType.And)
+    {
+        if (property == null)
+            throw new ArgumentNullException(nameof(property));
+
+        this.By(property, OperationType.Intersects, value, default, logicalType);
+    }
+
+    /// <summary>
+    /// Add <see cref="OperationType.Within"/> filter.
+    /// </summary>
+    /// <typeparam name="TType">The type of the property.</typeparam>
+    /// <param name="property">The property name.</param>
+    /// <param name="value">The value.</param>
+    /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
+    public virtual void Within<TType>(string property, TType value, LogicalType logicalType = LogicalType.And)
+        where TType : Geometry
+    {
+        if (property == null)
+            throw new ArgumentNullException(nameof(property));
+
+        this.By(property, OperationType.Within, value, logicalType);
+    }
+
+    /// <summary>
+    /// Add <see cref="OperationType.IsWithinDistance"/> filter.
+    /// </summary>
+    /// <typeparam name="TType">The type of the property.</typeparam>
+    /// <param name="property">The property name.</param>
+    /// <param name="value">The value.</param>
+    /// <param name="distance">The distance.</param>
+    /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
+    public virtual void IsWithinDistance<TType>(string property, TType value, double distance, LogicalType logicalType = LogicalType.And)
+        where TType : Geometry
+    {
+        if (property == null)
+            throw new ArgumentNullException(nameof(property));
+
+        this.By(property, OperationType.IsWithinDistance, value, distance, logicalType);
+    }
+
+    private void By<TType>(string property, OperationType operationType, TType value, object value2 = default, LogicalType logicalType = LogicalType.And)
     {
         if (property == null)
             throw new ArgumentNullException(nameof(property));

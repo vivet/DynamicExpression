@@ -50,7 +50,7 @@ public static class QueryableExtensions
             throw new ArgumentNullException(nameof(queryCriteria));
 
         var criteria = queryCriteria.GetExpressions();
-        var expression = new CriteriaBuilder().Build<T>(criteria);
+        var expression = CriteriaBuilder.Build<T>(criteria);
 
         return source
             .Where(expression);
@@ -73,7 +73,7 @@ public static class QueryableExtensions
             throw new ArgumentNullException(nameof(queryCriteria));
 
         var criteria = queryCriteria.Criteria.GetExpressions();
-        var expression = new CriteriaBuilder().Build<T>(criteria);
+        var expression = CriteriaBuilder.Build<T>(criteria);
 
         return source
             .Where(expression)

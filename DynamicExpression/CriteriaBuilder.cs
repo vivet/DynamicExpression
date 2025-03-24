@@ -6,13 +6,14 @@ using System.Reflection;
 using DynamicExpression.Entities;
 using DynamicExpression.Enums;
 using DynamicExpression.Extensions;
+using NetTopologySuite.Geometries;
 
 namespace DynamicExpression;
 
 /// <summary>
 /// Criteria Builder
 /// </summary>
-public class CriteriaBuilder
+public static class CriteriaBuilder
 {
     /// <summary>
     /// Builds the <see cref="CriteriaExpression"/>, and returns an <see cref="Expression"/>.
@@ -20,14 +21,14 @@ public class CriteriaBuilder
     /// <typeparam name="T">Type used in the <see cref="Expression{TDelegate}"/>.</typeparam>
     /// <param name="criteriaExpression">The <see cref="CriteriaExpression"/>.</param>
     /// <returns>The <see cref="Expression{T}"/></returns>
-    public virtual Expression<Func<T, bool>> Build<T>(CriteriaExpression criteriaExpression)
+    public static Expression<Func<T, bool>> Build<T>(CriteriaExpression criteriaExpression)
         where T : class
     {
         if (criteriaExpression == null)
             throw new ArgumentNullException(nameof(criteriaExpression));
 
         var parameter = Expression.Parameter(typeof(T), "x");
-        var expression = this.BuildExpression(criteriaExpression, parameter);
+        var expression = CriteriaBuilder.BuildExpression(criteriaExpression, parameter);
 
         return Expression.Lambda<Func<T, bool>>(expression ?? Expression.Constant(true), parameter);
     }
@@ -38,7 +39,7 @@ public class CriteriaBuilder
     /// <typeparam name="T">Type used in the <see cref="Expression{TDelegate}"/>.</typeparam>
     /// <param name="criteriaExpressions">The <see cref="CriteriaExpression"/>'s.</param>
     /// <returns>The <see cref="Expression{T}"/></returns>
-    public virtual Expression<Func<T, bool>> Build<T>(IEnumerable<CriteriaExpression> criteriaExpressions)
+    public static Expression<Func<T, bool>> Build<T>(IEnumerable<CriteriaExpression> criteriaExpressions)
         where T : class
     {
         if (criteriaExpressions == null)
@@ -46,7 +47,7 @@ public class CriteriaBuilder
 
         var parameter = Expression.Parameter(typeof(T), "x");
         var expressionCombined = criteriaExpressions
-            .Select(x => this.BuildExpression(x, parameter))
+            .Select(x => CriteriaBuilder.BuildExpression(x, parameter))
             .Aggregate<Expression, Expression>(null, (current, expression) => expression == null
                 ? current
                 : current == null
@@ -56,7 +57,7 @@ public class CriteriaBuilder
         return Expression.Lambda<Func<T, bool>>(expressionCombined ?? Expression.Constant(true), parameter);
     }
 
-    private Expression GetMember(Expression parameter, string propertyName)
+    private static Expression GetMember(Expression parameter, string propertyName)
     {
         if (parameter == null)
             throw new ArgumentNullException(nameof(parameter));
@@ -80,7 +81,7 @@ public class CriteriaBuilder
             return Expression.Property(parameter, propertyName);
         }
     }
-    private Expression GetExpression(Expression parameter, Criteria criteria, string propertyName = null)
+    private static Expression GetExpression(Expression parameter, Criteria criteria, string propertyName = null)
     {
         if (parameter == null)
             throw new ArgumentNullException(nameof(parameter));
@@ -89,7 +90,7 @@ public class CriteriaBuilder
             throw new ArgumentNullException(nameof(criteria));
 
         var name = propertyName ?? criteria.Property;
-        var member = this.GetMember(parameter, name);
+        var member = CriteriaBuilder.GetMember(parameter, name);
         var value = Expression.Constant(criteria.Value) as Expression;
         var value2 = Expression.Constant(criteria.Value2);
         var operationType = criteria.OperationType;
@@ -131,6 +132,101 @@ public class CriteriaBuilder
 
                 case OperationType.NotEqual:
                     return Expression.NotEqual(expression, value);
+            }
+        }
+        else if (value.Type.IsSubclassOf(typeof(Geometry)))
+        {
+            switch (operationType)
+            {
+                case OperationType.Covers:
+                    var methodCovers = typeof(Geometry).GetRuntimeMethod("Covers", [typeof(Geometry)]);
+
+                    if (methodCovers == null)
+                    {
+                        throw new NullReferenceException(nameof(methodCovers));
+                    }
+
+                    return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Call(member, methodCovers, value));
+
+                case OperationType.Crosses:
+                    var methodCrosses = typeof(Geometry).GetRuntimeMethod("Crosses", [typeof(Geometry)]);
+
+                    if (methodCrosses == null)
+                    {
+                        throw new NullReferenceException(nameof(methodCrosses));
+                    }
+
+                    return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Call(member, methodCrosses, value));
+
+                case OperationType.Touches:
+                    var methodTouches = typeof(Geometry).GetRuntimeMethod("Touches", [typeof(Geometry)]);
+
+                    if (methodTouches == null)
+                    {
+                        throw new NullReferenceException(nameof(methodTouches));
+                    }
+
+                    return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Call(member, methodTouches, value));
+
+                case OperationType.Overlaps:
+                    var methodOverlaps = typeof(Geometry).GetRuntimeMethod("Overlaps", [typeof(Geometry)]);
+
+                    if (methodOverlaps == null)
+                    {
+                        throw new NullReferenceException(nameof(methodOverlaps));
+                    }
+
+                    return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Call(member, methodOverlaps, value));
+
+                case OperationType.CoveredBy:
+                    var methodCoveredBy = typeof(Geometry).GetRuntimeMethod("CoveredBy", [typeof(Geometry)]);
+
+                    if (methodCoveredBy == null)
+                    {
+                        throw new NullReferenceException(nameof(methodCoveredBy));
+                    }
+
+                    return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Call(member, methodCoveredBy, value));
+
+                case OperationType.Disjoint:
+                    var methodDisjoints = typeof(Geometry).GetRuntimeMethod("Disjoint", [typeof(Geometry)]);
+
+                    if (methodDisjoints == null)
+                    {
+                        throw new NullReferenceException(nameof(methodDisjoints));
+                    }
+
+                    return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Call(member, methodDisjoints, value));
+
+                case OperationType.Intersects:
+                    var methodIntersects = typeof(Geometry).GetRuntimeMethod("Intersects", [typeof(Geometry)]);
+
+                    if (methodIntersects == null)
+                    {
+                        throw new NullReferenceException(nameof(methodIntersects));
+                    }
+
+                    return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Call(member, methodIntersects, value));
+
+                case OperationType.Within:
+                    var methodWithin = typeof(Geometry).GetRuntimeMethod("Within", [typeof(Geometry)]);
+
+                    if (methodWithin == null)
+                    {
+                        throw new NullReferenceException(nameof(methodWithin));
+                    }
+
+                    return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Call(member, methodWithin, value));
+
+                case OperationType.IsWithinDistance:
+                    var methodIsWithinDistance = typeof(Geometry).GetRuntimeMethod("IsWithinDistance", [typeof(Geometry), typeof(double)]);
+
+                    if (methodIsWithinDistance == null)
+                    {
+                        throw new NullReferenceException(nameof(methodIsWithinDistance));
+                    }
+
+                    return Expression.AndAlso(Expression.NotEqual(member, Expression.Constant(null)), Expression.Call(member, methodIsWithinDistance, value, value2));
             }
         }
         else
@@ -321,7 +417,7 @@ public class CriteriaBuilder
 
         throw new NotSupportedException($"'{operationType}' is not supported by '{value.Type}' ");
     }
-    private Expression BuildExpression(CriteriaExpression criteriaExpression, Expression parameter)
+    private static Expression BuildExpression(CriteriaExpression criteriaExpression, Expression parameter)
     {
         var prevLogicalType = LogicalType.And;
 
@@ -339,7 +435,7 @@ public class CriteriaBuilder
                 Expression paramNested;
                 if (lastIndexOfDot > 0)
                 {
-                    paramNested = this.GetMember(parameter, baseName[..lastIndexOfDot]);
+                    paramNested = CriteriaBuilder.GetMember(parameter, baseName[..lastIndexOfDot]);
                     baseName = baseName[(lastIndexOfDot + 1)..];
                 }
                 else
@@ -357,16 +453,16 @@ public class CriteriaBuilder
                 
                 var type = property.PropertyType.GenericTypeArguments[0];
                 var methodAny = typeof(Enumerable).GetRuntimeMethods().First(x => x.Name == "Any" && x.GetParameters().Length == 2).MakeGenericMethod(type);
-                var memberAny = this.GetMember(paramNested, baseName);
+                var memberAny = CriteriaBuilder.GetMember(paramNested, baseName);
                 var parameterAny = Expression.Parameter(type, "i");
-                var expressionAny = this.GetExpression(parameterAny, criteria, name);
+                var expressionAny = CriteriaBuilder.GetExpression(parameterAny, criteria, name);
                 var expr2 = Expression.Lambda(expressionAny, parameterAny);
 
                 innerExpression = Expression.Call(methodAny, memberAny, expr2);
             }
             else
             {
-                innerExpression = this.GetExpression(parameter, criteria);
+                innerExpression = CriteriaBuilder.GetExpression(parameter, criteria);
             }
 
             expression = expression == null

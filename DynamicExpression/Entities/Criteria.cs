@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DynamicExpression.Enums;
 using DynamicExpression.Extensions;
+using NetTopologySuite.Geometries;
 
 namespace DynamicExpression.Entities;
 
@@ -48,7 +49,7 @@ public class Criteria<TType> : Criteria
     /// <param name="value">The value.</param>
     /// <param name="value2">the value2</param>
     /// <param name="logicalType">The <see cref="LogicalType"/>.</param>
-    public Criteria(string property, OperationType operationType, TType value, TType value2, LogicalType logicalType = LogicalType.And)
+    public Criteria(string property, OperationType operationType, TType value, object value2, LogicalType logicalType = LogicalType.And)
     {
         if (property == null)
             throw new ArgumentNullException(nameof(property));
@@ -78,12 +79,19 @@ public class Criteria<TType> : Criteria
             { "Boolean", [typeof(bool)] },
             { "Date", [typeof(TimeOnly), typeof(DateOnly), typeof(DateTime), typeof(DateTimeOffset)] },
             { "Nullable", [typeof(Nullable<>)] },
-            { "Guid", [typeof(Guid)] }
+            { "Guid", [typeof(Guid)] },
+            { "Spatial", [typeof(Geometry), typeof(Point), typeof(LineString), typeof(LinearRing), typeof(Polygon), typeof(MultiPoint), typeof(MultiLineString), typeof(MultiPolygon), typeof(GeometryCollection)] }
         };
 
         if (type.IsArrayOrEnumerable())
         {
-            return new[] { OperationType.In, OperationType.NotIn, OperationType.Contains, OperationType.NotContains }; 
+            return 
+            [
+                OperationType.In, 
+                OperationType.NotIn, 
+                OperationType.Contains, 
+                OperationType.NotContains
+            ]; 
         }
 
         var operationType = type.IsEnum
@@ -93,8 +101,8 @@ public class Criteria<TType> : Criteria
         switch (operationType)
         {
             case "Text":
-                return new[]
-                {
+                return
+                [
                     OperationType.Equal,
                     OperationType.NotEqual,
                     OperationType.StartsWith,
@@ -111,12 +119,12 @@ public class Criteria<TType> : Criteria
                     OperationType.NotIn,
                     OperationType.Contains,
                     OperationType.NotContains
-                };
+                ];
 
             case "Date":
             case "Number":
-                return new[]
-                {
+                return
+                [
                     OperationType.Equal,
                     OperationType.NotEqual,
                     OperationType.GreaterThan,
@@ -124,26 +132,26 @@ public class Criteria<TType> : Criteria
                     OperationType.LessThan,
                     OperationType.LessThanOrEqual,
                     OperationType.Between
-                };
+                ];
 
             case "Boolean":
             case "Guid":
-                return new[]
-                {
+                return
+                [
                     OperationType.Equal,
                     OperationType.NotEqual
-                };
+                ];
 
             case "Enum":
-                return new[]
-                {
+                return
+                [
                     OperationType.Equal,
                     OperationType.NotEqual,
                     OperationType.In,
                     OperationType.NotIn,
                     OperationType.Contains,
                     OperationType.NotContains
-                };
+                ];
 
             case "Nullable":
                 return new[]
@@ -153,6 +161,20 @@ public class Criteria<TType> : Criteria
                     }
                     .Union(this.GetSupportedOperationTypes(Nullable.GetUnderlyingType(type)))
                     .Distinct();
+
+            case "Spatial":
+                return
+                [
+                    OperationType.Covers,
+                    OperationType.Crosses,
+                    OperationType.Touches,
+                    OperationType.Overlaps,
+                    OperationType.CoveredBy,
+                    OperationType.Disjoint,
+                    OperationType.Intersects,
+                    OperationType.Within,
+                    OperationType.IsWithinDistance
+                ];
 
             default:
                 throw new ArgumentOutOfRangeException(nameof(type));
