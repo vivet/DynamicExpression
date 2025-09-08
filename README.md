@@ -1,5 +1,5 @@
 # Dynamic Expression
-[![Build status](https://ci.appveyor.com/api/projects/status/lv6dki9f4o7ck88b/branch/master?svg=true)](https://ci.appveyor.com/project/vivet/dynamicexpression/branch/master)
+[![Build and Deploy](https://github.com/Vivet/DynamicExpression/actions/workflows/build-and-deploy.yml/badge.svg)](https://github.com/Vivet/DynamicExpression/actions/workflows/build-and-deploy.yml)
 [![NuGet](https://img.shields.io/nuget/dt/DynamicExpression.svg)](https://www.nuget.org/packages/DynamicExpression/)
 [![NuGet](https://img.shields.io/nuget/v/DynamicExpression.svg)](https://www.nuget.org/packages/DynamicExpression/)
 

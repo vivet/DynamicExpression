@@ -3,9 +3,9 @@
 		<TargetFrameworks>net9.0</TargetFrameworks>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PlatformTarget>AnyCPU</PlatformTarget>
-		<AssemblyVersion>9.0.1.0</AssemblyVersion>
-		<FileVersion>9.0.1.0</FileVersion>
-		<Version>9.0.1.0</Version>
+		<AssemblyVersion>9.0.2.0</AssemblyVersion>
+		<FileVersion>9.0.2.0</FileVersion>
+		<Version>9.0.2.0</Version>
 		<LangVersion>latest</LangVersion>
 		<Authors>Michael Vivet</Authors>
 		<Product>Dynamic Expression</Product>
@@ -15,7 +15,7 @@
 		<PackageTags>Lampda, Expression, Linq, Dynamic, Criteria, Query, Paging, Pagination, Sort, Sorting</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageReleaseNotes>
-			- Added Geometry types from nettopologysuite for geo-spatial criteria.
+			- Moved CI/CD to GitHub Actions.
 		</PackageReleaseNotes>
 		<PackageLicense>https://raw.githubusercontent.com/vivet/DynamicExpression/master/LICENSE</PackageLicense>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
