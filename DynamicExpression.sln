@@ -6,7 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".solution", ".solution", "{EA0E8885-9387-4A54-8DE6-65EB2431C1B9}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		appveyor.yml = appveyor.yml
 		icon.jpg = icon.jpg
 		LICENSE = LICENSE
 		README.md = README.md
@@ -16,7 +15,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicExpression", "Dynami
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".tests", ".tests", "{8BD321DD-4802-4A62-BA89-615F8565298F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicExpression.Test", ".tests\DynamicExpression.Test\DynamicExpression.Test.csproj", "{E13EA595-4752-4DD2-9AEE-EAEFDEBD86BF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{F1E6FE2B-1C26-464C-BCAA-2F22531084D3}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build-and-deploy.yml = .github\workflows\build-and-deploy.yml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.DynamicExpression", ".tests\Tests.DynamicExpression\Tests.DynamicExpression.csproj", "{25B6B71F-1096-6FB0-3131-FFEE12EB9024}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,15 +34,17 @@ Global
 		{B283F4A4-1E7B-4D9A-A767-002C11B2C881}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B283F4A4-1E7B-4D9A-A767-002C11B2C881}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B283F4A4-1E7B-4D9A-A767-002C11B2C881}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E13EA595-4752-4DD2-9AEE-EAEFDEBD86BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E13EA595-4752-4DD2-9AEE-EAEFDEBD86BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E13EA595-4752-4DD2-9AEE-EAEFDEBD86BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25B6B71F-1096-6FB0-3131-FFEE12EB9024}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25B6B71F-1096-6FB0-3131-FFEE12EB9024}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25B6B71F-1096-6FB0-3131-FFEE12EB9024}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25B6B71F-1096-6FB0-3131-FFEE12EB9024}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{E13EA595-4752-4DD2-9AEE-EAEFDEBD86BF} = {8BD321DD-4802-4A62-BA89-615F8565298F}
+		{F1E6FE2B-1C26-464C-BCAA-2F22531084D3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{25B6B71F-1096-6FB0-3131-FFEE12EB9024} = {8BD321DD-4802-4A62-BA89-615F8565298F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {88C60CFA-317B-4439-ACA0-4CBE16274F92}
