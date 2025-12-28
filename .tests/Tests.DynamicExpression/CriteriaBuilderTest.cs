@@ -394,7 +394,7 @@ public class CriteriaBuilderTest
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
-        Assert.AreEqual("value(DynamicExpression.Test.CriteriaBuilderTest+FlagsEnum[]).Contains(x.Flags)", expression.Body.ToString());
+        Assert.AreEqual("value(Tests.DynamicExpression.CriteriaBuilderTest+FlagsEnum[]).Contains(x.Flags)", expression.Body.ToString());
     }
 
     [TestMethod]
