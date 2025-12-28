@@ -6,7 +6,7 @@ using DynamicExpression.Enums;
 using DynamicExpression.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DynamicExpression.Test.Extensions;
+namespace Tests.DynamicExpression.Extensions;
 
 [TestClass]
 public class QueryableExtensionsTest

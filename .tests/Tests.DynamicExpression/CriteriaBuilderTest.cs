@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using DynamicExpression;
 using DynamicExpression.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NetTopologySuite.Geometries;
 
-namespace DynamicExpression.Test;
+namespace Tests.DynamicExpression;
 
 [TestClass]
 public class CriteriaBuilderTest
@@ -393,7 +394,7 @@ public class CriteriaBuilderTest
 
         Assert.IsNotNull(expression);
         Assert.IsNotNull(expression.Compile());
-        Assert.AreEqual("value(DynamicExpression.Test.CriteriaBuilderTest+FlagsEnum[]).Contains(x.Flags)", expression.Body.ToString());
+        Assert.AreEqual("value(Tests.DynamicExpression.CriteriaBuilderTest+FlagsEnum[]).Contains(x.Flags)", expression.Body.ToString());
     }
 
     [TestMethod]

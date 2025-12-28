@@ -1,8 +1,9 @@
 using System.Linq;
+using DynamicExpression;
 using DynamicExpression.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DynamicExpression.Test;
+namespace Tests.DynamicExpression;
 
 [TestClass]
 public class CriteriaExpressionTest
@@ -17,7 +18,7 @@ public class CriteriaExpressionTest
         Assert.IsNotNull(criteria);
         Assert.AreEqual("name", criteria.Property);
         Assert.AreEqual("value", criteria.Value);
-        Assert.AreEqual(null, criteria.Value2);
+        Assert.IsNull(criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.Equal, criteria.OperationType);
     }
@@ -32,7 +33,7 @@ public class CriteriaExpressionTest
         Assert.IsNotNull(criteria);
         Assert.AreEqual("name", criteria.Property);
         Assert.AreEqual("value", criteria.Value);
-        Assert.AreEqual(null, criteria.Value2);
+        Assert.IsNull(criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.StartsWith, criteria.OperationType);
     }
@@ -47,7 +48,7 @@ public class CriteriaExpressionTest
         Assert.IsNotNull(criteria);
         Assert.AreEqual("name", criteria.Property);
         Assert.AreEqual("value", criteria.Value);
-        Assert.AreEqual(null, criteria.Value2);
+        Assert.IsNull(criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.EndsWith, criteria.OperationType);
     }
@@ -62,7 +63,7 @@ public class CriteriaExpressionTest
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Age", criteria.Property);
         Assert.AreEqual(1, criteria.Value);
-        Assert.AreEqual(null, criteria.Value2);
+        Assert.IsNull(criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.GreaterThan, criteria.OperationType);
     }
@@ -77,7 +78,7 @@ public class CriteriaExpressionTest
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Age", criteria.Property);
         Assert.AreEqual(1, criteria.Value);
-        Assert.AreEqual(null, criteria.Value2);
+        Assert.IsNull(criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.GreaterThanOrEqual, criteria.OperationType);
     }
@@ -92,7 +93,7 @@ public class CriteriaExpressionTest
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Age", criteria.Property);
         Assert.AreEqual(1, criteria.Value);
-        Assert.AreEqual(null, criteria.Value2);
+        Assert.IsNull(criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.LessThan, criteria.OperationType);
     }
@@ -107,7 +108,7 @@ public class CriteriaExpressionTest
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Age", criteria.Property);
         Assert.AreEqual(1, criteria.Value);
-        Assert.AreEqual(null, criteria.Value2);
+        Assert.IsNull(criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.LessThanOrEqual, criteria.OperationType);
     }
@@ -136,8 +137,8 @@ public class CriteriaExpressionTest
         var criteria = expression.Criterias.FirstOrDefault();
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Name", criteria.Property);
-        Assert.AreEqual(null, criteria.Value);
-        Assert.AreEqual(null, criteria.Value2);
+        Assert.IsNull(criteria.Value);
+        Assert.IsNull(criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.IsNull, criteria.OperationType);
     }
@@ -151,8 +152,8 @@ public class CriteriaExpressionTest
         var criteria = expression.Criterias.FirstOrDefault();
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Name", criteria.Property);
-        Assert.AreEqual(null, criteria.Value);
-        Assert.AreEqual(null, criteria.Value2);
+        Assert.IsNull(criteria.Value);
+        Assert.IsNull(criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.IsNotNull, criteria.OperationType);
     }
@@ -166,8 +167,8 @@ public class CriteriaExpressionTest
         var criteria = expression.Criterias.FirstOrDefault();
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Name", criteria.Property);
-        Assert.AreEqual(null, criteria.Value);
-        Assert.AreEqual(null, criteria.Value2);
+        Assert.IsNull(criteria.Value);
+        Assert.IsNull(criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.IsEmpty, criteria.OperationType);
     }
@@ -181,8 +182,8 @@ public class CriteriaExpressionTest
         var criteria = expression.Criterias.FirstOrDefault();
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Name", criteria.Property);
-        Assert.AreEqual(null, criteria.Value);
-        Assert.AreEqual(null, criteria.Value2);
+        Assert.IsNull(criteria.Value);
+        Assert.IsNull(criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.IsNotEmpty, criteria.OperationType);
     }
@@ -196,8 +197,8 @@ public class CriteriaExpressionTest
         var criteria = expression.Criterias.FirstOrDefault();
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Name", criteria.Property);
-        Assert.AreEqual(null, criteria.Value);
-        Assert.AreEqual(null, criteria.Value2);
+        Assert.IsNull(criteria.Value);
+        Assert.IsNull(criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.IsNullOrWhiteSpace, criteria.OperationType);
     }
@@ -211,8 +212,8 @@ public class CriteriaExpressionTest
         var criteria = expression.Criterias.FirstOrDefault();
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Name", criteria.Property);
-        Assert.AreEqual(null, criteria.Value);
-        Assert.AreEqual(null, criteria.Value2);
+        Assert.IsNull(criteria.Value);
+        Assert.IsNull(criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.IsNotNullOrWhiteSpace, criteria.OperationType);
     }
@@ -228,7 +229,7 @@ public class CriteriaExpressionTest
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Name", criteria.Property);
         Assert.AreEqual(array, criteria.Value);
-        Assert.AreEqual(null, criteria.Value2);
+        Assert.IsNull(criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.In, criteria.OperationType);
     }
@@ -244,7 +245,7 @@ public class CriteriaExpressionTest
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Name", criteria.Property);
         Assert.AreEqual(array, criteria.Value);
-        Assert.AreEqual(null, criteria.Value2);
+        Assert.IsNull(criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.NotIn, criteria.OperationType);
     }
@@ -259,7 +260,7 @@ public class CriteriaExpressionTest
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Name", criteria.Property);
         Assert.AreEqual("value", criteria.Value);
-        Assert.AreEqual(null, criteria.Value2);
+        Assert.IsNull(criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.Contains, criteria.OperationType);
     }
@@ -274,7 +275,7 @@ public class CriteriaExpressionTest
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Name", criteria.Property);
         Assert.AreEqual("value", criteria.Value);
-        Assert.AreEqual(null, criteria.Value2);
+        Assert.IsNull(criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.NotContains, criteria.OperationType);
     }

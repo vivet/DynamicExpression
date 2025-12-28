@@ -28,7 +28,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By(property, OperationType.Equal, value, default, logicalType);
+        this.By(property, OperationType.Equal, value, null, logicalType);
     }
 
     /// <summary>
@@ -43,7 +43,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By(property, OperationType.NotEqual, value, default, logicalType);
+        this.By(property, OperationType.NotEqual, value, null, logicalType);
     }
 
     /// <summary>
@@ -58,7 +58,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By(property, OperationType.StartsWith, value, default, logicalType);
+        this.By(property, OperationType.StartsWith, value, null, logicalType);
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By(property, OperationType.EndsWith, value, default, logicalType);
+        this.By(property, OperationType.EndsWith, value, null, logicalType);
     }
 
     /// <summary>
@@ -88,7 +88,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By(property, OperationType.GreaterThan, value, default, logicalType);
+        this.By(property, OperationType.GreaterThan, value, null, logicalType);
     }
 
     /// <summary>
@@ -103,7 +103,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By(property, OperationType.GreaterThanOrEqual, value, default, logicalType);
+        this.By(property, OperationType.GreaterThanOrEqual, value, null, logicalType);
     }
 
     /// <summary>
@@ -118,7 +118,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By(property, OperationType.LessThan, value, default, logicalType);
+        this.By(property, OperationType.LessThan, value, null, logicalType);
     }
 
     /// <summary>
@@ -133,7 +133,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By(property, OperationType.LessThanOrEqual, value, default, logicalType);
+        this.By(property, OperationType.LessThanOrEqual, value, null, logicalType);
     }
 
     /// <summary>
@@ -163,7 +163,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By<TType>(property, OperationType.IsNull, default, default, logicalType);
+        this.By<TType>(property, OperationType.IsNull, default, null, logicalType);
     }
 
     /// <summary>
@@ -177,7 +177,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By<TType>(property, OperationType.IsNotNull, default, default, logicalType);
+        this.By<TType>(property, OperationType.IsNotNull, default, null, logicalType);
     }
 
     /// <summary>
@@ -191,7 +191,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By<TType>(property, OperationType.IsEmpty, default, default, logicalType);
+        this.By<TType>(property, OperationType.IsEmpty, default, null, logicalType);
     }
 
     /// <summary>
@@ -205,7 +205,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By<TType>(property, OperationType.IsNotEmpty, default, default, logicalType);
+        this.By<TType>(property, OperationType.IsNotEmpty, default, null, logicalType);
     }
 
     /// <summary>
@@ -219,7 +219,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By<TType>(property, OperationType.IsNullOrWhiteSpace, default, default, logicalType);
+        this.By<TType>(property, OperationType.IsNullOrWhiteSpace, default, null, logicalType);
     }
 
     /// <summary>
@@ -233,7 +233,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By<TType>(property, OperationType.IsNotNullOrWhiteSpace, default, default, logicalType);
+        this.By<TType>(property, OperationType.IsNotNullOrWhiteSpace, default, null, logicalType);
     }
 
     /// <summary>
@@ -248,7 +248,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By(property, OperationType.In, value, default, logicalType);
+        this.By(property, OperationType.In, value, null, logicalType);
     }
 
     /// <summary>
@@ -263,7 +263,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By(property, OperationType.NotIn, value, default, logicalType);
+        this.By(property, OperationType.NotIn, value, null, logicalType);
     }
 
     /// <summary>
@@ -278,7 +278,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By(property, OperationType.Contains, value, default, logicalType);
+        this.By(property, OperationType.Contains, value, null, logicalType);
     }
 
     /// <summary>
@@ -293,7 +293,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By(property, OperationType.NotContains, value, default, logicalType);
+        this.By(property, OperationType.NotContains, value, null, logicalType);
     }
 
     /// <summary>
@@ -308,7 +308,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By(property, OperationType.Covers, value, default, logicalType);
+        this.By(property, OperationType.Covers, value, null, logicalType);
     }
 
     /// <summary>
@@ -323,7 +323,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By(property, OperationType.Crosses, value, default, logicalType);
+        this.By(property, OperationType.Crosses, value, null, logicalType);
     }
 
     /// <summary>
@@ -338,7 +338,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By(property, OperationType.Touches, value, default, logicalType);
+        this.By(property, OperationType.Touches, value, null, logicalType);
     }
 
     /// <summary>
@@ -353,7 +353,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By(property, OperationType.Overlaps, value, default, logicalType);
+        this.By(property, OperationType.Overlaps, value, null, logicalType);
     }
 
     /// <summary>
@@ -368,7 +368,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By(property, OperationType.CoveredBy, value, default, logicalType);
+        this.By(property, OperationType.CoveredBy, value, null, logicalType);
     }
 
     /// <summary>
@@ -383,7 +383,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By(property, OperationType.Disjoint, value, default, logicalType);
+        this.By(property, OperationType.Disjoint, value, null, logicalType);
     }
 
     /// <summary>
@@ -398,7 +398,7 @@ public class CriteriaExpression
         if (property == null)
             throw new ArgumentNullException(nameof(property));
 
-        this.By(property, OperationType.Intersects, value, default, logicalType);
+        this.By(property, OperationType.Intersects, value, null, logicalType);
     }
 
     /// <summary>
@@ -434,7 +434,7 @@ public class CriteriaExpression
         this.By(property, OperationType.IsWithinDistance, value, distance, logicalType);
     }
 
-    private void By<TType>(string property, OperationType operationType, TType value, object value2 = default, LogicalType logicalType = LogicalType.And)
+    private void By<TType>(string property, OperationType operationType, TType value, object value2 = null, LogicalType logicalType = LogicalType.And)
     {
         if (property == null)
             throw new ArgumentNullException(nameof(property));
