@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using DynamicExpression;
 using DynamicExpression.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NetTopologySuite.Geometries;
 
-namespace DynamicExpression.Test;
+namespace Tests.DynamicExpression;
 
 [TestClass]
 public class CriteriaBuilderTest

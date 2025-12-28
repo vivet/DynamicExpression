@@ -98,86 +98,38 @@ public class Criteria<TType> : Criteria
             ? "Enum"
             : operationTypes.FirstOrDefault(x => x.Value.Any(y => y.Name == type.Name)).Key;
 
-        switch (operationType)
+        return operationType switch
         {
-            case "Text":
-                return
-                [
-                    OperationType.Equal,
-                    OperationType.NotEqual,
-                    OperationType.StartsWith,
-                    OperationType.EndsWith,
-                    OperationType.IsEmpty,
-                    OperationType.IsNotEmpty,
-                    OperationType.IsNull,
-                    OperationType.IsNotNull,
-                    OperationType.IsNullOrWhiteSpace,
-                    OperationType.IsNotNullOrWhiteSpace,
-                    OperationType.IsEmpty,
-                    OperationType.IsNotEmpty,
-                    OperationType.In,
-                    OperationType.NotIn,
-                    OperationType.Contains,
-                    OperationType.NotContains
-                ];
-
-            case "Date":
-            case "Number":
-                return
-                [
-                    OperationType.Equal,
-                    OperationType.NotEqual,
-                    OperationType.GreaterThan,
-                    OperationType.GreaterThanOrEqual,
-                    OperationType.LessThan,
-                    OperationType.LessThanOrEqual,
-                    OperationType.Between
-                ];
-
-            case "Boolean":
-            case "Guid":
-                return
-                [
-                    OperationType.Equal,
-                    OperationType.NotEqual
-                ];
-
-            case "Enum":
-                return
-                [
-                    OperationType.Equal,
-                    OperationType.NotEqual,
-                    OperationType.In,
-                    OperationType.NotIn,
-                    OperationType.Contains,
-                    OperationType.NotContains
-                ];
-
-            case "Nullable":
-                return new[]
-                    {
-                        OperationType.IsNull,
-                        OperationType.IsNotNull
-                    }
-                    .Union(this.GetSupportedOperationTypes(Nullable.GetUnderlyingType(type)))
-                    .Distinct();
-
-            case "Spatial":
-                return
-                [
-                    OperationType.Covers,
-                    OperationType.Crosses,
-                    OperationType.Touches,
-                    OperationType.Overlaps,
-                    OperationType.CoveredBy,
-                    OperationType.Disjoint,
-                    OperationType.Intersects,
-                    OperationType.Within,
-                    OperationType.IsWithinDistance
-                ];
-
-            default:
-                throw new ArgumentOutOfRangeException(nameof(type));
-        }
+            "Text" =>
+            [
+                OperationType.Equal, OperationType.NotEqual, OperationType.StartsWith, OperationType.EndsWith,
+                OperationType.IsEmpty, OperationType.IsNotEmpty, OperationType.IsNull, OperationType.IsNotNull,
+                OperationType.IsNullOrWhiteSpace, OperationType.IsNotNullOrWhiteSpace, OperationType.IsEmpty,
+                OperationType.IsNotEmpty, OperationType.In, OperationType.NotIn, OperationType.Contains,
+                OperationType.NotContains
+            ],
+            "Date" or "Number" =>
+            [
+                OperationType.Equal, OperationType.NotEqual, OperationType.GreaterThan,
+                OperationType.GreaterThanOrEqual, OperationType.LessThan, OperationType.LessThanOrEqual,
+                OperationType.Between
+            ],
+            "Boolean" or "Guid" => [OperationType.Equal, OperationType.NotEqual],
+            "Enum" =>
+            [
+                OperationType.Equal, OperationType.NotEqual, OperationType.In, OperationType.NotIn,
+                OperationType.Contains, OperationType.NotContains
+            ],
+            "Nullable" => new[] { OperationType.IsNull, OperationType.IsNotNull }
+                .Union(this.GetSupportedOperationTypes(Nullable.GetUnderlyingType(type)))
+                .Distinct(),
+            "Spatial" =>
+            [
+                OperationType.Covers, OperationType.Crosses, OperationType.Touches, OperationType.Overlaps,
+                OperationType.CoveredBy, OperationType.Disjoint, OperationType.Intersects, OperationType.Within,
+                OperationType.IsWithinDistance
+            ],
+            _ => throw new ArgumentOutOfRangeException(nameof(type))
+        };
     }
 }
