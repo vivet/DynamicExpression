@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DynamicExpression.ModelBinders.Converters;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace DynamicExpression.ModelBinders.Const;
@@ -18,7 +19,8 @@ internal static class Constants
         PreserveReferencesHandling = PreserveReferencesHandling.None,
         Converters =
         {
-            new StringEnumConverter()
+            new StringEnumConverter(),
+            new GeometryConverterIgnoreCase()
         }
     };
 }
