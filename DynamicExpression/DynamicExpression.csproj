@@ -15,8 +15,7 @@
 		<PackageTags>Lampda, Expression, Linq, Dynamic, Criteria, Query, Paging, Pagination, Sort, Sorting</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageReleaseNotes>
-			- Updated NuGets.
-			- Added Geometry converter for query model binder.
+			- Fixed The QueryModelBinder for enum values in querystring criteria.
 		</PackageReleaseNotes>
 		<PackageLicense>https://raw.githubusercontent.com/vivet/DynamicExpression/master/LICENSE</PackageLicense>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
