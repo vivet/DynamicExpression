@@ -182,61 +182,81 @@ public class QueryModelBinder<TCriteria> : QueryModelBinder
 
         var criteria = new TCriteria();
 
-        typeof(TCriteria)
-            .GetProperties(BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance)
-            .ToList()
-            .ForEach(x =>
+        var propertyInfos = typeof(TCriteria)
+            .GetProperties(BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance);
+
+        foreach (var propertyInfo in propertyInfos)
+        {
+            var bodyValue = propertyInfo
+                .GetValue(query.Criteria);
+
+            if (bodyValue != null)
             {
-                var bodyValue = x.GetValue(query.Criteria);
+                propertyInfo
+                    .SetValue(criteria, bodyValue);
 
-                if (bodyValue != null)
-                {
-                    x.SetValue(criteria, bodyValue);
+                continue;
+            }
 
-                    return; 
-                }
+            var success = httpRequest.Query.TryGetValue($"{nameof(Criteria)}.{propertyInfo.Name}", out var values);
 
-                var success = httpRequest.Query.TryGetValue($"{nameof(Criteria)}.{x.Name}", out var values);
-                if (!success)
-                {
-                    return;
-                }
+            if (!success)
+            {
+                continue;
+            }
 
-                var value = values.FirstOrDefault();
-                if (value == null)
-                {
-                    return;
-                }
+            var value = values
+                .FirstOrDefault();
+            
+            if (value == null)
+            {
+                continue;
+            }
 
-                if (x.PropertyType == typeof(TimeSpan) || x.PropertyType == typeof(TimeSpan?))
-                {
-                    x.SetValue(criteria, TimeSpan.Parse(value));
-                }
-                else if (x.PropertyType == typeof(TimeOnly) || x.PropertyType == typeof(TimeOnly?))
-                {
-                    x.SetValue(criteria, TimeOnly.Parse(value));
-                }
-                else if (x.PropertyType == typeof(DateOnly) || x.PropertyType == typeof(DateOnly?))
-                {
-                    x.SetValue(criteria, DateOnly.Parse(value));
-                }
-                else if (x.PropertyType == typeof(DateTime) || x.PropertyType == typeof(DateTime?))
-                {
-                    x.SetValue(criteria, DateTime.Parse(value));
-                }
-                else if (x.PropertyType == typeof(DateTimeOffset) || x.PropertyType == typeof(DateTimeOffset?))
-                {
-                    x.SetValue(criteria, DateTimeOffset.Parse(value));
-                }
-                else if (x.PropertyType == typeof(Guid) || x.PropertyType == typeof(Guid?))
-                {
-                    x.SetValue(criteria, Guid.Parse(value));
-                }
-                else
-                {
-                    x.SetValue(criteria, value);
-                }
-            });
+            if (propertyInfo.PropertyType == typeof(TimeSpan) || propertyInfo.PropertyType == typeof(TimeSpan?))
+            {
+                propertyInfo
+                    .SetValue(criteria, TimeSpan.Parse(value));
+            }
+            else if (propertyInfo.PropertyType == typeof(TimeOnly) || propertyInfo.PropertyType == typeof(TimeOnly?))
+            {
+                propertyInfo
+                    .SetValue(criteria, TimeOnly.Parse(value));
+            }
+            else if (propertyInfo.PropertyType == typeof(DateOnly) || propertyInfo.PropertyType == typeof(DateOnly?))
+            {
+                propertyInfo
+                    .SetValue(criteria, DateOnly.Parse(value));
+            }
+            else if (propertyInfo.PropertyType == typeof(DateTime) || propertyInfo.PropertyType == typeof(DateTime?))
+            {
+                propertyInfo
+                    .SetValue(criteria, DateTime.Parse(value));
+            }
+            else if (propertyInfo.PropertyType == typeof(DateTimeOffset) || propertyInfo.PropertyType == typeof(DateTimeOffset?))
+            {
+                propertyInfo
+                    .SetValue(criteria, DateTimeOffset.Parse(value));
+            }
+            else if (propertyInfo.PropertyType == typeof(Guid) || propertyInfo.PropertyType == typeof(Guid?))
+            {
+                propertyInfo
+                    .SetValue(criteria, Guid.Parse(value));
+            }
+            else if (propertyInfo.PropertyType.IsEnum || (Nullable.GetUnderlyingType(propertyInfo.PropertyType)?.IsEnum ?? false))
+            {
+                var enumType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
+                var enumValue = Enum.Parse(enumType, value, ignoreCase: true);
+
+                propertyInfo
+                    .SetValue(criteria, enumValue);
+            }
+            else
+            {
+                propertyInfo
+                    .SetValue(criteria, value);
+            }
+        }
 
         return criteria;
     }
