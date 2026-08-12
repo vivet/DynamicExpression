@@ -112,6 +112,18 @@ public static class CriteriaBuilder
             }
         }
 
+        try
+        {
+            return CriteriaBuilder.GetExpressionCore(member, value, value2, operationType);
+        }
+        catch (Exception ex) when (ex is ArgumentException or InvalidOperationException && ex is not ArgumentOutOfRangeException)
+        {
+            throw new ArgumentException($"Criteria for property '{name}' cannot be applied: operation '{operationType}' with value type '{value.Type.Name}' is not compatible with the property's type '{member.Type.Name}'.", ex);
+        }
+    }
+
+    private static Expression GetExpressionCore(Expression member, Expression value, Expression value2, OperationType operationType)
+    {
         if (value.Type.IsEnum)
         {
             var expression = Expression.Convert(member, Enum.GetUnderlyingType(value.Type));

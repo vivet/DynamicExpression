@@ -15,6 +15,7 @@
 		<PackageTags>Lampda, Expression, Linq, Dynamic, Criteria, Query, Paging, Pagination, Sort, Sorting</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageReleaseNotes>
+			- Improved exception handling for property type mismatch.
 			- Updated NuGets
 		</PackageReleaseNotes>
 		<PackageLicense>https://raw.githubusercontent.com/vivet/DynamicExpression/master/LICENSE</PackageLicense>
@@ -47,7 +48,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.301" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.400" PrivateAssets="All" />
 		<PackageReference Include="NetTopologySuite" Version="2.6.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="NetTopologySuite.IO.GeoJSON" Version="4.0.0" />

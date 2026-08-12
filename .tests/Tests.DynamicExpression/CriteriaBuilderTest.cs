@@ -613,6 +613,20 @@ public class CriteriaBuilderTest
     }
 
     [TestMethod]
+    public void BuildWhenIntersectsAndPropertyTypeMismatchTest()
+    {
+        var criteriaExpression = new CriteriaExpression();
+
+        criteriaExpression.Intersects(nameof(Customer.Name), new Point(0, 0));
+
+        var exception = Assert.ThrowsExactly<ArgumentException>(() => CriteriaBuilder.Build<Customer>(criteriaExpression));
+
+        Assert.IsInstanceOfType<ArgumentException>(exception.InnerException);
+        StringAssert.Contains(exception.Message, nameof(Customer.Name));
+        StringAssert.Contains(exception.Message, nameof(OperationType.Intersects));
+    }
+
+    [TestMethod]
     public void BuildWhenWithinTest()
     {
         var criteriaExpression = new CriteriaExpression();
