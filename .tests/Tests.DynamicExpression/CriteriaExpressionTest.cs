@@ -228,7 +228,7 @@ public class CriteriaExpressionTest
         var criteria = expression.Criterias.FirstOrDefault();
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Name", criteria.Property);
-        Assert.AreEqual(array, criteria.Value);
+        Assert.AreSame(array, criteria.Value);
         Assert.IsNull(criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.In, criteria.OperationType);
@@ -244,7 +244,7 @@ public class CriteriaExpressionTest
         var criteria = expression.Criterias.FirstOrDefault();
         Assert.IsNotNull(criteria);
         Assert.AreEqual("Name", criteria.Property);
-        Assert.AreEqual(array, criteria.Value);
+        Assert.AreSame(array, criteria.Value);
         Assert.IsNull(criteria.Value2);
         Assert.AreEqual(LogicalType.And, criteria.LogicalType);
         Assert.AreEqual(OperationType.NotIn, criteria.OperationType);
