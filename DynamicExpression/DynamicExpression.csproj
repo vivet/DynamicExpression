@@ -15,7 +15,6 @@
 		<PackageTags>Lampda, Expression, Linq, Dynamic, Criteria, Query, Paging, Pagination, Sort, Sorting</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageReleaseNotes>
-			- Improved exception handling for property type mismatch.
 			- Updated NuGets
 		</PackageReleaseNotes>
 		<PackageLicense>https://raw.githubusercontent.com/vivet/DynamicExpression/master/LICENSE</PackageLicense>
