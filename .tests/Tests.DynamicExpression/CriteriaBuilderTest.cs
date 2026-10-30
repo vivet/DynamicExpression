@@ -681,6 +681,36 @@ public class CriteriaBuilderTest
     }
 
     [TestMethod]
+    public void BuildWhenNotEqualReferenceCollectionTest()
+    {
+        var criteriaExpression = new CriteriaExpression();
+        criteriaExpression.NotEqual("Orders[Payment.Id]", "value");
+
+        var expression = CriteriaBuilder.Build<Customer>(criteriaExpression);
+
+        Assert.IsNotNull(expression);
+        Assert.IsNotNull(expression.Compile());
+        Assert.AreEqual("Not(x.Orders.Any(i => ((i.Payment.Id != null) AndAlso (i.Payment.Id == \"value\"))))", expression.Body.ToString());
+    }
+
+    [TestMethod]
+    public void BuildWhenNotEqualReferenceCollectionLeavesOutMatchesTest()
+    {
+        var criteriaExpression = new CriteriaExpression();
+        criteriaExpression.NotEqual("Orders[Payment.Id]", "value");
+
+        var predicate = CriteriaBuilder.Build<Customer>(criteriaExpression).Compile();
+
+        var withMatch = new Customer { Orders = [new Order { Payment = new Payment { Id = "value" } }, new Order { Payment = new Payment { Id = "other" } }] };
+        var withoutMatch = new Customer { Orders = [new Order { Payment = new Payment { Id = "other" } }] };
+        var withoutOrders = new Customer { Orders = [] };
+
+        Assert.IsFalse(predicate(withMatch));
+        Assert.IsTrue(predicate(withoutMatch));
+        Assert.IsTrue(predicate(withoutOrders));
+    }
+
+    [TestMethod]
     public void BuildWhenRefernceAndReferenceCollectionTest()
     {
         var criteriaExpression = new CriteriaExpression();
