@@ -121,7 +121,6 @@ public static class CriteriaBuilder
             throw new ArgumentException($"Criteria for property '{name}' cannot be applied: operation '{operationType}' with value type '{value.Type.Name}' is not compatible with the property's type '{member.Type.Name}'.", ex);
         }
     }
-
     private static Expression GetExpressionCore(Expression member, Expression value, Expression value2, OperationType operationType)
     {
         if (value.Type.IsEnum)
@@ -429,6 +428,27 @@ public static class CriteriaBuilder
 
         throw new NotSupportedException($"'{operationType}' is not supported by '{value.Type}' ");
     }
+    private static bool TryGetPositiveOperation(OperationType operationType, out OperationType positiveOperation)
+    {
+        switch (operationType)
+        {
+            case OperationType.NotEqual:
+                positiveOperation = OperationType.Equal;
+                return true;
+
+            case OperationType.NotIn:
+                positiveOperation = OperationType.In;
+                return true;
+
+            case OperationType.NotContains:
+                positiveOperation = OperationType.Contains;
+                return true;
+
+            default:
+                positiveOperation = operationType;
+                return false;
+        }
+    }
     private static Expression BuildExpression(CriteriaExpression criteriaExpression, Expression parameter)
     {
         var prevLogicalType = LogicalType.And;
@@ -467,10 +487,26 @@ public static class CriteriaBuilder
                 var methodAny = typeof(Enumerable).GetRuntimeMethods().First(x => x.Name == "Any" && x.GetParameters().Length == 2).MakeGenericMethod(type);
                 var memberAny = CriteriaBuilder.GetMember(paramNested, baseName);
                 var parameterAny = Expression.Parameter(type, "i");
-                var expressionAny = CriteriaBuilder.GetExpression(parameterAny, criteria, name);
+                var isNegated = CriteriaBuilder.TryGetPositiveOperation(criteria.OperationType, out var positiveOperation);
+                var elementCriteria = isNegated
+                    ? new Criteria
+                    {
+                        Property = criteria.Property,
+                        Value = criteria.Value,
+                        Value2 = criteria.Value2,
+                        LogicalType = criteria.LogicalType,
+                        OperationType = positiveOperation
+                    }
+                    : criteria;
+                var expressionAny = CriteriaBuilder.GetExpression(parameterAny, elementCriteria, name);
                 var expr2 = Expression.Lambda(expressionAny, parameterAny);
 
                 innerExpression = Expression.Call(methodAny, memberAny, expr2);
+
+                if (isNegated)
+                {
+                    innerExpression = Expression.Not(innerExpression);
+                }
             }
             else
             {

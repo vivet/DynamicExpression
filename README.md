@@ -97,6 +97,9 @@ Note, that not all operations are valid on all data types, but it should be appa
 * IsEmpty
 * IsNotEmpty
 
+A property on a collection is written in brackets, such as `Orders[Total]`, and the operation must match at least one element: `GreaterThan("Orders[Total]", 100)` is `x.Orders.Any(i => i.Total > 100)`.  
+The negated operations (NotEqual, NotIn and NotContains) on a collection mean that no element matches: `NotEqual("Orders[Id]", id)` is `!x.Orders.Any(i => i.Id == id)`.
+
 #### Linq Extensions
 The library comes with a few ```IQueryable<T>``` extension methods. They serve to convert the ```CriteriaExpression``` returned by the ```GetExpression()```, into a valid linq expression.  
 
